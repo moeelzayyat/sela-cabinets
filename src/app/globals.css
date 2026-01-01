@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 15%;
+
+    --primary: 0 0% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 28 30% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 30 25% 95%;
+    --accent-foreground: 0 0% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 89%;
+    --input: 0 0% 89%;
+    --ring: 0 0% 15%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-charcoal-900 via-wood-700 to-charcoal-900 bg-clip-text text-transparent;
+  }
+
+  .wood-grain-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='%23f5f0eb'/%3E%3Cpath d='M0 10c20 5 40 2 60 8s40 3 40 3' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 20c25 3 45 8 70 5s30 7 30 7' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 30c15 5 35 3 55 9s45 2 45 2' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 40c20 4 40 7 65 4s35 6 35 6' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 50c25 5 50 3 75 8s25 4 25 4' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 60c18 3 38 6 58 4s42 5 42 5' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 70c22 5 42 2 67 7s33 3 33 3' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 80c20 4 45 5 70 3s30 6 30 6' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3Cpath d='M0 90c25 3 50 7 75 4s25 5 25 5' stroke='%23e8ddd1' fill='none' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-charcoal-900 ring-offset-2;
+}
+
+/* Selection color */
+::selection {
+  @apply bg-wood-200 text-charcoal-900;
+}
+
+/* Calendly embed container */
+.calendly-inline-widget {
+  min-width: 320px;
+  height: 700px;
+}
+
+@media (max-width: 640px) {
+  .calendly-inline-widget {
+    height: 1000px;
+  }
+}
+

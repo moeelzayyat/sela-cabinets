@@ -17,7 +17,7 @@ export const siteConfig = {
   phoneFormatted: '(313) 246-7903',
   phoneLink: 'tel:+13132467903',
   
-  email: 'info@selacabinet.com',
+  email: 'info@selacabinets.com',
   
   location: {
     city: 'Detroit',
@@ -85,7 +85,7 @@ export const siteConfig = {
       'custom cabinets',
       'kitchen design Detroit',
     ],
-    url: 'https://selacabinet.com',
+    url: 'https://selacabinets.com',
   },
   
   // ============================================

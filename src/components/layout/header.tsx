@@ -28,7 +28,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-charcoal-900">
-              <span className="font-display text-lg font-bold text-white">S</span>
+              <span className="font-display text-lg font-bold text-white">★</span>
             </div>
             <div className="flex flex-col">
               <span className="font-display text-xl font-bold text-charcoal-900">

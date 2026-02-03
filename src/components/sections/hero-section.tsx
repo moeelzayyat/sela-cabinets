@@ -40,8 +40,8 @@ export function HeroSection() {
 
           {/* Subheadline */}
           <p className="mt-6 max-w-lg text-lg text-charcoal-300 sm:text-xl">
-            Semi-custom cabinets . Professional measuring. Clean installation.{' '}
-            <span className="text-wood-300">Detroit-born, Detroit-focused.</span>
+            Semi-custom cabinets at wholesale prices. 10×10 kitchens from <span className="font-semibold text-wood-400">$3,999 installed</span>.{' '}
+            <span className="text-wood-300">Save up to 66% vs big box stores.</span>
           </p>
 
           {/* CTAs */}

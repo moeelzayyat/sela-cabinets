@@ -21,9 +21,9 @@ const trustItems = [
   },
   {
     icon: Package,
-    stat: 'Direct',
-    title: 'Direct From Supplier',
-    description: 'No middlemen. No showroom markup. Just fair pricing on quality cabinets.',
+    stat: 'Save 66%',
+    title: 'Vs Big Box Stores',
+    description: 'Direct supplier pricing. No showroom markup. 10×10 kitchens from $3,999 installed.',
   },
 ]
 

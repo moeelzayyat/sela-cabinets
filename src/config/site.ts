@@ -96,6 +96,7 @@ export const siteConfig = {
       { label: 'Home', href: '/' },
       { label: 'Services', href: '/services' },
       { label: 'Products', href: '/products' },
+      { label: 'Pricing', href: '/pricing' },
       { label: 'Gallery', href: '/gallery' },
       { label: 'About', href: '/about' },
       { label: 'FAQs', href: '/faqs' },

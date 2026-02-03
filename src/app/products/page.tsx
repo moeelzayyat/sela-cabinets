@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CTASection } from '@/components/sections/cta-section'
 import { siteConfig } from '@/config/site'
-import { alineProducts } from '@/config/aline-products'
+import { productsCatalog } from '@/config/products-catalog'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Styles Detroit | 24+ Colors & Finishes | SELA',
@@ -63,7 +63,7 @@ export default function ProductsPage() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {alineProducts.framed.map((style) => (
+                {productsCatalog.framed.map((style) => (
                   <div
                     key={style.id}
                     className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"
@@ -121,7 +121,7 @@ export default function ProductsPage() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {alineProducts.frameless.map((style) => (
+                {productsCatalog.frameless.map((style) => (
                   <div
                     key={style.id}
                     className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"

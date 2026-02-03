@@ -1,0 +1,75 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { CTASection } from '@/components/sections/cta-section'
+import { MapPin, Phone, CheckCircle } from 'lucide-react'
+import { siteConfig } from '@/config/site'
+
+export const metadata: Metadata = {
+  title: 'Kitchen Cabinets Ann Arbor MI | Cabinet Installation & Design',
+  description: 'Kitchen cabinet installation in Ann Arbor, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Ann Arbor & Washtenaw County.',
+  keywords: ['kitchen cabinets Ann Arbor MI', 'cabinet installation Ann Arbor', 'kitchen remodel Ann Arbor', 'Washtenaw County cabinets', 'Ann Arbor kitchen design'],
+}
+
+export default function AnnArborPage() {
+  return (
+    <>
+      <section className="section-padding bg-charcoal-900 text-white">
+        <div className="container-wide">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-wood-500/30 bg-wood-900/30 px-4 py-2 text-sm text-wood-300">
+                <MapPin className="h-4 w-4" />
+                Serving Ann Arbor, Michigan
+              </div>
+              <h1 className="mt-6 font-display text-4xl font-bold md:text-5xl lg:text-6xl">
+                Kitchen Cabinets in Ann Arbor
+              </h1>
+              <p className="mt-6 text-lg text-charcoal-300">
+                Quality kitchen cabinet installation for Ann Arbor and Washtenaw County homes. 
+                From modern to traditional, we bring your vision to life.
+              </p>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <Link href="/book">
+                  <Button size="lg" className="bg-wood-600 hover:bg-wood-500">
+                    Book Free Consultation
+                  </Button>
+                </Link>
+                <a href={siteConfig.phoneLink}>
+                  <Button size="lg" variant="outline" className="border-white/50">
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call {siteConfig.phoneFormatted}
+                  </Button>
+                </a>
+              </div>
+            </div>
+            
+            <div className="rounded-2xl bg-charcoal-800 p-8">
+              <h2 className="font-display text-2xl font-bold">Ann Arbor Kitchen Experts</h2>
+              <ul className="mt-6 space-y-4">
+                {[
+                  'Free in-home measurement in Ann Arbor',
+                  'Washtenaw County service area',
+                  '24+ cabinet styles from Aline',
+                  'Installation in 1-3 days',
+                  'Same-week appointments',
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <CheckCircle className="h-6 w-6 shrink-0 text-wood-400" />
+                    <span className="text-charcoal-300">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CTASection 
+        title="Ann Arbor Kitchen Cabinet Quote"
+        description="Book your free Ann Arbor consultation. We'll bring samples and provide a detailed quote."
+        variant="wood"
+      />
+    </>
+  )
+}

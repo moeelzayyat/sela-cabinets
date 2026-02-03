@@ -14,9 +14,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/contact',
     '/book',
     '/estimate',
+    '/blog',
+    '/blog/kitchen-cabinet-costs-detroit',
     '/locations/dearborn',
     '/locations/livonia',
     '/locations/troy',
+    '/locations/warren',
+    '/locations/sterling-heights',
+    '/locations/ann-arbor',
   ]
 
   return routes.map((route) => ({

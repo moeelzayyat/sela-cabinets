@@ -8,8 +8,13 @@ import { siteConfig } from '@/config/site'
 import { serviceImages, type ServiceImageKey } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: 'Our Services',
-  description: 'Professional kitchen cabinet services in Detroit: cabinet supply, expert installation, in-home measurement, and design help. Get your dream kitchen today.',
+  title: 'Kitchen Cabinet Services Detroit | Installation & Design | SELA Cabinets',
+  description: 'Professional kitchen cabinet installation in Detroit. Cabinet supply, in-home measurement, design help & more. Serving Dearborn, Livonia, Troy & metro Detroit.',
+  keywords: ['kitchen cabinet installation Detroit', 'cabinet services Michigan', 'kitchen remodeling Detroit', 'cabinet installation Dearborn', 'kitchen design Troy'],
+  openGraph: {
+    title: 'Kitchen Cabinet Services Detroit | SELA Cabinets',
+    description: 'Professional cabinet installation, supply & design services in Detroit. Free in-home measurement.',
+  },
 }
 
 const iconMap = {

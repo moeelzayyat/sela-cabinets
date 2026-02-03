@@ -14,6 +14,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/contact',
     '/book',
     '/estimate',
+    '/locations/dearborn',
+    '/locations/livonia',
+    '/locations/troy',
   ]
 
   return routes.map((route) => ({

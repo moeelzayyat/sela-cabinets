@@ -12,8 +12,13 @@ import { FAQJsonLd } from '@/components/seo/json-ld'
 import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions',
-  description: 'Get answers to common questions about kitchen cabinet installation, in-home measurement, pricing, and our services in Detroit, Michigan.',
+  title: 'Kitchen Cabinet FAQs Detroit | Costs, Timeline & More | SELA',
+  description: 'Answers about kitchen cabinet costs, installation timeline, in-home measurement & removal in Detroit. How much do cabinets cost? How long does install take?',
+  keywords: ['kitchen cabinet cost Detroit', 'cabinet installation timeline', 'how much kitchen cabinets cost', 'cabinet removal Detroit', 'kitchen remodel FAQ'],
+  openGraph: {
+    title: 'Kitchen Cabinet FAQs | SELA Cabinets Detroit',
+    description: 'Get answers about cabinet costs, installation & services in Detroit.',
+  },
 }
 
 export default function FAQsPage() {

@@ -9,8 +9,13 @@ import { siteConfig } from '@/config/site'
 import { aboutImages } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: 'About Us',
-  description: `Learn about ${siteConfig.name} - your trusted partner for kitchen cabinets in Detroit, Michigan. Professional installation, in-home measurement, and quality service.`,
+  title: 'About SELA Cabinets Detroit | Kitchen Cabinet Experts',
+  description: 'Meet Hamada - owner of SELA Cabinets. Detroit-born cabinet installer serving metro Detroit with Aline cabinets. 15+ cities, free measurement, professional install.',
+  keywords: ['SELA Cabinets Detroit', 'Hamada cabinets', 'kitchen cabinet installer Detroit', 'Detroit cabinet company', 'local cabinet installer'],
+  openGraph: {
+    title: 'About SELA Cabinets | Detroit Kitchen Experts',
+    description: 'Your Detroit cabinet installation experts. Local, reliable, quality service.',
+  },
 }
 
 const values = [

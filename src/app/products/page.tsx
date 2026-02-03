@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CTASection } from '@/components/sections/cta-section'
@@ -68,11 +69,14 @@ export default function ProductsPage() {
                     className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"
                   >
                     <div className="aspect-[4/3] overflow-hidden bg-charcoal-100">
-                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-charcoal-100 to-charcoal-200">
-                        <span className="text-4xl font-display font-bold text-charcoal-300">
-                          {style.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
+                      <Image
+                        src={style.image}
+                        alt={style.name}
+                        width={800}
+                        height={600}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
                     </div>
                     <div className="p-6">
                       <div className="flex items-start justify-between">
@@ -123,11 +127,14 @@ export default function ProductsPage() {
                     className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"
                   >
                     <div className="aspect-[4/3] overflow-hidden bg-charcoal-100">
-                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-charcoal-100 to-charcoal-200">
-                        <span className="text-4xl font-display font-bold text-charcoal-300">
-                          {style.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
+                      <Image
+                        src={style.image}
+                        alt={style.name}
+                        width={800}
+                        height={600}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
                     </div>
                     <div className="p-6">
                       <div className="flex items-start justify-between">

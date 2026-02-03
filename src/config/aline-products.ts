@@ -1,5 +1,5 @@
 /**
- * Aline Cabinet Products Catalog
+ * Aline Cabinet Products Catalog with Images
  * Based on Aline Cabinets product listings
  */
 
@@ -10,6 +10,41 @@ export interface AlineProduct {
   tags: string[]
   isNew?: boolean
   construction: 'framed' | 'frameless'
+  image: string
+}
+
+// Unsplash cabinet images by style/color
+const cabinetImages = {
+  // White cabinets
+  whiteShaker: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=600&q=80',
+  whiteRaised: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&h=600&q=80',
+  whiteModern: 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?auto=format&fit=crop&w=800&h=600&q=80',
+  whiteTextured: 'https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=800&h=600&q=80',
+  
+  // Gray cabinets
+  grayShaker: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?auto=format&fit=crop&w=800&h=600&q=80',
+  grayCharcoal: 'https://images.unsplash.com/photo-1600566752229-250ed79470f8?auto=format&fit=crop&w=800&h=600&q=80',
+  grayModern: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&h=600&q=80',
+  
+  // Dark cabinets
+  espresso: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=800&h=600&q=80',
+  navy: 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?auto=format&fit=crop&w=800&h=600&q=80',
+  black: 'https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?auto=format&fit=crop&w=800&h=600&q=80',
+  matteBlack: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&h=600&q=80',
+  
+  // Wood tones
+  oakNatural: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&h=600&q=80',
+  oakLight: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&h=600&q=80',
+  oakDark: 'https://images.unsplash.com/photo-1600573472591-ee6c563aaec4?auto=format&fit=crop&w=800&h=600&q=80',
+  walnut: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&h=600&q=80',
+  chestnut: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&h=600&q=80',
+  saddle: 'https://images.unsplash.com/photo-1600566752229-250ed79470f8?auto=format&fit=crop&w=800&h=600&q=80',
+  
+  // Specialty
+  highGloss: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&h=600&q=80',
+  glassFront: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=800&h=600&q=80',
+  green: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=800&h=600&q=80',
+  ivory: 'https://images.unsplash.com/photo-1600585153490-76fb20a32601?auto=format&fit=crop&w=800&h=600&q=80',
 }
 
 export const alineProducts = {
@@ -20,6 +55,7 @@ export const alineProducts = {
       description: 'Rich, deep brown finish on classic shaker-style doors. Warm and sophisticated for traditional kitchens.',
       tags: ['Shaker', 'Dark', 'Traditional'],
       construction: 'framed',
+      image: cabinetImages.espresso,
     },
     {
       id: 'charleston-white',
@@ -27,6 +63,7 @@ export const alineProducts = {
       description: 'Elegant raised-panel design in bright white. Timeless appeal with detailed craftsmanship.',
       tags: ['Raised Panel', 'White', 'Classic'],
       construction: 'framed',
+      image: cabinetImages.whiteRaised,
     },
     {
       id: 'shaker-white',
@@ -34,6 +71,7 @@ export const alineProducts = {
       description: 'Clean, bright white shaker doors. The most popular choice for modern and transitional kitchens.',
       tags: ['Shaker', 'White', 'Popular'],
       construction: 'framed',
+      image: cabinetImages.whiteShaker,
     },
     {
       id: 'shaker-gray',
@@ -41,6 +79,7 @@ export const alineProducts = {
       description: 'Sophisticated gray shaker doors. Neutral tone that pairs beautifully with any countertop.',
       tags: ['Shaker', 'Gray', 'Versatile'],
       construction: 'framed',
+      image: cabinetImages.grayShaker,
     },
     {
       id: 'aspen-charcoal-gray',
@@ -48,6 +87,7 @@ export const alineProducts = {
       description: 'Deep charcoal finish with subtle wood grain texture. Bold and contemporary.',
       tags: ['Textured', 'Gray', 'Modern'],
       construction: 'framed',
+      image: cabinetImages.grayCharcoal,
     },
     {
       id: 'aspen-white',
@@ -55,6 +95,7 @@ export const alineProducts = {
       description: 'Bright white with a subtle textured finish. Adds depth and interest to clean designs.',
       tags: ['Textured', 'White', 'Modern'],
       construction: 'framed',
+      image: cabinetImages.whiteTextured,
     },
     {
       id: 'charleston-saddle',
@@ -62,6 +103,7 @@ export const alineProducts = {
       description: 'Warm medium-brown wood tone with raised panel detail. Classic elegance.',
       tags: ['Raised Panel', 'Wood Tone', 'Traditional'],
       construction: 'framed',
+      image: cabinetImages.saddle,
     },
     {
       id: 'navy-blue',
@@ -69,6 +111,7 @@ export const alineProducts = {
       description: 'Bold navy blue shaker doors. Make a statement with this rich, deep color.',
       tags: ['Shaker', 'Blue', 'Statement'],
       construction: 'framed',
+      image: cabinetImages.navy,
     },
     {
       id: 'slim-dove-white',
@@ -76,6 +119,7 @@ export const alineProducts = {
       description: 'Slender shaker profile in soft white. Minimalist design for contemporary spaces.',
       tags: ['Slim Shaker', 'White', 'Contemporary'],
       construction: 'framed',
+      image: cabinetImages.whiteModern,
     },
     {
       id: 'slim-white-oak',
@@ -84,6 +128,7 @@ export const alineProducts = {
       tags: ['Slim Shaker', 'Oak', 'Natural'],
       isNew: true,
       construction: 'framed',
+      image: cabinetImages.oakLight,
     },
     {
       id: 'shaker-charcoal',
@@ -91,6 +136,7 @@ export const alineProducts = {
       description: 'Deep charcoal shaker doors. Modern, dramatic, and endlessly versatile.',
       tags: ['Shaker', 'Charcoal', 'Modern'],
       construction: 'framed',
+      image: cabinetImages.grayCharcoal,
     },
     {
       id: 'iron-black',
@@ -98,6 +144,7 @@ export const alineProducts = {
       description: 'Bold matte black shaker doors. Ultra-modern with serious visual impact.',
       tags: ['Shaker', 'Black', 'Bold'],
       construction: 'framed',
+      image: cabinetImages.black,
     },
     {
       id: 'treasure-chest',
@@ -106,6 +153,7 @@ export const alineProducts = {
       tags: ['Oak', 'Natural', 'Warm'],
       isNew: true,
       construction: 'framed',
+      image: cabinetImages.chestnut,
     },
     {
       id: 'aston-green',
@@ -114,6 +162,7 @@ export const alineProducts = {
       tags: ['Slim Shaker', 'Green', 'Trending'],
       isNew: true,
       construction: 'framed',
+      image: cabinetImages.green,
     },
     {
       id: 'slim-aston-green',
@@ -122,6 +171,7 @@ export const alineProducts = {
       tags: ['Slim Shaker', 'Green', 'Elegant'],
       isNew: true,
       construction: 'framed',
+      image: cabinetImages.green,
     },
     {
       id: 'double-dove-white',
@@ -129,6 +179,7 @@ export const alineProducts = {
       description: 'Double-step shaker profile in soft white. Extra detail for refined taste.',
       tags: ['Double Shaker', 'White', 'Refined'],
       construction: 'framed',
+      image: cabinetImages.whiteModern,
     },
   ] as AlineProduct[],
 
@@ -139,6 +190,7 @@ export const alineProducts = {
       description: 'Sleek high-gloss finish in sophisticated gray. Ultra-modern and reflective.',
       tags: ['High Gloss', 'Gray', 'Modern'],
       construction: 'frameless',
+      image: cabinetImages.highGloss,
     },
     {
       id: 'high-gloss-white',
@@ -146,6 +198,7 @@ export const alineProducts = {
       description: 'Brilliant white high-gloss doors. Clean, bright, and contemporary.',
       tags: ['High Gloss', 'White', 'Contemporary'],
       construction: 'frameless',
+      image: cabinetImages.highGloss,
     },
     {
       id: 'crystal-glass',
@@ -154,6 +207,7 @@ export const alineProducts = {
       tags: ['Glass', 'Display', 'Elegant'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.glassFront,
     },
     {
       id: 'matt-black',
@@ -162,6 +216,7 @@ export const alineProducts = {
       tags: ['Matte', 'Black', 'Luxury'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.matteBlack,
     },
     {
       id: 'midnight-glass',
@@ -170,6 +225,7 @@ export const alineProducts = {
       tags: ['Glass', 'Display', 'Dramatic'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.glassFront,
     },
     {
       id: 'oak-blonde',
@@ -178,6 +234,7 @@ export const alineProducts = {
       tags: ['Oak', 'Natural', 'Light'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.oakLight,
     },
     {
       id: 'oak-shade',
@@ -186,6 +243,7 @@ export const alineProducts = {
       tags: ['Oak', 'Natural', 'Rich'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.oakDark,
     },
     {
       id: 'matt-ivory',
@@ -194,6 +252,7 @@ export const alineProducts = {
       tags: ['Matte', 'Ivory', 'Warm'],
       isNew: true,
       construction: 'frameless',
+      image: cabinetImages.ivory,
     },
   ] as AlineProduct[],
 }

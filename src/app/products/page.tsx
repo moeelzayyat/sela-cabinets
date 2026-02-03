@@ -285,7 +285,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      <CTASection variant="wood" /&gt;
+      <CTASection variant="wood" />
     </>
   )
 }

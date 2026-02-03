@@ -1,30 +1,29 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CTASection } from '@/components/sections/cta-section'
 import { siteConfig } from '@/config/site'
-import { styleImages, type StyleImageKey } from '@/config/images'
+import { alineProducts } from '@/config/aline-products'
 
 export const metadata: Metadata = {
-  title: 'Cabinet Products',
-  description: 'Browse our selection of premium kitchen cabinet styles and finishes. From classic shaker to modern flat-panel designs in various colors and wood tones.',
+  title: 'Cabinet Styles | SELA Cabinets Detroit',
+  description: 'Browse Aline cabinet styles: Framed and Frameless collections. Shaker, Charleston, Slim, High Gloss, and more. Quality kitchen cabinets for Detroit homes.',
 }
 
 export default function ProductsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="section-padding bg-charcoal-50">
+      <section className="section-padding bg-charcoal-900 text-white">
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="font-display text-4xl font-bold text-charcoal-900 md:text-5xl lg:text-6xl">
-              Cabinet Products
+            <h1 className="font-display text-4xl font-bold md:text-5xl lg:text-6xl">
+              Aline Cabinet Styles
             </h1>
-            <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-              Explore our curated selection of kitchen cabinet styles and finishes. 
-              Quality materials, beautiful designs, and options for every budget.
+            <p className="mt-6 text-lg text-charcoal-300 md:text-xl">
+              Quality kitchen cabinets direct from Aline. Two construction types, 
+              24 beautiful styles, endless possibilities for your Detroit kitchen.
             </p>
           </div>
         </div>
@@ -33,104 +32,252 @@ export default function ProductsPage() {
       {/* Products Tabs */}
       <section className="section-padding bg-white">
         <div className="container-wide">
-          <Tabs defaultValue="styles" className="w-full">
+          <Tabs defaultValue="framed" className="w-full">
             <div className="flex justify-center">
               <TabsList className="h-auto p-1">
-                <TabsTrigger value="styles" className="px-6 py-3 text-base">
-                  Cabinet Styles
+                <TabsTrigger value="framed" className="px-6 py-3 text-base">
+                  Framed Cabinets
+                  <span className="ml-2 text-xs text-charcoal-500">(16 styles)</span>
                 </TabsTrigger>
-                <TabsTrigger value="finishes" className="px-6 py-3 text-base">
-                  Finishes & Colors
+                <TabsTrigger value="frameless" className="px-6 py-3 text-base">
+                  Frameless Cabinets
+                  <span className="ml-2 text-xs text-charcoal-500">(8 styles)</span>
+                </TabsTrigger>
+                <TabsTrigger value="specs" className="px-6 py-3 text-base">
+                  Specifications
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            {/* Styles Tab */}
-            {/* TEMP PLACEHOLDER – REPLACE WITH REAL SELA CABINETS PHOTOS */}
-            <TabsContent value="styles" className="mt-12">
-              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {siteConfig.cabinetStyles.map((style) => {
-                  const styleImage = styleImages[style.id as StyleImageKey]
-                  return (
-                    <div
-                      key={style.id}
-                      className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-shadow hover:shadow-lg"
-                    >
-                      <div className="aspect-[4/3] overflow-hidden bg-charcoal-100">
-                        {styleImage ? (
-                          <Image
-                            src={styleImage.src}
-                            alt={styleImage.alt}
-                            width={600}
-                            height={450}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="flex h-full items-center justify-center text-charcoal-400">
-                            <span className="text-sm">Style Image</span>
-                          </div>
-                        )}
+            {/* Framed Tab */}
+            <TabsContent value="framed" className="mt-12">
+              <div className="mb-8 rounded-xl bg-wood-50 p-6">
+                <h2 className="font-display text-2xl font-bold text-charcoal-900">
+                  Framed Cabinet Construction
+                </h2>
+                <p className="mt-2 text-charcoal-600">
+                  Traditional American style with a solid wood face frame. Features full overlay panels, 
+                  soft-close hinges, and dovetail drawers. Classic craftsmanship for timeless kitchens.
+                </p>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {alineProducts.framed.map((style) => (
+                  <div
+                    key={style.id}
+                    className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"
+                  >
+                    <div className="aspect-[4/3] overflow-hidden bg-charcoal-100">
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-charcoal-100 to-charcoal-200">
+                        <span className="text-4xl font-display font-bold text-charcoal-300">
+                          {style.name.split(' ').map(n => n[0]).join('')}
+                        </span>
                       </div>
-                      <div className="p-6">
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-start justify-between">
                         <h3 className="font-display text-xl font-semibold text-charcoal-900">
                           {style.name}
                         </h3>
-                        <p className="mt-2 text-charcoal-600">
-                          {style.description}
-                        </p>
+                        {style.isNew && (
+                          <span className="rounded-full bg-wood-500 px-2 py-1 text-xs font-semibold text-white">
+                            NEW
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-2 text-sm text-charcoal-600">
+                        {style.description}
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {style.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-charcoal-100 px-3 py-1 text-xs text-charcoal-600"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )
-                })}
+                  </div>
+                ))}
               </div>
             </TabsContent>
 
-            {/* Finishes Tab */}
-            <TabsContent value="finishes" className="mt-12">
-              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {siteConfig.cabinetFinishes.map((finish) => (
+            {/* Frameless Tab */}
+            <TabsContent value="frameless" className="mt-12">
+              <div className="mb-8 rounded-xl bg-charcoal-50 p-6">
+                <h2 className="font-display text-2xl font-bold text-charcoal-900">
+                  Frameless Cabinet Construction
+                </h2>
+                <p className="mt-2 text-charcoal-600">
+                  European-style frameless design for a sleek, modern look. Features full-access storage, 
+                  clean lines, and contemporary finishes. Perfect for modern kitchens.
+                </p>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {alineProducts.frameless.map((style) => (
                   <div
-                    key={finish.id}
-                    className="group rounded-2xl border border-charcoal-200 bg-white p-6 transition-shadow hover:shadow-lg"
+                    key={style.id}
+                    className="group overflow-hidden rounded-2xl border border-charcoal-200 bg-white transition-all hover:border-wood-300 hover:shadow-lg"
                   >
-                    <div
-                      className="mx-auto h-20 w-20 rounded-full border-4 border-white shadow-lg"
-                      style={{ backgroundColor: finish.hex }}
-                    />
-                    <h3 className="mt-4 text-center font-display text-lg font-semibold text-charcoal-900">
-                      {finish.name}
-                    </h3>
-                    <p className="mt-2 text-center text-sm text-charcoal-600">
-                      {finish.description}
-                    </p>
+                    <div className="aspect-[4/3] overflow-hidden bg-charcoal-100">
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-charcoal-100 to-charcoal-200">
+                        <span className="text-4xl font-display font-bold text-charcoal-300">
+                          {style.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-start justify-between">
+                        <h3 className="font-display text-xl font-semibold text-charcoal-900">
+                          {style.name}
+                        </h3>
+                        {style.isNew && (
+                          <span className="rounded-full bg-wood-500 px-2 py-1 text-xs font-semibold text-white">
+                            NEW
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-2 text-sm text-charcoal-600">
+                        {style.description}
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {style.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-charcoal-100 px-3 py-1 text-xs text-charcoal-600"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))}
+              </div>
+            </TabsContent>
+
+            {/* Specifications Tab */}
+            <TabsContent value="specs" className="mt-12">
+              <div className="grid gap-8 md:grid-cols-2">
+                <div className="rounded-2xl border border-charcoal-200 bg-white p-8">
+                  <h3 className="font-display text-2xl font-bold text-charcoal-900">
+                    Framed Construction
+                  </h3>
+                  <ul className="mt-6 space-y-4 text-charcoal-600">
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Full overlay panel door and drawer front
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      ¾ inch thick solid wood frame with MDF center
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      ¾ inch thick cabinet-grade plywood shelving
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Dovetail drawers with solid wood on all sides
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      ½ inch cabinet-grade plywood box, UV coated interior
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Concealed undermount soft-close drawer glides
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      6-way adjustable European-style soft-close hinges
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Door bumpers included
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl border border-charcoal-200 bg-white p-8">
+                  <h3 className="font-display text-2xl font-bold text-charcoal-900">
+                    Frameless Construction
+                  </h3>
+                  <ul className="mt-6 space-y-4 text-charcoal-600">
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Frameless European-style door and drawer front
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      ¾ inch thick MDF flat door, melamine paper finish
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      ¾ inch particle board box, melamine both sides
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Finished exteriors with wood-color interior
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Dovetail drawers with ⅝ inch solid wood sides
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Concealed undermount soft-close drawer glides
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      DTC European-style soft-close hinges
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-wood-600">•</span>
+                      Full access storage — no face frame
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-8 rounded-2xl border border-charcoal-200 bg-charcoal-50 p-8">
+                <h3 className="font-display text-xl font-bold text-charcoal-900">
+                  Handles & Hardware
+                </h3>
+                <p className="mt-2 text-charcoal-600">
+                  Complete your kitchen with our selection of premium handles and hardware. 
+                  From modern bar pulls to classic knobs, available in brushed nickel, 
+                  matte black, brass, and chrome finishes.
+                </p>
               </div>
             </TabsContent>
           </Tabs>
         </div>
       </section>
 
-      {/* Note about pricing */}
-      <section className="border-y border-charcoal-200 bg-charcoal-50 py-12">
+      {/* CTA */}
+      <section className="section-padding bg-charcoal-50">
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-display text-2xl font-bold text-charcoal-900 md:text-3xl">
-              Ready to See Pricing?
+            <h2 className="font-display text-3xl font-bold text-charcoal-900">
+              See These Styles in Person
             </h2>
             <p className="mt-4 text-charcoal-600">
-              Cabinet pricing depends on your kitchen size, style choice, and configuration. 
-              Request an estimate or book a consultation to discuss your specific project 
-              and get accurate pricing.
+              We bring cabinet samples to your home. See colors, feel the quality, 
+              and get expert advice on what works best for your kitchen.
             </p>
-            <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/estimate">
-                <Button size="lg">Get an Estimate</Button>
-              </Link>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link href="/book">
+                <Button size="lg" className="bg-wood-600 hover:bg-wood-500">
+                  Book Free Consultation
+                </Button>
+              </Link>
+              <Link href="/estimate">
                 <Button size="lg" variant="outline">
-                  Book a Consultation
+                  Get an Estimate
                 </Button>
               </Link>
             </div>
@@ -138,77 +285,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* How to Choose */}
-      <section className="section-padding bg-white">
-        <div className="container-wide">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="text-center font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-              How to Choose Your Cabinets
-            </h2>
-            <div className="mt-12 space-y-8">
-              <div className="flex gap-6">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal-900 text-white">
-                  1
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-charcoal-900">
-                    Consider Your Style
-                  </h3>
-                  <p className="mt-2 text-charcoal-600">
-                    Think about your home&apos;s overall aesthetic. Modern homes suit flat-panel 
-                    doors, while traditional homes pair well with shaker or raised-panel styles.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal-900 text-white">
-                  2
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-charcoal-900">
-                    Choose Your Colors
-                  </h3>
-                  <p className="mt-2 text-charcoal-600">
-                    White and gray remain popular for their versatility. Wood tones add warmth, 
-                    while bold colors like navy can create a stunning focal point.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal-900 text-white">
-                  3
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-charcoal-900">
-                    Plan Your Layout
-                  </h3>
-                  <p className="mt-2 text-charcoal-600">
-                    Consider cabinet configurations like corner solutions, pantry units, and 
-                    drawer bases. Our design consultation can help optimize your space.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal-900 text-white">
-                  4
-                </div>
-                <div>
-                  <h3 className="font-display text-xl font-semibold text-charcoal-900">
-                    Get Expert Help
-                  </h3>
-                  <p className="mt-2 text-charcoal-600">
-                    Not sure where to start? Book a consultation and we&apos;ll help you choose 
-                    the perfect cabinets for your kitchen and budget.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <CTASection variant="dark" />
+      <CTASection variant="wood" /&gt;
     </>
   )
 }
-

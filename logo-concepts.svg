@@ -1,0 +1,237 @@
+<!-- SELA Cabinets Logo Concepts -->
+<!-- All designs use the existing color palette: charcoal-900 (#262626) and wood-600 (#9a7a5e) -->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <!-- Colors from existing palette -->
+    <color id="charcoal" value="#262626"/>
+    <color id="wood" value="#9a7a5e"/>
+    <color id="wood-light" value="#c0a98e"/>
+    <color id="white" value="#ffffff"/>
+    
+    <!-- Fonts -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      
+      .logo-title { font-family: 'Playfair Display', Georgia, serif; }
+      .logo-subtitle { font-family: 'Inter', system-ui, sans-serif; }
+      
+      /* Concept 1: Minimal Wordmark */
+      .concept1-text { 
+        font-family: 'Playfair Display', Georgia, serif; 
+        font-size: 72px; 
+        font-weight: 600;
+        letter-spacing: 0.15em;
+      }
+      .concept1-line {
+        stroke: #9a7a5e;
+        stroke-width: 3;
+      }
+      
+      /* Concept 2: Badge/Emblem */
+      .concept2-border {
+        fill: none;
+        stroke: #262626;
+        stroke-width: 2;
+      }
+      .concept2-wood-fill {
+        fill: #9a7a5e;
+      }
+      .concept2-text-main {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 48px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+      }
+      .concept2-text-sub {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      
+      /* Concept 3: Icon + Wordmark */
+      .concept3-icon-line {
+        stroke: #262626;
+        stroke-width: 2.5;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .concept3-wood-accent {
+        fill: #9a7a5e;
+      }
+      .concept3-text {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 56px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+      }
+      .concept3-tagline {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        fill: #9a7a5e;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#faf8f5"/>
+  
+  <!-- Grid lines for alignment -->
+  <g opacity="0.1">
+    <line x1="0" y1="200" x2="800" y2="200" stroke="#262626" stroke-width="1"/>
+    <line x1="0" y1="400" x2="800" y2="400" stroke="#262626" stroke-width="1"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- CONCEPT 1: Minimal Wordmark -->
+  <!-- Clean, modern, premium feel -->
+  <!-- ============================================ -->
+  <g transform="translate(400, 100)">
+    <!-- Label -->
+    <text x="0" y="-60" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#888" letter-spacing="0.1em">CONCEPT 1: MINIMAL WORDMARK</text>
+    
+    <!-- Logo -->
+    <g transform="translate(0, 0)">
+      <!-- Top line -->
+      <line x1="-140" y1="-25" x2="140" y2="-25" class="concept1-line"/>
+      
+      <!-- SELA text -->
+      <text x="0" y="30" text-anchor="middle" class="concept1-text" fill="#262626">SELA</text>
+      
+      <!-- Bottom line -->
+      <line x1="-140" y1="50" x2="140" y2="50" class="concept1-line"/>
+      
+      <!-- CABINETS subtitle -->
+      <text x="0" y="85" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="400" fill="#9a7a5e" letter-spacing="0.3em">C A B I N E T S</text>
+    </g>
+    
+    <!-- Usage note -->
+    <text x="0" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#888">Best for: Website header, business cards, subtle branding</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- CONCEPT 2: Badge/Emblem -->
+  <!-- Traditional craftsmanship, trustworthy -->
+  <!-- ============================================ -->
+  <g transform="translate(200, 320)">
+    <!-- Label -->
+    <text x="0" y="-140" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#888" letter-spacing="0.1em">CONCEPT 2: BADGE / EMBLEM</text>
+    
+    <!-- Badge shape -->
+    <g transform="translate(0, -20)">
+      <!-- Outer circle -->
+      <circle cx="0" cy="0" r="85" class="concept2-border"/>
+      <circle cx="0" cy="0" r="78" class="concept2-border"/>
+      
+      <!-- Wood accent arc at bottom -->
+      <path d="M -55 55 A 78 78 0 0 0 55 55" fill="none" stroke="#9a7a5e" stroke-width="8"/>
+      
+      <!-- SELA text curved -->
+      <path id="curve1" d="M -60 -10 A 65 65 0 0 1 60 -10" fill="none"/>
+      <text font-family="Playfair Display, Georgia, serif" font-size="36" font-weight="700" fill="#262626" letter-spacing="0.12em">
+        <textPath href="#curve1" startOffset="50%" text-anchor="middle">SELA</textPath>
+      </text>
+      
+      <!-- CABINETS text curved at bottom -->
+      <path id="curve2" d="M -50 40 A 60 60 0 0 0 50 40" fill="none"/>
+      <text font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#9a7a5e" letter-spacing="0.15em">
+        <textPath href="#curve2" startOffset="50%" text-anchor="middle">CABINETS</textPath>
+      </text>
+      
+      <!-- Center icon: cabinet door -->
+      <g transform="translate(-15, -35)">
+        <rect x="0" y="0" width="30" height="40" rx="2" fill="none" stroke="#262626" stroke-width="2"/>
+        <circle cx="22" cy="20" r="2.5" fill="#9a7a5e"/>
+      </g>
+    </g>
+    
+    <!-- Usage note -->
+    <text x="0" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#888">Best for: Work vehicles, signage, stickers, uniform patches</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- CONCEPT 3: Icon + Wordmark -->
+  <!-- Modern, versatile, memorable -->
+  <!-- ============================================ -->
+  <g transform="translate(600, 320)">
+    <!-- Label -->
+    <text x="0" y="-140" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="500" fill="#888" letter-spacing="0.1em">CONCEPT 3: ICON + WORDMARK</text>
+    
+    <!-- Logo group -->
+    <g transform="translate(0, -30)">
+      <!-- Cabinet icon -->
+      <g transform="translate(-130, -25)">
+        <!-- Cabinet outline -->
+        <rect x="0" y="0" width="50" height="60" rx="3" class="concept3-icon-line"/>
+        <!-- Middle shelf line -->
+        <line x1="0" y1="30" x2="50" y2="30" class="concept3-icon-line"/>
+        <!-- Vertical divider -->
+        <line x1="25" y1="0" x2="25" y2="60" class="concept3-icon-line"/>
+        <!-- Door handles -->
+        <circle cx="18" cy="20" r="2" class="concept3-wood-accent"/>
+        <circle cx="32" cy="20" r="2" class="concept3-wood-accent"/>
+        <circle cx="18" cy="45" r="2" class="concept3-wood-accent"/>
+        <circle cx="32" cy="45" r="2" class="concept3-wood-accent"/>
+        <!-- Base/legs -->
+        <line x1="5" y1="60" x2="5" y2="68" class="concept3-icon-line"/>
+        <line x1="45" y1="60" x2="45" y2="68" class="concept3-icon-line"/>
+      </g>
+      
+      <!-- SELA text -->
+      <text x="-25" y="15" class="concept3-text" fill="#262626">SELA</text>
+      
+      <!-- Tagline -->
+      <text x="-25" y="45" class="concept3-tagline">DETROIT CABINETRY</text>
+    </g>
+    
+    <!-- Alternate: Stacked version -->
+    <g transform="translate(0, 70)" opacity="0.6">
+      <text x="0" y="0" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#888">ALTERNATE: VERTICAL</text>
+      
+      <!-- Simplified vertical lockup -->
+      <g transform="translate(0, 20)">
+        <!-- Small icon -->
+        <rect x="-15" y="0" width="30" height="35" rx="2" fill="none" stroke="#262626" stroke-width="2"/>
+        <line x1="0" y1="0" x2="0" y2="35" stroke="#262626" stroke-width="1.5"/>
+        <circle cx="-8" cy="12" r="1.5" fill="#9a7a5e"/>
+        <circle cx="8" cy="12" r="1.5" fill="#9a7a5e"/>
+        
+        <!-- SELA below -->
+        <text x="0" y="55" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="24" font-weight="600" fill="#262626" letter-spacing="0.15em">SELA</text>
+      </g>
+    </g>
+    
+    <!-- Usage note -->
+    <text x="0" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#888">Best for: Website, social media, favicon, app icon</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- Color palette reference -->
+  <!-- ============================================ -->
+  <g transform="translate(400, 560)">
+    <text x="0" y="0" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#888" letter-spacing="0.1em">COLOR PALETTE</text>
+    
+    <!-- Charcoal swatch -->
+    <rect x="-80" y="15" width="30" height="20" rx="3" fill="#262626"/>
+    <text x="-65" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#888">Charcoal</text>
+    <text x="-65" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#aaa">#262626</text>
+    
+    <!-- Wood swatch -->
+    <rect x="-15" y="15" width="30" height="20" rx="3" fill="#9a7a5e"/>
+    <text x="0" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#888">Wood</text>
+    <text x="0" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#aaa">#9a7a5e</text>
+    
+    <!-- Cream swatch -->
+    <rect x="50" y="15" width="30" height="20" rx="3" fill="#faf8f5" stroke="#ddd" stroke-width="1"/>
+    <text x="65" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#888">Cream</text>
+    <text x="65" y="62" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#aaa">#faf8f5</text>
+  </g>
+
+  <!-- Border -->
+  <rect x="10" y="10" width="780" height="580" fill="none" stroke="#e5ddd0" stroke-width="1" rx="10"/>
+</svg>

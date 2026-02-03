@@ -113,26 +113,26 @@ export const siteConfig = {
   process: [
     {
       step: 1,
-      title: 'Book a Consultation',
-      description: 'Schedule a free phone consultation or in-home visit to discuss your vision.',
+      title: 'Tell Us About Your Kitchen',
+      description: 'Share photos, dimensions, or schedule a call. We\'ll tell you what\'s possible.',
       icon: 'Calendar',
     },
     {
       step: 2,
-      title: 'In-Home Measurement',
-      description: 'Our expert measures your space precisely to ensure a perfect fit.',
+      title: 'We Come to You (Free)',
+      description: 'Exact measurements at your home. No obligation. See samples. Get a real quote.',
       icon: 'Ruler',
     },
     {
       step: 3,
-      title: 'Design & Quote',
-      description: 'Receive a detailed design plan and transparent pricing for your project.',
+      title: 'See Your Price — No Surprises',
+      description: 'Clear pricing with no hidden fees. Know exactly what you\'re getting before you commit.',
       icon: 'PenTool',
     },
     {
       step: 4,
-      title: 'Delivery & Installation',
-      description: 'Professional installation by experienced craftsmen, on schedule.',
+      title: 'Your New Kitchen, Done',
+      description: 'Professional install with a clean worksite. Most projects finished in 1-3 days.',
       icon: 'Truck',
     },
   ],
@@ -144,8 +144,8 @@ export const siteConfig = {
     {
       id: 'cabinet-supply',
       title: 'Cabinet Supply',
-      shortDescription: 'Premium cabinets in a variety of styles and finishes.',
-      description: 'We offer a curated selection of high-quality kitchen cabinets from trusted manufacturers. From classic shaker to modern flat-panel designs, find the perfect cabinets to match your style and budget.',
+      shortDescription: 'Aline cabinets direct to you. No big-box markup.',
+      description: 'We offer a curated selection of high-quality kitchen cabinets from Aline. From classic shaker to modern flat-panel designs, find the perfect cabinets to match your style and budget.',
       features: [
         'Wide selection of styles and finishes',
         'Quality materials and construction',
@@ -157,7 +157,7 @@ export const siteConfig = {
     {
       id: 'installation',
       title: 'Professional Installation',
-      shortDescription: 'Expert cabinet installation by experienced craftsmen.',
+      shortDescription: 'Installed by pros who measure twice. Done in 1-3 days.',
       description: 'Our skilled installation team brings years of experience to every project. We handle everything from removing old cabinets to the final adjustments, ensuring your new cabinets are installed perfectly.',
       features: [
         'Experienced installation team',
@@ -170,7 +170,7 @@ export const siteConfig = {
     {
       id: 'measurement',
       title: 'In-Home Measurement',
-      shortDescription: 'Precise measurements for a perfect cabinet fit.',
+      shortDescription: 'We come to you. Free measuring with your order.',
       description: 'Accurate measurements are crucial for a successful cabinet project. Our experts visit your home to take detailed measurements, ensuring your new cabinets fit perfectly in your space.',
       features: [
         'Complimentary with cabinet order',
@@ -182,8 +182,8 @@ export const siteConfig = {
     },
     {
       id: 'design-help',
-      title: 'Design Help & 3D Planning',
-      shortDescription: 'Visualize your new kitchen before you commit.',
+      title: 'Design Help',
+      shortDescription: 'Need ideas? We\'ll show you what\'s possible.',
       description: 'Not sure where to start? Our design consultants help you plan your perfect kitchen. We can create 3D renderings so you can see exactly how your new cabinets will look before ordering.',
       features: [
         'Virtual design consultations',

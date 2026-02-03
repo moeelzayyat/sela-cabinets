@@ -9,8 +9,8 @@ interface CTASectionProps {
 }
 
 export function CTASection({
-  title = 'Ready to Transform Your Kitchen?',
-  description = "Let's discuss your cabinet project. Book a free consultation or request an estimate today.",
+  title = 'See What Your Kitchen Could Look Like',
+  description = 'Book a free consultation. Get a real quote. No obligation.',
   variant = 'default',
 }: CTASectionProps) {
   const bgClass = {
@@ -19,7 +19,7 @@ export function CTASection({
     wood: 'wood-grain-bg',
   }[variant]
 
-  const textClass = variant === 'dark' ? 'text-charcoal-300' : 'text-charcoal-600'
+  const textClass = variant === 'dark' ? 'text-charcoal-400' : 'text-charcoal-600'
   const titleClass = variant === 'dark' ? 'text-white' : 'text-charcoal-900'
 
   return (
@@ -35,24 +35,24 @@ export function CTASection({
           <Link href="/book">
             <Button
               size="lg"
-              variant={variant === 'dark' ? 'white' : 'default'}
-              className="w-full sm:w-auto"
+              variant={variant === 'dark' ? 'default' : 'default'}
+              className={`w-full sm:w-auto ${variant === 'dark' ? 'bg-wood-600 hover:bg-wood-500' : ''}`}
             >
-              Book a Consultation
+              Book Free Consult
             </Button>
           </Link>
           <Link href="/estimate">
             <Button
               size="lg"
-              variant={variant === 'dark' ? 'outline' : 'outline'}
-              className={`w-full sm:w-auto ${variant === 'dark' ? 'border-white text-white hover:bg-white hover:text-charcoal-900' : ''}`}
+              variant="outline"
+              className={`w-full sm:w-auto ${variant === 'dark' ? 'border-white/50 text-white hover:bg-white hover:text-charcoal-900' : ''}`}
             >
               Get an Estimate
             </Button>
           </Link>
         </div>
         <p className={`mt-6 text-sm ${textClass}`}>
-          Or call us at{' '}
+          Questions? Text or call{' '}
           <a
             href={siteConfig.phoneLink}
             className={`font-semibold underline-offset-2 hover:underline ${variant === 'dark' ? 'text-white' : 'text-charcoal-900'}`}
@@ -64,4 +64,3 @@ export function CTASection({
     </section>
   )
 }
-

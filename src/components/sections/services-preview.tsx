@@ -15,10 +15,10 @@ export function ServicesPreview() {
       <div className="container-wide">
         <div className="text-center">
           <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl lg:text-5xl">
-            What We Offer
+            Simple. Straightforward. Done Right.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-            Everything you need for your kitchen cabinet project, from selection to installation.
+            You pick the cabinets. We handle the rest.
           </p>
         </div>
 
@@ -29,10 +29,11 @@ export function ServicesPreview() {
               <Link
                 key={service.id}
                 href={`/services#${service.id}`}
-                className="group rounded-2xl border border-charcoal-200 bg-white p-8 shadow-sm transition-all hover:border-charcoal-300 hover:shadow-md"
+                className="group rounded-2xl border border-charcoal-200 bg-white p-8 shadow-sm transition-all hover:border-wood-300 hover:shadow-md"
               >
                 <div className="flex items-start gap-5">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-charcoal-900 text-white transition-colors group-hover:bg-wood-600">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-charcoal-900 text-white transition-colors group-hover:bg-wood-600"
+                  >
                     <Icon className="h-7 w-7" />
                   </div>
                   <div className="flex-1">
@@ -66,4 +67,3 @@ export function ServicesPreview() {
     </section>
   )
 }
-

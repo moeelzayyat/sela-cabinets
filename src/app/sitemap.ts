@@ -22,6 +22,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/locations/warren',
     '/locations/sterling-heights',
     '/locations/ann-arbor',
+    '/locations/west-bloomfield',
+    '/locations/birmingham',
+    '/locations/royal-oak',
+    '/locations/farmington-hills',
+    '/locations/rochester-hills',
+    '/locations/novi',
+    '/locations/canton',
+    '/locations/bloomfield-hills',
+    '/locations/shelby-township',
+    '/locations/grosse-pointe',
   ]
 
   return routes.map((route) => ({

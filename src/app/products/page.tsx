@@ -8,8 +8,8 @@ import { siteConfig } from '@/config/site'
 import { alineProducts } from '@/config/aline-products'
 
 export const metadata: Metadata = {
-  title: 'Aline Kitchen Cabinet Styles Detroit | 24+ Colors & Finishes | SELA',
-  description: 'Browse Aline cabinet styles: Shaker, Charleston, Slim & more. 16 framed + 8 frameless styles. White, gray, navy, oak finishes. Serving Detroit metro area.',
+  title: 'Kitchen Cabinet Styles Detroit | 24+ Colors & Finishes | SELA',
+  description: 'Browse our cabinet styles: Shaker, Charleston, Slim & more. 16 framed + 8 frameless styles. White, gray, navy, oak finishes. Serving Detroit metro area.',
 }
 
 export default function ProductsPage() {
@@ -20,10 +20,10 @@ export default function ProductsPage() {
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="font-display text-4xl font-bold md:text-5xl lg:text-6xl">
-              Aline Cabinet Styles
+              Cabinet Styles
             </h1>
             <p className="mt-6 text-lg text-charcoal-300 md:text-xl">
-              Quality kitchen cabinets direct from Aline. Two construction types, 
+              Quality kitchen cabinets for your home. Two construction types, 
               24 beautiful styles, endless possibilities for your Detroit kitchen.
             </p>
           </div>

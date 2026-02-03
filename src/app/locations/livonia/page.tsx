@@ -7,8 +7,8 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Livonia MI | Cabinet Installation & Design',
-  description: 'Kitchen cabinet installation in Livonia, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Livonia & surrounding areas.',
-  keywords: ['kitchen cabinets Livonia MI', 'cabinet installation Livonia', 'kitchen remodel Livonia', 'Aline cabinets Livonia', 'Livonia kitchen design'],
+  description: 'Kitchen cabinet installation in Livonia, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Livonia & surrounding areas.',
+  keywords: ['kitchen cabinets Livonia MI', 'cabinet installation Livonia', 'kitchen remodel Livonia', 'cabinets Livonia', 'Livonia kitchen design'],
 }
 
 export default function LivoniaPage() {
@@ -26,7 +26,7 @@ export default function LivoniaPage() {
                 Kitchen Cabinets in Livonia
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
-                Transform your Livonia kitchen with quality Aline cabinets. Professional measurement, 
+                Transform your Livonia kitchen with quality cabinets. Professional measurement, 
                 expert installation, and 24+ styles to choose from. Serving Livonia and western suburbs.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -49,7 +49,7 @@ export default function LivoniaPage() {
               <ul className="mt-6 space-y-4">
                 {[
                   'Free in-home measurement in Livonia',
-                  '24+ Aline cabinet styles available',
+                  '24+ cabinet styles available',
                   '1-3 day professional installation',
                   'Same-week appointments',
                   'No-pressure consultation',

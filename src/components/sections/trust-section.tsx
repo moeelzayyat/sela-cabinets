@@ -21,7 +21,7 @@ const trustItems = [
   },
   {
     icon: Package,
-    stat: 'Aline',
+    stat: 'Direct',
     title: 'Direct From Supplier',
     description: 'No middlemen. No showroom markup. Just fair pricing on quality cabinets.',
   },

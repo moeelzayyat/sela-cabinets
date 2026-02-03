@@ -1,7 +1,6 @@
 /**
- * Aline Cabinet Products Catalog with Images
- * Based on Aline Cabinets product listings
- * Images sourced from https://shop.alinecabinets.com/
+ * Cabinet Products Catalog with Images
+ * Supplier: Aline Cabinets (alinecabinets.com)
  */
 
 export interface AlineProduct {

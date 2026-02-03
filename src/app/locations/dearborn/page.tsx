@@ -7,8 +7,8 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Dearborn MI | Cabinet Installation & Design',
-  description: 'Kitchen cabinet installation in Dearborn, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Dearborn & surrounding areas.',
-  keywords: ['kitchen cabinets Dearborn MI', 'cabinet installation Dearborn', 'kitchen remodel Dearborn', 'Aline cabinets Dearborn', 'Dearborn kitchen design'],
+  description: 'Kitchen cabinet installation in Dearborn, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Dearborn & surrounding areas.',
+  keywords: ['kitchen cabinets Dearborn MI', 'cabinet installation Dearborn', 'kitchen remodel Dearborn', 'cabinets Dearborn', 'Dearborn kitchen design'],
 }
 
 export default function DearbornPage() {
@@ -28,7 +28,7 @@ export default function DearbornPage() {
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
                 Professional kitchen cabinet installation for Dearborn homes. From classic to contemporary, 
-                we bring Aline cabinets to your kitchen with expert measuring and flawless installation.
+                we bring cabinets to your kitchen with expert measuring and flawless installation.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
@@ -52,7 +52,7 @@ export default function DearbornPage() {
               <ul className="mt-6 space-y-4">
                 {[
                   'Free in-home measurement in Dearborn',
-                  '24+ cabinet styles from Aline',
+                  '24+ cabinet styles ',
                   'Installation in 1-3 days',
                   'Same-week appointments available',
                   'Local Detroit-area business',
@@ -84,7 +84,7 @@ export default function DearbornPage() {
             {[
               {
                 title: 'Cabinet Supply',
-                description: 'Choose from 24+ Aline cabinet styles. Framed and frameless options in white, gray, navy, oak, and more.',
+                description: 'Choose from 24+ cabinet styles. Framed and frameless options in white, gray, navy, oak, and more.',
               },
               {
                 title: 'In-Home Measurement',

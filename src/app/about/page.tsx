@@ -10,7 +10,7 @@ import { aboutImages } from '@/config/images'
 
 export const metadata: Metadata = {
   title: 'About SELA Cabinets Detroit | Kitchen Cabinet Experts',
-  description: 'Meet Hamada - owner of SELA Cabinets. Detroit-born cabinet installer serving metro Detroit with Aline cabinets. 15+ cities, free measurement, professional install.',
+  description: 'Meet Hamada - owner of SELA Cabinets. Detroit-born cabinet installer serving metro Detroit with cabinets. 15+ cities, free measurement, professional install.',
   keywords: ['SELA Cabinets Detroit', 'Hamada cabinets', 'kitchen cabinet installer Detroit', 'Detroit cabinet company', 'local cabinet installer'],
   openGraph: {
     title: 'About SELA Cabinets | Detroit Kitchen Experts',

@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Warren MI | Cabinet Installation & Design',
-  description: 'Kitchen cabinet installation in Warren, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Warren & Macomb County.',
+  description: 'Kitchen cabinet installation in Warren, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Warren & Macomb County.',
   keywords: ['kitchen cabinets Warren MI', 'cabinet installation Warren', 'kitchen remodel Warren', 'Macomb County cabinets', 'Warren kitchen design'],
 }
 
@@ -27,7 +27,7 @@ export default function WarrenPage() {
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
                 Professional kitchen cabinet installation for Warren and Macomb County homes. 
-                Quality Aline cabinets, expert measuring, and flawless installation.
+                Quality cabinets, expert measuring, and flawless installation.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
@@ -50,7 +50,7 @@ export default function WarrenPage() {
                 {[
                   'Free in-home measurement in Warren',
                   'Macomb County kitchen experts',
-                  '24+ cabinet styles from Aline',
+                  '24+ cabinet styles ',
                   '1-3 day installation',
                   'Same-week appointments available',
                 ].map((item) => (

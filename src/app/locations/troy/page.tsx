@@ -7,8 +7,8 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Troy MI | Cabinet Installation & Design',
-  description: 'Kitchen cabinet installation in Troy, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Troy, Rochester Hills & Oakland County.',
-  keywords: ['kitchen cabinets Troy MI', 'cabinet installation Troy', 'kitchen remodel Troy', 'Aline cabinets Troy', 'Troy kitchen design', 'Oakland County cabinets'],
+  description: 'Kitchen cabinet installation in Troy, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Troy, Rochester Hills & Oakland County.',
+  keywords: ['kitchen cabinets Troy MI', 'cabinet installation Troy', 'kitchen remodel Troy', 'cabinets Troy', 'Troy kitchen design', 'Oakland County cabinets'],
 }
 
 export default function TroyPage() {
@@ -26,7 +26,7 @@ export default function TroyPage() {
                 Kitchen Cabinets in Troy
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
-                Premium kitchen cabinets for Troy and Oakland County homes. Aline quality, 
+                Premium kitchen cabinets for Troy and Oakland County homes. quality, 
                 professional installation, and service that exceeds expectations.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -79,7 +79,7 @@ export default function TroyPage() {
               },
               {
                 title: 'Premium Products',
-                description: 'Aline cabinets known for quality construction and beautiful finishes.',
+                description: 'cabinets known for quality construction and beautiful finishes.',
               },
               {
                 title: 'Local Expertise',

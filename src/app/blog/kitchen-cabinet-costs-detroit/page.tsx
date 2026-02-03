@@ -6,7 +6,7 @@ import { CTASection } from '@/components/sections/cta-section'
 export const metadata: Metadata = {
   title: 'How Much Do Kitchen Cabinets Cost in Detroit? (2025 Pricing Guide)',
   description: 'Real kitchen cabinet costs for Detroit homeowners in 2025. From budget to premium options. Get accurate pricing for your kitchen remodel.',
-  keywords: ['kitchen cabinet cost Detroit', 'cabinet installation price Michigan', 'how much kitchen cabinets cost', 'Detroit kitchen remodel cost', 'Aline cabinets pricing'],
+  keywords: ['kitchen cabinet cost Detroit', 'cabinet installation price Michigan', 'how much kitchen cabinets cost', 'Detroit kitchen remodel cost', 'cabinets pricing'],
 }
 
 export default function CabinetCostsPost() {

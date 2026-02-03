@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Ann Arbor MI | Cabinet Installation & Design',
-  description: 'Kitchen cabinet installation in Ann Arbor, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Ann Arbor & Washtenaw County.',
+  description: 'Kitchen cabinet installation in Ann Arbor, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Ann Arbor & Washtenaw County.',
   keywords: ['kitchen cabinets Ann Arbor MI', 'cabinet installation Ann Arbor', 'kitchen remodel Ann Arbor', 'Washtenaw County cabinets', 'Ann Arbor kitchen design'],
 }
 
@@ -50,7 +50,7 @@ export default function AnnArborPage() {
                 {[
                   'Free in-home measurement in Ann Arbor',
                   'Washtenaw County service area',
-                  '24+ cabinet styles from Aline',
+                  '24+ cabinet styles ',
                   'Installation in 1-3 days',
                   'Same-week appointments',
                 ].map((item) => (

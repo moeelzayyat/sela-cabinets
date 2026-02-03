@@ -144,8 +144,8 @@ export const siteConfig = {
     {
       id: 'cabinet-supply',
       title: 'Cabinet Supply',
-      shortDescription: 'Aline cabinets direct to you. No big-box markup.',
-      description: 'We offer a curated selection of high-quality kitchen cabinets from Aline. From classic shaker to modern flat-panel designs, find the perfect cabinets to match your style and budget.',
+      shortDescription: 'Premium cabinets direct to you. No big-box markup.',
+      description: 'We offer a curated selection of high-quality kitchen cabinets. From classic shaker to modern flat-panel designs, find the perfect cabinets to match your style and budget.',
       features: [
         'Wide selection of styles and finishes',
         'Quality materials and construction',

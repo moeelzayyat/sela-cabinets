@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Sterling Heights MI | Cabinet Installation',
-  description: 'Kitchen cabinet installation in Sterling Heights, MI. Aline cabinets, professional measuring & installation. Free in-home estimates. Serving Sterling Heights & Macomb County.',
+  description: 'Kitchen cabinet installation in Sterling Heights, MI. cabinets, professional measuring & installation. Free in-home estimates. Serving Sterling Heights & Macomb County.',
   keywords: ['kitchen cabinets Sterling Heights MI', 'cabinet installation Sterling Heights', 'kitchen remodel Sterling Heights', 'Macomb County cabinets'],
 }
 
@@ -27,7 +27,7 @@ export default function SterlingHeightsPage() {
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
                 Premium kitchen cabinets for Sterling Heights homes. Expert installation, 
-                quality Aline products, and service you can trust.
+                quality products, and service you can trust.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">

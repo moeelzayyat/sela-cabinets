@@ -40,7 +40,7 @@ export function HeroSection() {
 
           {/* Subheadline */}
           <p className="mt-6 max-w-lg text-lg text-charcoal-300 sm:text-xl">
-            Semi-custom cabinets from Aline. Professional measuring. Clean installation.{' '}
+            Semi-custom cabinets . Professional measuring. Clean installation.{' '}
             <span className="text-wood-300">Detroit-born, Detroit-focused.</span>
           </p>
 

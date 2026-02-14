@@ -57,9 +57,9 @@ export default function PricingPage() {
                 <div className="font-semibold text-charcoal-900">$6,500 - $9,500</div>
               </div>
 
-              {/* Lowe's */}
+              {/* Lowe&apos;s */}
               <div className="grid grid-cols-4 gap-4 border-b border-charcoal-100 p-6">
-                <div className="font-medium text-charcoal-900">Lowe's</div>
+                <div className="font-medium text-charcoal-900">Lowe&apos;s</div>
                 <div className="text-charcoal-600">$4,000 - $5,500</div>
                 <div className="text-charcoal-600">$1,800 - $3,000</div>
                 <div className="font-semibold text-charcoal-900">$5,800 - $8,500</div>
@@ -212,7 +212,7 @@ export default function PricingPage() {
         <div className="container-wide">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="font-display text-3xl font-bold text-charcoal-900">What's Included</h2>
+              <h2 className="font-display text-3xl font-bold text-charcoal-900">What&apos;s Included</h2>
               <p className="mt-4 text-charcoal-600">
                 Every SELA cabinet project includes everything you need for a complete kitchen transformation.
               </p>

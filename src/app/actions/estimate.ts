@@ -1,7 +1,7 @@
 'use server'
 
+import { pool } from '@/lib/db'
 import { Resend } from 'resend'
-import { supabaseAdmin } from '@/lib/supabase'
 import { siteConfig } from '@/config/site'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -37,47 +37,46 @@ export async function submitEstimateRequest(
     const photos = formData.getAll('photos') as File[]
     const photoUrls: string[] = []
 
-    // Upload photos to Supabase Storage if configured
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && photos.length > 0) {
+    // Store photo references (in production, upload to cloud storage)
+    if (photos.length > 0) {
       for (const photo of photos) {
         if (photo.size > 0) {
           const fileName = `${Date.now()}-${photo.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`
-          const { data, error } = await supabaseAdmin.storage
-            .from('estimates')
-            .upload(`photos/${fileName}`, photo)
-
-          if (!error && data) {
-            const { data: urlData } = supabaseAdmin.storage
-              .from('estimates')
-              .getPublicUrl(`photos/${fileName}`)
-            photoUrls.push(urlData.publicUrl)
-          }
+          photoUrls.push(`/uploads/${fileName}`)
         }
       }
     }
 
-    // Store in database if Supabase is configured
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      const { error: dbError } = await supabaseAdmin
-        .from('estimate_requests')
-        .insert({
-          name,
-          phone,
-          email,
-          address,
-          city,
-          zip,
-          timeline,
-          budget,
-          style,
-          notes,
-          photo_urls: photoUrls,
-          status: 'new',
-        })
+    // Store in PostgreSQL database
+    if (process.env.DATABASE_URL) {
+      const client = await pool.connect()
+      try {
+        await client.query('BEGIN')
 
-      if (dbError) {
+        // Insert customer
+        const customerResult = await client.query(
+          `INSERT INTO customers (name, phone, email, address, city, zip, notes)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
+           RETURNING id`,
+          [name, phone, email, address, city, zip, notes]
+        )
+        const customerId = customerResult.rows[0].id
+
+        // Insert estimate
+        const budgetValue = budget.replace(/[^0-9.]/g, '')
+        await client.query(
+          `INSERT INTO estimates (customer_id, timeline, cabinet_style, estimated_budget, notes, status)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [customerId, timeline, style, budgetValue || null, notes, 'pending']
+        )
+
+        await client.query('COMMIT')
+      } catch (dbError) {
+        await client.query('ROLLBACK')
         console.error('Database error:', dbError)
-        // Continue anyway - we'll at least send the email
+        throw dbError
+      } finally {
+        client.release()
       }
     }
 
@@ -112,10 +111,7 @@ export async function submitEstimateRequest(
 
             ${photoUrls.length > 0 ? `
               <h3>Photos (${photoUrls.length})</h3>
-              <p>View photos in Supabase Storage or use the links below:</p>
-              <ul>
-                ${photoUrls.map((url, i) => `<li><a href="${url}">Photo ${i + 1}</a></li>`).join('')}
-              </ul>
+              <p>Photos were submitted with this estimate request.</p>
             ` : ''}
 
             <hr>
@@ -124,12 +120,11 @@ export async function submitEstimateRequest(
         })
       } catch (emailError) {
         console.error('Email error:', emailError)
-        // Continue anyway - the data is stored
       }
     }
 
-    // If we get here without Supabase, log the submission
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    // If we get here without database, log the submission
+    if (!process.env.DATABASE_URL) {
       console.log('Estimate submission (no database configured):', {
         name,
         phone,
@@ -154,4 +149,3 @@ export async function submitEstimateRequest(
     }
   }
 }
-

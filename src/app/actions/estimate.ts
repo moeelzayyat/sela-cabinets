@@ -28,12 +28,11 @@ export async function submitEstimateRequest(
     const city = formData.get('city') as string
     const zip = formData.get('zip') as string
     const timeline = formData.get('timeline') as string
-    const budget = formData.get('budget') as string
     const style = formData.get('style') as string
     const notes = formData.get('notes') as string || ''
 
     // Validate required fields
-    if (!name || !phone || !email || !address || !city || !zip || !timeline || !budget || !style) {
+    if (!name || !phone || !email || !address || !city || !zip || !timeline || !style) {
       return { success: false, error: 'Please fill in all required fields.' }
     }
 
@@ -107,7 +106,6 @@ export async function submitEstimateRequest(
             <h3>Project Details</h3>
             <ul>
               <li><strong>Timeline:</strong> ${timeline}</li>
-              <li><strong>Budget:</strong> ${budget}</li>
               <li><strong>Style Preference:</strong> ${style}</li>
             </ul>
 
@@ -137,7 +135,6 @@ export async function submitEstimateRequest(
         city,
         zip,
         timeline,
-        budget,
         style,
         notes,
         photoCount: photos.length,

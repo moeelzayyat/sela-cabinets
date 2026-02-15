@@ -4,8 +4,12 @@ import { pool } from '@/lib/db'
 import { Resend } from 'resend'
 import { siteConfig } from '@/config/site'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'owner@selacabinets.com'
+
+// Only initialize Resend if API key is present
+const resend = process.env.RESEND_API_KEY 
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null
 
 interface EstimateResult {
   success: boolean
@@ -80,8 +84,8 @@ export async function submitEstimateRequest(
       }
     }
 
-    // Send email notification to owner
-    if (process.env.RESEND_API_KEY) {
+    // Send email notification to owner (optional)
+    if (resend && process.env.RESEND_API_KEY) {
       try {
         await resend.emails.send({
           from: `${siteConfig.name} <notifications@${process.env.RESEND_DOMAIN || 'resend.dev'}>`,

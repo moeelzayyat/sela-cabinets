@@ -31,7 +31,6 @@ const estimateSchema = z.object({
   city: z.string().min(2, 'City is required'),
   zip: z.string().min(5, 'ZIP code is required'),
   timeline: z.string().min(1, 'Please select a timeline'),
-  budget: z.string().min(1, 'Please select a budget range'),
   style: z.string().min(1, 'Please select a style preference'),
   notes: z.string().optional(),
 })
@@ -292,7 +291,7 @@ export default function EstimatePage() {
                 <h2 className="font-display text-xl font-semibold text-charcoal-900">
                   Project Details
                 </h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label>Timeline *</Label>
                     <Select onValueChange={(value) => setValue('timeline', value)}>
@@ -309,24 +308,6 @@ export default function EstimatePage() {
                     </Select>
                     {errors.timeline && (
                       <p className="mt-1 text-sm text-red-500">{errors.timeline.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>Budget Range *</Label>
-                    <Select onValueChange={(value) => setValue('budget', value)}>
-                      <SelectTrigger className={errors.budget ? 'border-red-500' : ''}>
-                        <SelectValue placeholder="Select budget" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {siteConfig.formOptions.budgets.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.budget && (
-                      <p className="mt-1 text-sm text-red-500">{errors.budget.message}</p>
                     )}
                   </div>
                   <div>

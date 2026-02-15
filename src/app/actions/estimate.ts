@@ -66,14 +66,12 @@ export async function submitEstimateRequest(
         )
         const customerId = customerResult.rows[0].id
 
-        // Insert estimate
-        // Extract numeric budget value from range (e.g., "$10,000 - $20,000" -> 10000)
-        const budgetMatch = budget.match(/[\d,]+/)
-        const budgetValue = budgetMatch ? parseInt(budgetMatch[0].replace(/,/g, ''), 10) : null
+    // Insert estimate
+        // Budget is now optional - removed from form for better marketing
         await client.query(
           `INSERT INTO estimates (customer_id, timeline, cabinet_style, estimated_budget, notes, status)
            VALUES ($1, $2, $3, $4, $5, $6)`,
-          [customerId, timeline, style, budgetValue || null, notes, 'pending']
+          [customerId, timeline, style, null, notes, 'pending']
         )
 
         await client.query('COMMIT')

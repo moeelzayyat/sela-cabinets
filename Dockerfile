@@ -4,18 +4,17 @@
 # Multi-stage build for optimized Next.js deployment
 
 # Stage 1: Dependencies
-FROM node:20-alpine AS deps
+FROM node:20-slim AS deps
 WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
 # Install ALL dependencies (including dev deps needed for build)
-# Use --max-old-space-size to prevent memory issues
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm ci
 
 # Stage 2: Builder
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 WORKDIR /app
 
 # Copy dependencies from deps stage
@@ -34,15 +33,15 @@ ENV NEXT_DEBUG_BUILD=1
 RUN npm run build || (echo "=== BUILD FAILED - Checking for errors ===" && cat /app/.next/build-manifest.json 2>/dev/null || echo "No build manifest found" && exit 1)
 
 # Stage 3: Runner
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs
+RUN useradd --system --uid 1001 nextjs
 
 # Copy necessary files
 COPY --from=builder /app/public ./public

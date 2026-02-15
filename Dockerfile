@@ -5,17 +5,22 @@
 
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
 # Install ALL dependencies (including dev deps needed for build)
+# Use --max-old-space-size to prevent memory issues
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm ci
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
 WORKDIR /app
+
+# Install build dependencies for native modules (Sharp, etc.)
+RUN apk add --no-cache libc6-compat python3 make g++
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
@@ -24,9 +29,13 @@ COPY . .
 # Set build environment
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Build the application
-RUN npm run build
+# Add verbose output for debugging
+ENV NEXT_DEBUG_BUILD=1
+
+# Build the application with error handling
+RUN npm run build || (echo "=== BUILD FAILED - Checking for errors ===" && cat /app/.next/build-manifest.json 2>/dev/null || echo "No build manifest found" && exit 1)
 
 # Stage 3: Runner
 FROM node:20-alpine AS runner

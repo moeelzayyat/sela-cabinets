@@ -22,47 +22,6 @@ const quickReplies: QuickReply[] = [
   { text: '📞 Get Quote', message: 'I want to get a quote' },
 ]
 
-// FAQ responses
-const botResponses: Record<string, string> = {
-  'service area': `We serve Detroit and 15+ surrounding cities including:\n\n• Dearborn\n• Troy\n• Sterling Heights\n• Ann Arbor\n• Royal Oak\n• Farmington Hills\n• Livonia\n• Canton\n• Southfield\n• West Bloomfield\n\nAnd more! If you're in the Detroit metro area, we've got you covered.`,
-  
-  'cost': `Great question! Our pricing is straightforward:\n\n**10×10 kitchens start at $3,999 installed**\n\nThis includes:\n• Semi-custom cabinets\n• Professional installation\n• All hardware and materials\n\n**You save up to 66%** vs Home Depot or Lowes.\n\nFor a precise quote, I can help you book a free in-home measurement. Would you like to schedule one?`,
-  
-  'timeline': `Most kitchen installations are quick:\n\n• **1-3 days** for typical installations\n• **Same-week appointments** available for measurements\n• **Free in-home measurement** with your order\n\nWe respect your time and keep disruptions minimal. Want to see available appointment times?`,
-  
-  'quote': `I'd be happy to help you get a quote!\n\nYou have two options:\n\n1️⃣ **Quick Estimate Online**\nGet a preliminary estimate in 24 hours: [Get Estimate](/estimate)\n\n2️⃣ **Free In-Home Measurement**\nMost accurate - we come to you: [Book Consultation](/book)\n\nWhich would you prefer?`,
-  
-  'default': `Thanks for your message! I'm here to help with:\n\n• Pricing and quotes\n• Service areas\n• Installation timeline\n• General questions\n\nWhat would you like to know? Or if you'd like to speak with someone directly, call us at (313) 246-7903.`,
-}
-
-function getBotResponse(message: string): string {
-  const lowerMessage = message.toLowerCase()
-  
-  if (lowerMessage.includes('area') || lowerMessage.includes('serve') || lowerMessage.includes('city') || lowerMessage.includes('detroit')) {
-    return botResponses['service area']
-  }
-  if (lowerMessage.includes('cost') || lowerMessage.includes('price') || lowerMessage.includes('much') || lowerMessage.includes('$') || lowerMessage.includes('dollar')) {
-    return botResponses['cost']
-  }
-  if (lowerMessage.includes('time') || lowerMessage.includes('long') || lowerMessage.includes('day') || lowerMessage.includes('week') || lowerMessage.includes('install')) {
-    return botResponses['timeline']
-  }
-  if (lowerMessage.includes('quote') || lowerMessage.includes('estimate') || lowerMessage.includes('price') || lowerMessage.includes('interested')) {
-    return botResponses['quote']
-  }
-  if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
-    return `Hello! 👋 Welcome to SELA Cabinets!\n\nI'm here to help you with your kitchen cabinet project. I can answer questions about:\n\n• Pricing and quotes\n• Service areas\n• Installation timeline\n\nWhat would you like to know?`
-  }
-  if (lowerMessage.includes('thank')) {
-    return `You're welcome! 😊\n\nIf you have any other questions, I'm here 24/7. Or feel free to call us at (313) 246-7903.\n\nHave a great day!`
-  }
-  if (lowerMessage.includes('phone') || lowerMessage.includes('call') || lowerMessage.includes('contact')) {
-    return `You can reach us at:\n\n📞 **(313) 246-7903**\n\nOur hours:\n• Monday–Friday: 8:00 AM – 6:00 PM\n• Saturday: 9:00 AM – 3:00 PM\n• Sunday: Closed\n\nOr I can help you book an appointment online right now!`
-  }
-  
-  return botResponses['default']
-}
-
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -95,19 +54,40 @@ export default function ChatBot() {
     setInputValue('')
     setIsTyping(true)
 
-    // Simulate bot typing delay
-    await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1000))
+    try {
+      // Call AI chat API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, { role: 'user', content: text }].map(m => ({
+            role: m.sender === 'user' ? 'user' : 'assistant',
+            content: m.text
+          }))
+        })
+      })
 
-    // Get bot response
-    const botResponse = getBotResponse(text)
-    const botMessage: Message = {
-      id: Date.now() + 1,
-      text: botResponse,
-      sender: 'bot',
-      timestamp: new Date()
+      const data = await response.json()
+
+      const botMessage: Message = {
+        id: Date.now() + 1,
+        text: data.message,
+        sender: 'bot',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, botMessage])
+    } catch (error) {
+      console.error('Chat error:', error)
+      const errorMessage: Message = {
+        id: Date.now() + 1,
+        text: "I'm having a little trouble right now. For immediate help, please call us at (313) 246-7903!",
+        sender: 'bot',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsTyping(false)
     }
-    setMessages(prev => [...prev, botMessage])
-    setIsTyping(false)
   }
 
   const handleQuickReply = (message: string) => {

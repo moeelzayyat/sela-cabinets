@@ -73,7 +73,7 @@ export async function submitEstimateRequest(
     if (resend && process.env.RESEND_API_KEY) {
       try {
         await resend.emails.send({
-          from: `${siteConfig.name} <notifications@${process.env.RESEND_DOMAIN || 'resend.dev'}>`,
+          from: `${siteConfig.name} <notifications@lucidsro.com>`,
           to: OWNER_EMAIL,
           subject: `New Estimate Request from ${name}`,
           html: `

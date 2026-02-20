@@ -1,10 +1,10 @@
 'use server'
 
-import { pool } from '@/lib/db'
 import { Resend } from 'resend'
 import { siteConfig } from '@/config/site'
+import { addLead } from '@/lib/lead-capture'
 
-const OWNER_EMAIL = process.env.OWNER_EMAIL || 'owner@selacabinets.com'
+const OWNER_EMAIL = process.env.OWNER_EMAIL || 'info@selatrade.com'
 
 // Only initialize Resend if API key is present
 const resend = process.env.RESEND_API_KEY 
@@ -50,37 +50,23 @@ export async function submitEstimateRequest(
       }
     }
 
-    // Store in PostgreSQL database
-    if (process.env.DATABASE_URL) {
-      const client = await pool.connect()
-      try {
-        await client.query('BEGIN')
+    // Save to database
+    const leadResult = await addLead({
+      name,
+      phone,
+      email,
+      address,
+      city,
+      zip,
+      source: 'estimate',
+      timeline,
+      style_preference: style,
+      notes,
+      photos: photoUrls
+    })
 
-        // Insert customer
-        const customerResult = await client.query(
-          `INSERT INTO customers (name, phone, email, address, city, zip, notes)
-           VALUES ($1, $2, $3, $4, $5, $6, $7)
-           RETURNING id`,
-          [name, phone, email, address, city, zip, notes]
-        )
-        const customerId = customerResult.rows[0].id
-
-    // Insert estimate
-        // Budget is now optional - removed from form for better marketing
-        await client.query(
-          `INSERT INTO estimates (customer_id, timeline, cabinet_style, estimated_budget, notes, status)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
-          [customerId, timeline, style, null, notes, 'pending']
-        )
-
-        await client.query('COMMIT')
-      } catch (dbError) {
-        await client.query('ROLLBACK')
-        console.error('Database error:', dbError)
-        throw dbError
-      } finally {
-        client.release()
-      }
+    if (!leadResult.success) {
+      console.error('Failed to save lead to database')
     }
 
     // Send email notification to owner (optional)
@@ -125,9 +111,9 @@ export async function submitEstimateRequest(
       }
     }
 
-    // If we get here without database, log the submission
-    if (!process.env.DATABASE_URL) {
-      console.log('Estimate submission (no database configured):', {
+    // If no database configured, log to console
+    if (!process.env.DATABASE_URL && !leadResult.success) {
+      console.log('Estimate submission (database unavailable):', {
         name,
         phone,
         email,

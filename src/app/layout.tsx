@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer'
 import { MobileCallButton } from '@/components/layout/mobile-call-button'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
 import { Toaster } from '@/components/ui/toaster'
+import ChatBot from '@/components/ChatBot'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -64,6 +65,7 @@ export default function RootLayout({
         <main className="pt-[72px]">{children}</main>
         <Footer />
         <MobileCallButton />
+        <ChatBot />
         <Toaster />
       </body>
     </html>

@@ -90,10 +90,12 @@ export async function POST(req: NextRequest) {
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
-        ...messages.map((msg: any) => ({
-          role: msg.role,
-          content: msg.content
-        }))
+        ...messages
+          .filter((msg: any) => msg.content && msg.content.trim())
+          .map((msg: any) => ({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content.trim()
+          }))
       ],
       temperature: 0.7,
       max_tokens: 500,

@@ -112,68 +112,71 @@ export default function ChatBot() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return
 
+    // Prevent duplicate messages with same timestamp
+    const userMessageId = Date.now()
+    
     // Add user message immediately
     const userMessage: Message = {
-      id: Date.now(),
+      id: userMessageId,
       text: text.trim(),
       sender: 'user',
       timestamp: new Date()
     }
     
-    const newMessages = [...messages, userMessage]
-    setMessages(newMessages)
+    setMessages(prev => {
+      // Check if message already exists
+      if (prev.some(m => m.id === userMessageId)) {
+        return prev
+      }
+      const newMessages = [...prev, userMessage]
+      return newMessages
+    })
+    
     setInputValue('')
     setIsTyping(true)
 
     try {
-      // Build conversation history for API (only include actual conversation, not welcome)
-      const conversationHistory = newMessages
-        .filter(m => m.id !== 1) // Exclude initial welcome message
-        .map(m => ({
-          role: m.sender === 'user' ? 'user' : 'assistant',
-          content: m.text
-        }))
-
-      // Call AI chat API
+      // Call AI chat API - only send user's message, not entire history
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: conversationHistory
+          message: text.trim()
         })
       })
 
       const data = await response.json()
 
+      const botMessageId = Date.now() + 1
       const botMessage: Message = {
-        id: Date.now() + 1,
+        id: botMessageId,
         text: data.message,
         sender: 'bot',
         timestamp: new Date()
       }
       
-      const finalMessages = [...newMessages, botMessage]
-      setMessages(finalMessages)
-      
-      // Save to localStorage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        messages: finalMessages,
-        timestamp: Date.now()
-      }))
+      setMessages(prev => {
+        // Check if bot message already exists
+        if (prev.some(m => m.id === botMessageId)) {
+          return prev
+        }
+        return [...prev, botMessage]
+      })
     } catch (error) {
       console.error('Chat error:', error)
+      const errorMessageId = Date.now() + 2
       const errorMessage: Message = {
-        id: Date.now() + 1,
+        id: errorMessageId,
         text: "I'm having a little trouble right now. For immediate help, please call us at (313) 246-7903!",
         sender: 'bot',
         timestamp: new Date()
       }
-      const finalMessages = [...newMessages, errorMessage]
-      setMessages(finalMessages)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        messages: finalMessages,
-        timestamp: Date.now()
-      }))
+      setMessages(prev => {
+        if (prev.some(m => m.id === errorMessageId)) {
+          return prev
+        }
+        return [...prev, errorMessage]
+      })
     } finally {
       setIsTyping(false)
     }

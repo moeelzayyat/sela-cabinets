@@ -67,12 +67,24 @@ RULES:
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json()
+    const body = await req.json()
+    
+    // Handle both single message and messages array
+    let userMessage: string
+    if (body.message) {
+      userMessage = body.message
+    } else if (body.messages && Array.isArray(body.messages)) {
+      // Get the last user message
+      const lastMessage = body.messages.filter((m: any) => m.role === 'user').pop()
+      userMessage = lastMessage?.content || ''
+    } else {
+      return NextResponse.json({ message: "I didn't catch that. Could you repeat?" })
+    }
 
     if (!process.env.OPENAI_API_KEY) {
       // Fallback to simple responses if no API key
       return NextResponse.json({
-        message: getSimpleResponse(messages[messages.length - 1]?.content || '')
+        message: getSimpleResponse(userMessage)
       })
     }
 
@@ -83,12 +95,7 @@ export async function POST(req: NextRequest) {
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
-        ...messages
-          .filter((msg: any) => msg.content && msg.content.trim())
-          .map((msg: any) => ({
-            role: msg.role === 'user' ? 'user' : 'assistant',
-            content: msg.content.trim()
-          }))
+        { role: 'user', content: userMessage }
       ],
       temperature: 0.7,
       max_tokens: 500,

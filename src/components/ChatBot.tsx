@@ -36,23 +36,30 @@ export default function ChatBot() {
   // Load session from localStorage or initialize
   useEffect(() => {
     const loadSession = async () => {
-      // Try to load from localStorage
-      const savedSession = localStorage.getItem(STORAGE_KEY)
+      // Check if localStorage is available (client-side only)
+      if (typeof window === 'undefined') return
       
-      if (savedSession) {
-        try {
-          const parsed = JSON.parse(savedSession)
-          // Only restore if session is less than 1 hour old
-          const sessionAge = Date.now() - parsed.timestamp
-          if (sessionAge < 3600000 && parsed.messages?.length > 0) {
-            setMessages(parsed.messages)
-            setSessionId(parsed.sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
-            setIsLoading(false)
-            return
+      // Try to load from localStorage
+      try {
+        const savedSession = localStorage.getItem(STORAGE_KEY)
+        
+        if (savedSession) {
+          try {
+            const parsed = JSON.parse(savedSession)
+            // Only restore if session is less than 1 hour old
+            const sessionAge = Date.now() - parsed.timestamp
+            if (sessionAge < 3600000 && parsed.messages?.length > 0) {
+              setMessages(parsed.messages)
+              setSessionId(parsed.sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
+              setIsLoading(false)
+              return
+            }
+          } catch (parseError) {
+            console.error('Error parsing session:', parseError)
           }
-        } catch (error) {
-          console.error('Error loading session:', error)
         }
+      } catch (storageError) {
+        console.error('Error accessing localStorage:', storageError)
       }
       
       // Generate new session ID
@@ -77,12 +84,17 @@ export default function ChatBot() {
         }]
         
         setMessages(initialMessages)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          messages: initialMessages,
-          timestamp: Date.now(),
-          sessionId: newSessionId
-        }))
-      } catch (error) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            messages: initialMessages,
+            timestamp: Date.now(),
+            sessionId: newSessionId
+          }))
+        } catch (e) {
+          // Ignore localStorage errors
+        }
+      } catch (fetchError) {
+        console.error('Error loading welcome message:', fetchError)
         const initialMessages = [{
           id: 1,
           text: "Hi! I am Mango, your SELA Cabinets assistant. How can I help you today?",
@@ -90,11 +102,15 @@ export default function ChatBot() {
           timestamp: new Date()
         }]
         setMessages(initialMessages)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          messages: initialMessages,
-          timestamp: Date.now(),
-          sessionId: newSessionId
-        }))
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            messages: initialMessages,
+            timestamp: Date.now(),
+            sessionId: newSessionId
+          }))
+        } catch (e) {
+          // Ignore localStorage errors
+        }
       } finally {
         setIsLoading(false)
       }
@@ -105,12 +121,17 @@ export default function ChatBot() {
 
   // Save to localStorage whenever messages change
   useEffect(() => {
+    if (typeof window === 'undefined') return
     if (messages.length > 0 && sessionId) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        messages,
-        timestamp: Date.now(),
-        sessionId
-      }))
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          messages,
+          timestamp: Date.now(),
+          sessionId
+        }))
+      } catch (e) {
+        // Ignore localStorage errors
+      }
     }
   }, [messages, sessionId])
 
@@ -237,7 +258,11 @@ export default function ChatBot() {
                 <button
                   onClick={() => {
                     if (confirm('Clear chat history?')) {
-                      localStorage.removeItem(STORAGE_KEY)
+                      try {
+                        localStorage.removeItem(STORAGE_KEY)
+                      } catch (e) {
+                        // Ignore localStorage errors
+                      }
                       window.location.reload()
                     }
                   }}

@@ -22,6 +22,8 @@ const quickReplies: QuickReply[] = [
   { text: '📞 Get Quote', message: 'I want to get a quote' },
 ]
 
+const STORAGE_KEY = 'selacabinets_chat_session'
+
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -30,9 +32,28 @@ export default function ChatBot() {
   const [isLoading, setIsLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Load welcome message from database on mount
+  // Load session from localStorage or initialize
   useEffect(() => {
-    const loadWelcomeMessage = async () => {
+    const loadSession = async () => {
+      // Try to load from localStorage
+      const savedSession = localStorage.getItem(STORAGE_KEY)
+      
+      if (savedSession) {
+        try {
+          const parsed = JSON.parse(savedSession)
+          // Only restore if session is less than 1 hour old
+          const sessionAge = Date.now() - parsed.timestamp
+          if (sessionAge < 3600000 && parsed.messages?.length > 0) {
+            setMessages(parsed.messages)
+            setIsLoading(false)
+            return
+          }
+        } catch (error) {
+          console.error('Error loading session:', error)
+        }
+      }
+      
+      // Load fresh welcome message from database
       try {
         const response = await fetch('/api/chatbot-config', {
           headers: {
@@ -40,29 +61,49 @@ export default function ChatBot() {
           }
         })
         const data = await response.json()
-        const welcomeMsg = data.config?.welcome_message?.value || "Hi! 👋 I'm here to help with your kitchen cabinet questions. What would you like to know?"
+        const welcomeMsg = data.config?.welcome_message?.value || "Hi! I am Mango, your SELA Cabinets assistant. How can I help you today?"
         
-        setMessages([{
+        const initialMessages = [{
           id: 1,
           text: welcomeMsg,
-          sender: 'bot',
+          sender: 'bot' as const,
           timestamp: new Date()
-        }])
+        }]
+        
+        setMessages(initialMessages)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          messages: initialMessages,
+          timestamp: Date.now()
+        }))
       } catch (error) {
-        // Fallback to default message
-        setMessages([{
+        const initialMessages = [{
           id: 1,
-          text: "Hi! 👋 I'm Mango, your SELA Cabinets assistant. I can help with pricing, service areas, and booking. What would you like to know?",
-          sender: 'bot',
+          text: "Hi! I am Mango, your SELA Cabinets assistant. How can I help you today?",
+          sender: 'bot' as const,
           timestamp: new Date()
-        }])
+        }]
+        setMessages(initialMessages)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          messages: initialMessages,
+          timestamp: Date.now()
+        }))
       } finally {
         setIsLoading(false)
       }
     }
 
-    loadWelcomeMessage()
+    loadSession()
   }, [])
+
+  // Save to localStorage whenever messages change
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        messages,
+        timestamp: Date.now()
+      }))
+    }
+  }, [messages])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -71,27 +112,34 @@ export default function ChatBot() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return
 
-    // Add user message
+    // Add user message immediately
     const userMessage: Message = {
       id: Date.now(),
       text: text.trim(),
       sender: 'user',
       timestamp: new Date()
     }
-    setMessages(prev => [...prev, userMessage])
+    
+    const newMessages = [...messages, userMessage]
+    setMessages(newMessages)
     setInputValue('')
     setIsTyping(true)
 
     try {
+      // Build conversation history for API (only include actual conversation, not welcome)
+      const conversationHistory = newMessages
+        .filter(m => m.id !== 1) // Exclude initial welcome message
+        .map(m => ({
+          role: m.sender === 'user' ? 'user' : 'assistant',
+          content: m.text
+        }))
+
       // Call AI chat API
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: text }].map(m => ({
-            role: m.sender === 'user' ? 'user' : 'assistant',
-            content: m.text
-          }))
+          messages: conversationHistory
         })
       })
 
@@ -103,7 +151,15 @@ export default function ChatBot() {
         sender: 'bot',
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, botMessage])
+      
+      const finalMessages = [...newMessages, botMessage]
+      setMessages(finalMessages)
+      
+      // Save to localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        messages: finalMessages,
+        timestamp: Date.now()
+      }))
     } catch (error) {
       console.error('Chat error:', error)
       const errorMessage: Message = {
@@ -112,7 +168,12 @@ export default function ChatBot() {
         sender: 'bot',
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, errorMessage])
+      const finalMessages = [...newMessages, errorMessage]
+      setMessages(finalMessages)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        messages: finalMessages,
+        timestamp: Date.now()
+      }))
     } finally {
       setIsTyping(false)
     }
@@ -159,13 +220,27 @@ export default function ChatBot() {
                   <div className="text-xs text-white/80">We typically reply in a few minutes</div>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg p-2 hover:bg-white/10 transition-colors"
-                aria-label="Close chat"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <div className="flex gap-1">
+                <button
+                  onClick={() => {
+                    if (confirm('Clear chat history?')) {
+                      localStorage.removeItem(STORAGE_KEY)
+                      window.location.reload()
+                    }
+                  }}
+                  className="rounded-lg p-2 hover:bg-white/10 transition-colors text-xs"
+                  title="Clear chat"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg p-2 hover:bg-white/10 transition-colors"
+                  aria-label="Close chat"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
 

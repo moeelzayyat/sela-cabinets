@@ -65,12 +65,43 @@ RULES:
 - For urgent matters, suggest calling (313) 246-7903`
 }
 
+// Save chat message to database
+async function saveChatMessage(sessionId: string, message: string, sender: string) {
+  try {
+    const client = await pool.connect()
+    try {
+      // Save message
+      await client.query(
+        'INSERT INTO chat_messages (session_id, message, sender) VALUES ($1, $2, $3)',
+        [sessionId, message, sender]
+      )
+      
+      // Update or create session
+      await client.query(
+        `INSERT INTO chat_sessions (session_id, first_message_at, last_message_at, message_count)
+         VALUES ($1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1)
+         ON CONFLICT (session_id)
+         DO UPDATE SET 
+           last_message_at = CURRENT_TIMESTAMP,
+           message_count = chat_sessions.message_count + 1`,
+        [sessionId]
+      )
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error saving chat message:', error)
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     
     // Handle both single message and messages array
     let userMessage: string
+    let sessionId: string = body.sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    
     if (body.message) {
       userMessage = body.message
     } else if (body.messages && Array.isArray(body.messages)) {
@@ -81,11 +112,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "I didn't catch that. Could you repeat?" })
     }
 
+    // Save user message
+    await saveChatMessage(sessionId, userMessage, 'user')
+
     if (!process.env.OPENAI_API_KEY) {
       // Fallback to simple responses if no API key
-      return NextResponse.json({
-        message: getSimpleResponse(userMessage)
-      })
+      const fallbackResponse = getSimpleResponse(userMessage)
+      await saveChatMessage(sessionId, fallbackResponse, 'bot')
+      return NextResponse.json({ message: fallbackResponse })
     }
 
     // Get system prompt from database
@@ -102,15 +136,17 @@ export async function POST(req: NextRequest) {
     })
 
     const message = completion.choices[0]?.message?.content || "I'm here to help! What would you like to know about SELA Cabinets?"
+    
+    // Save bot response
+    await saveChatMessage(sessionId, message, 'bot')
 
-    return NextResponse.json({ message })
+    return NextResponse.json({ message, sessionId })
   } catch (error) {
     console.error('Chat API error:', error)
     
     // Fallback response on error
-    return NextResponse.json({
-      message: "I'm having a little trouble right now. For immediate assistance, please call us at (313) 246-7903 or visit our contact page!"
-    })
+    const errorMessage = "I'm having a little trouble right now. For immediate assistance, please call us at (313) 246-7903 or visit our contact page!"
+    return NextResponse.json({ message: errorMessage })
   }
 }
 

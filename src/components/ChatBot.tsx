@@ -30,6 +30,7 @@ export default function ChatBot() {
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [sessionId, setSessionId] = useState<string>('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Load session from localStorage or initialize
@@ -45,6 +46,7 @@ export default function ChatBot() {
           const sessionAge = Date.now() - parsed.timestamp
           if (sessionAge < 3600000 && parsed.messages?.length > 0) {
             setMessages(parsed.messages)
+            setSessionId(parsed.sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
             setIsLoading(false)
             return
           }
@@ -52,6 +54,10 @@ export default function ChatBot() {
           console.error('Error loading session:', error)
         }
       }
+      
+      // Generate new session ID
+      const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      setSessionId(newSessionId)
       
       // Load fresh welcome message from database
       try {
@@ -73,7 +79,8 @@ export default function ChatBot() {
         setMessages(initialMessages)
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           messages: initialMessages,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          sessionId: newSessionId
         }))
       } catch (error) {
         const initialMessages = [{
@@ -85,7 +92,8 @@ export default function ChatBot() {
         setMessages(initialMessages)
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           messages: initialMessages,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          sessionId: newSessionId
         }))
       } finally {
         setIsLoading(false)
@@ -97,13 +105,14 @@ export default function ChatBot() {
 
   // Save to localStorage whenever messages change
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages.length > 0 && sessionId) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         messages,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        sessionId
       }))
     }
-  }, [messages])
+  }, [messages, sessionId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -141,7 +150,8 @@ export default function ChatBot() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: text.trim()
+          message: text.trim(),
+          sessionId: sessionId
         })
       })
 

@@ -8,6 +8,7 @@ import { MobileCallButton } from '@/components/layout/mobile-call-button'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
 import { Toaster } from '@/components/ui/toaster'
 import ChatBot from '@/components/ChatBot'
+import { LocalBusinessSchema } from '@/components/seo/SchemaMarkup'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -59,6 +60,12 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <GoogleAnalytics />
+        <LocalBusinessSchema />
+        <link rel="canonical" href={typeof window !== 'undefined' ? window.location.href : siteConfig.seo.url} />
+        <meta name="geo.region" content="US-MI" />
+        <meta name="geo.placename" content="Detroit" />
+        <meta name="geo.position" content="42.3314;-83.0458" />
+        <meta name="ICBM" content="42.3314, -83.0458" />
       </head>
       <body className="min-h-screen bg-white font-sans">
         <Header />

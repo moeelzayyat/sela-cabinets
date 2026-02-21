@@ -3,43 +3,78 @@ import { siteConfig } from '@/config/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.seo.url
-
-  const routes = [
-    '',
-    '/services',
-    '/products',
-    '/pricing',
-    '/gallery',
-    '/about',
-    '/faqs',
-    '/contact',
-    '/book',
-    '/estimate',
-    '/blog',
-    '/blog/kitchen-cabinet-costs-detroit',
-    '/locations/dearborn',
-    '/locations/livonia',
-    '/locations/troy',
-    '/locations/warren',
-    '/locations/sterling-heights',
-    '/locations/ann-arbor',
-    '/locations/west-bloomfield',
-    '/locations/birmingham',
-    '/locations/royal-oak',
-    '/locations/farmington-hills',
-    '/locations/rochester-hills',
-    '/locations/novi',
-    '/locations/canton',
-    '/locations/bloomfield-hills',
-    '/locations/shelby-township',
-    '/locations/grosse-pointe',
+  
+  // Static pages
+  const staticPages = [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/products`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/gallery`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/faqs`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/book`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/estimate`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
   ]
 
-  return routes.map((route) => ({
-    url: `${baseUrl}${route}`,
+  // Service area pages (create these later)
+  const serviceAreaPages = siteConfig.serviceAreas.map(city => ({
+    url: `${baseUrl}/service-areas/${city.toLowerCase().replace(/ /g, '-')}`,
     lastModified: new Date(),
-    changeFrequency: route === '' ? 'weekly' : 'monthly',
-    priority: route === '' ? 1 : 0.8,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
   }))
-}
 
+  return [...staticPages, ...serviceAreaPages]
+}

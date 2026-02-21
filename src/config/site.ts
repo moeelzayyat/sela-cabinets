@@ -74,16 +74,50 @@ export const siteConfig = {
   // ============================================
   seo: {
     titleTemplate: '%s | SELA Cabinets - Detroit Kitchen Cabinets',
-    defaultTitle: 'SELA Cabinets | Premium Kitchen Cabinets in Detroit, MI',
-    defaultDescription: 'Transform your Detroit kitchen with SELA Cabinets. Professional cabinet supply, expert installation, and free in-home measurement. Serving Detroit and surrounding areas.',
+    defaultTitle: 'SELA Cabinets | Premium Kitchen Cabinets in Detroit, MI | Save 66% vs Big Box',
+    defaultDescription: 'Transform your Detroit kitchen with SELA Cabinets. Premium semi-custom cabinets, professional installation, and free in-home measurement. 10x10 kitchens from $3,999. Serving Detroit, Dearborn, Troy, Sterling Heights, Ann Arbor, and 15+ metro cities. Save up to 66% vs Home Depot & Lowes.',
     keywords: [
+      // Primary keywords
       'kitchen cabinets Detroit',
-      'cabinet installation Detroit',
+      'cabinet installation Detroit MI',
       'kitchen remodel Detroit',
-      'cabinet supply Michigan',
-      'in-home measurement',
-      'custom cabinets',
-      'kitchen design Detroit',
+      'cabinet supply Detroit',
+      // Location-specific
+      'kitchen cabinets Dearborn',
+      'kitchen cabinets Troy Michigan',
+      'kitchen cabinets Sterling Heights',
+      'kitchen cabinets Ann Arbor',
+      'kitchen cabinets Royal Oak',
+      'kitchen cabinets Farmington Hills',
+      'kitchen cabinets Livonia',
+      'kitchen cabinets Canton MI',
+      // Service keywords
+      'cabinet installation services',
+      'in-home cabinet measurement',
+      'kitchen design consultation Detroit',
+      'custom kitchen cabinets Michigan',
+      'semi-custom cabinets',
+      // Comparison keywords
+      'cheap kitchen cabinets Detroit',
+      'affordable kitchen cabinets Michigan',
+      'kitchen cabinet deals Detroit',
+      'cabinet wholesale Detroit',
+      // Long-tail keywords
+      '10x10 kitchen cabinets Detroit',
+      'kitchen cabinet installation cost Michigan',
+      'best kitchen cabinet company Detroit',
+      'kitchen renovation Detroit metro',
+      'cabinet replacement Detroit',
+      // Product keywords
+      'shaker cabinets Detroit',
+      'white kitchen cabinets',
+      'modern kitchen cabinets Michigan',
+      'wood kitchen cabinets Detroit',
+      // Action keywords
+      'buy kitchen cabinets Detroit',
+      'order cabinets online Michigan',
+      'get kitchen quote Detroit',
+      'free cabinet estimate',
     ],
     url: 'https://selacabinets.com',
   },

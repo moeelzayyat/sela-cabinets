@@ -24,17 +24,45 @@ const quickReplies: QuickReply[] = [
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: "Hi! 👋 I'm here to help with your kitchen cabinet questions. What would you like to know?",
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Load welcome message from database on mount
+  useEffect(() => {
+    const loadWelcomeMessage = async () => {
+      try {
+        const response = await fetch('/api/chatbot-config', {
+          headers: {
+            'Authorization': `Bearer sela-admin-2026`
+          }
+        })
+        const data = await response.json()
+        const welcomeMsg = data.config?.welcome_message?.value || "Hi! 👋 I'm here to help with your kitchen cabinet questions. What would you like to know?"
+        
+        setMessages([{
+          id: 1,
+          text: welcomeMsg,
+          sender: 'bot',
+          timestamp: new Date()
+        }])
+      } catch (error) {
+        // Fallback to default message
+        setMessages([{
+          id: 1,
+          text: "Hi! 👋 I'm Mango, your SELA Cabinets assistant. I can help with pricing, service areas, and booking. What would you like to know?",
+          sender: 'bot',
+          timestamp: new Date()
+        }])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadWelcomeMessage()
+  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })

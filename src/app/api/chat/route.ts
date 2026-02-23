@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { Pool } from 'pg'
+import { addLead } from '@/lib/lead-capture'
+import { sendLeadNotification } from '@/lib/email-notifications'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
@@ -140,6 +142,33 @@ export async function POST(req: NextRequest) {
     // Save bot response
     await saveChatMessage(sessionId, message, 'bot')
 
+    // Detect if user is a lead (wants quote, booking, or provides contact info)
+    const leadInfo = extractLeadInfo(userMessage)
+    if (leadInfo.isLead) {
+      try {
+        const leadResult = await addLead({
+          name: leadInfo.name || 'Chat Lead',
+          phone: leadInfo.phone || '',
+          email: leadInfo.email || '',
+          source: 'contact',
+          notes: `From chatbot conversation: "${userMessage}"`,
+        })
+        
+        if (leadResult.success) {
+          // Send email notification
+          await sendLeadNotification({
+            name: leadInfo.name || 'Chat Lead',
+            phone: leadInfo.phone,
+            email: leadInfo.email,
+            source: 'Chatbot',
+            notes: userMessage,
+          })
+        }
+      } catch (leadError) {
+        console.error('Error creating lead from chat:', leadError)
+      }
+    }
+
     return NextResponse.json({ message, sessionId })
   } catch (error) {
     console.error('Chat API error:', error)
@@ -175,4 +204,53 @@ function getSimpleResponse(message: string): string {
   }
   
   return "Thanks for your message! I'm here to help with pricing, service areas, installation timeline, and general questions. What would you like to know? Or call us at (313) 246-7903 for immediate assistance."
+}
+
+// Extract lead info from message (phone, email, intent to purchase)
+function extractLeadInfo(message: string): {
+  isLead: boolean
+  name?: string
+  phone?: string
+  email?: string
+} {
+  const result: { isLead: boolean; name?: string; phone?: string; email?: string } = { isLead: false }
+  
+  // Phone number regex (various formats)
+  const phoneRegex = /(?:\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/
+  const phoneMatch = message.match(phoneRegex)
+  if (phoneMatch) {
+    result.phone = phoneMatch[0]
+    result.isLead = true
+  }
+  
+  // Email regex
+  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/
+  const emailMatch = message.match(emailRegex)
+  if (emailMatch) {
+    result.email = emailMatch[0]
+    result.isLead = true
+  }
+  
+  // Intent keywords that suggest they want to buy
+  const intentKeywords = [
+    'i want to book',
+    'i want a quote',
+    'i need a quote',
+    'get a quote',
+    'book a consultation',
+    'schedule an appointment',
+    'i want to schedule',
+    'can you call me',
+    'please call me',
+    'interested in buying',
+    'ready to buy',
+    'i want to purchase',
+  ]
+  
+  const lowerMessage = message.toLowerCase()
+  if (intentKeywords.some(keyword => lowerMessage.includes(keyword))) {
+    result.isLead = true
+  }
+  
+  return result
 }

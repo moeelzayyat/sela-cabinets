@@ -49,7 +49,10 @@ export default function ChatBot() {
             // Only restore if session is less than 1 hour old
             const sessionAge = Date.now() - parsed.timestamp
             if (sessionAge < 3600000 && parsed.messages?.length > 0) {
-              setMessages(parsed.messages)
+              setMessages(parsed.messages.map((m: any) => ({
+                ...m,
+                timestamp: new Date(m.timestamp)
+              })))
               setSessionId(parsed.sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
               setIsLoading(false)
               return
@@ -298,7 +301,7 @@ export default function ChatBot() {
                 >
                   <div className="whitespace-pre-wrap text-sm leading-relaxed">{message.text}</div>
                   <div className={`text-xs mt-1 ${message.sender === 'user' ? 'text-white/70' : 'text-charcoal-400'}`}>
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
               </div>

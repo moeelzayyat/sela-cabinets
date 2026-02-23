@@ -26,7 +26,7 @@ export async function sendLeadNotification(lead: LeadEmailData): Promise<{ succe
   try {
     const { data, error } = await resend.emails.send({
       from: 'SELA Cabinets <leads@selacabinets.com>',
-      to: ['info@selacabinets.com'],
+      to: ['info@selatrade.com'],
       subject: `🔥 New Lead: ${lead.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

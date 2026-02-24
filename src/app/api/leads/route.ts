@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getLeads, getLeadStats } from '@/lib/lead-capture'
+import { getLeads, getLeadStats, updateLeadStatus } from '@/lib/lead-capture'
+import { Pool } from 'pg'
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+})
 
 // Simple API key check (in production, use proper auth)
 const API_KEY = process.env.ADMIN_API_KEY || 'sela-admin-2026'
@@ -36,6 +42,106 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching leads:', error)
     return NextResponse.json(
       { error: 'Failed to fetch leads' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    // Check for API key in headers
+    const authHeader = request.headers.get('authorization')
+    if (authHeader !== `Bearer ${API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing lead id' }, { status: 400 })
+    }
+
+    const body = await request.json()
+    const { status, notes, timeline, style_preference } = body
+
+    const client = await pool.connect()
+    try {
+      // Build dynamic update query
+      const updates: string[] = []
+      const values: any[] = []
+      let paramCount = 1
+
+      if (status) {
+        updates.push(`status = $${paramCount++}`)
+        values.push(status)
+      }
+      if (notes !== undefined) {
+        updates.push(`notes = $${paramCount++}`)
+        values.push(notes)
+      }
+      if (timeline !== undefined) {
+        updates.push(`timeline = $${paramCount++}`)
+        values.push(timeline)
+      }
+      if (style_preference !== undefined) {
+        updates.push(`style_preference = $${paramCount++}`)
+        values.push(style_preference)
+      }
+
+      if (updates.length === 0) {
+        return NextResponse.json({ error: 'No fields to update' }, { status: 400 })
+      }
+
+      updates.push(`updated_at = CURRENT_TIMESTAMP`)
+      values.push(parseInt(id))
+
+      const query = `UPDATE leads SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING *`
+      const result = await client.query(query, values)
+
+      if (result.rows.length === 0) {
+        return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+      }
+
+      return NextResponse.json({ success: true, lead: result.rows[0] })
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error updating lead:', error)
+    return NextResponse.json(
+      { error: 'Failed to update lead' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    // Check for API key in headers
+    const authHeader = request.headers.get('authorization')
+    if (authHeader !== `Bearer ${API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing lead id' }, { status: 400 })
+    }
+
+    const client = await pool.connect()
+    try {
+      await client.query('DELETE FROM leads WHERE id = $1', [parseInt(id)])
+      return NextResponse.json({ success: true })
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error deleting lead:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete lead' },
       { status: 500 }
     )
   }

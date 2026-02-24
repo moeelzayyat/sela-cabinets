@@ -10,7 +10,10 @@ import {
   X,
   GripVertical,
   RefreshCw,
-  Users
+  Users,
+  Save,
+  Check,
+  Edit3
 } from 'lucide-react'
 
 // Pipeline stages
@@ -50,6 +53,9 @@ export default function LeadsKanban() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [draggedLead, setDraggedLead] = useState<number | null>(null)
   const [updating, setUpdating] = useState(false)
+  const [notes, setNotes] = useState('')
+  const [savingNotes, setSavingNotes] = useState(false)
+  const [notesSaved, setNotesSaved] = useState(false)
 
   const API_KEY = 'sela-admin-2026'
 
@@ -74,6 +80,14 @@ export default function LeadsKanban() {
     fetchLeads()
   }, [])
 
+  // Update notes when selected lead changes
+  useEffect(() => {
+    if (selectedLead) {
+      setNotes(selectedLead.notes || '')
+      setNotesSaved(false)
+    }
+  }, [selectedLead])
+
   const getLeadsByStage = (stageId: string) => {
     return leads.filter(lead => lead.status === stageId)
   }
@@ -90,7 +104,6 @@ export default function LeadsKanban() {
     if (draggedLead) {
       setUpdating(true)
       try {
-        // Update via API
         const response = await fetch(`/api/leads?id=${draggedLead}`, {
           method: 'PATCH',
           headers: {
@@ -102,7 +115,6 @@ export default function LeadsKanban() {
         
         if (!response.ok) throw new Error('Failed to update lead')
         
-        // Update local state
         setLeads(leads.map(lead => 
           lead.id === draggedLead 
             ? { ...lead, status: stageId }
@@ -114,6 +126,39 @@ export default function LeadsKanban() {
         setDraggedLead(null)
         setUpdating(false)
       }
+    }
+  }
+
+  const handleSaveNotes = async () => {
+    if (!selectedLead) return
+    
+    setSavingNotes(true)
+    try {
+      const response = await fetch(`/api/leads?id=${selectedLead.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ notes })
+      })
+      
+      if (!response.ok) throw new Error('Failed to save notes')
+      
+      // Update local state
+      setLeads(leads.map(lead => 
+        lead.id === selectedLead.id 
+          ? { ...lead, notes }
+          : lead
+      ))
+      
+      setSelectedLead({ ...selectedLead, notes })
+      setNotesSaved(true)
+      setTimeout(() => setNotesSaved(false), 2000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save notes')
+    } finally {
+      setSavingNotes(false)
     }
   }
 
@@ -133,6 +178,11 @@ export default function LeadsKanban() {
       chatbot: 'bg-green-100 text-green-700',
     }
     return colors[source] || 'bg-slate-100 text-slate-600'
+  }
+
+  const getStatusColor = (status: string) => {
+    const stage = stages.find(s => s.id === status)
+    return stage?.color || 'bg-slate-500'
   }
 
   if (loading) {
@@ -250,6 +300,11 @@ export default function LeadsKanban() {
                           {lead.source}
                         </span>
                       </div>
+                      {lead.notes && (
+                        <p className="text-xs text-slate-400 truncate mt-2">
+                          📝 {lead.notes.substring(0, 40)}{lead.notes.length > 40 ? '...' : ''}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -274,7 +329,7 @@ export default function LeadsKanban() {
           />
           <div className="relative w-full max-w-md bg-white shadow-2xl overflow-y-auto">
             {/* Header */}
-            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
+            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between z-10">
               <h2 className="text-lg font-semibold text-slate-900">Lead Details</h2>
               <button 
                 onClick={() => setSelectedLead(null)}
@@ -293,7 +348,10 @@ export default function LeadsKanban() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">{selectedLead.name}</h3>
-                  <p className="text-slate-500 capitalize">{selectedLead.status}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className={`w-2 h-2 ${getStatusColor(selectedLead.status)} rounded-full`} />
+                    <p className="text-slate-500 capitalize">{selectedLead.status}</p>
+                  </div>
                 </div>
               </div>
 
@@ -354,12 +412,57 @@ export default function LeadsKanban() {
                   </div>
                 )}
 
-                {selectedLead.notes && (
-                  <div>
+                {/* Editable Notes Section */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
                     <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Notes</label>
-                    <p className="mt-2 text-slate-700 whitespace-pre-wrap">{selectedLead.notes}</p>
+                    {notesSaved && (
+                      <span className="text-xs text-emerald-600 flex items-center gap-1">
+                        <Check className="w-3 h-3" />
+                        Saved
+                      </span>
+                    )}
                   </div>
-                )}
+                  <div className="relative">
+                    <textarea
+                      value={notes}
+                      onChange={(e) => {
+                        setNotes(e.target.value)
+                        setNotesSaved(false)
+                      }}
+                      placeholder="Add notes about this lead..."
+                      rows={4}
+                      className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
+                    />
+                    <button
+                      onClick={handleSaveNotes}
+                      disabled={savingNotes || notes === (selectedLead.notes || '')}
+                      className={`absolute bottom-3 right-3 flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        savingNotes 
+                          ? 'bg-slate-100 text-slate-400' 
+                          : notes === (selectedLead.notes || '')
+                          ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                          : 'bg-amber-500 text-white hover:bg-amber-600'
+                      }`}
+                    >
+                      {savingNotes ? (
+                        <>
+                          <RefreshCw className="w-3 h-3 animate-spin" />
+                          Saving
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-3 h-3" />
+                          Save
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    <Edit3 className="w-3 h-3 inline mr-1" />
+                    Edit notes above and click Save
+                  </p>
+                </div>
 
                 <div>
                   <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Created</label>

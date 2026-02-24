@@ -76,3 +76,38 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch chat logs' }, { status: 500 })
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization')
+    if (authHeader !== `Bearer ${API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const searchParams = request.nextUrl.searchParams
+    const sessionId = searchParams.get('session_id')
+    const deleteAll = searchParams.get('all') === 'true'
+
+    const client = await pool.connect()
+    try {
+      if (deleteAll) {
+        // Delete all chat sessions and messages
+        await client.query('DELETE FROM chat_messages')
+        await client.query('DELETE FROM chat_sessions')
+        return NextResponse.json({ success: true, message: 'All chat history deleted' })
+      } else if (sessionId) {
+        // Delete specific session
+        await client.query('DELETE FROM chat_messages WHERE session_id = $1', [sessionId])
+        await client.query('DELETE FROM chat_sessions WHERE session_id = $1', [sessionId])
+        return NextResponse.json({ success: true, message: 'Session deleted' })
+      } else {
+        return NextResponse.json({ error: 'Missing session_id or all parameter' }, { status: 400 })
+      }
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error deleting chat logs:', error)
+    return NextResponse.json({ error: 'Failed to delete chat logs' }, { status: 500 })
+  }
+}

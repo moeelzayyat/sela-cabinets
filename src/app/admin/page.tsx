@@ -1,58 +1,17 @@
 // app/admin/page.tsx
-import { Suspense } from 'react';
 import { getCustomers, getEstimates } from '@/lib/db-admin';
-import { redirect } from 'next/navigation';
 
-// Simple auth check - you can change this password
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sela2024';
-
-export default async function AdminPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const params = await searchParams;
-  const password = typeof params.p === 'string' ? params.p : '';
-  
-  if (password !== ADMIN_PASSWORD) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <form className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Admin Access</h1>
-          <input
-            type="password"
-            name="p"
-            placeholder="Enter password"
-            className="w-full p-2 border rounded mb-4"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
-            Access Database
-          </button>
-        </form>
-      </div>
-    );
-  }
-
+export default async function AdminPage() {
   const [customers, estimates] = await Promise.all([
     getCustomers(),
     getEstimates(),
   ]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">SELA Cabinets - Database Viewer</h1>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Refresh
-          </button>
-        </div>
+    <div>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Database Overview</h1>
+      </div>
 
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4">

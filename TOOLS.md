@@ -32,12 +32,66 @@ _(Update with specific cabinet lines, pricing tiers, and options as they're shar
 
 ## Server & Infrastructure
 
-- **Server IP:** 15.204.156.235
+- **Server IP (Mango/DB):** 15.204.156.235
+- **Server IP (Coolify/Deploy):** 15.204.156.223
 - **SSH User:** way
+- **SSH Password (fallback):** SamasemTanash12$$..
 - **Bot platform:** OpenClaw (Docker container: openclaw-openclaw-gateway-1)
 - **Gateway port:** 18789
 - **Bridge port:** 18790
 - **AI Model:** openai/gpt-5-mini (primary)
+
+### SSH Access (from this container)
+
+SSH key auth is configured. No password needed:
+```bash
+# Mango's server (database, OpenClaw)
+ssh way@15.204.156.235 "YOUR COMMAND HERE"
+
+# Coolify server (deployments, app containers)
+ssh way@15.204.156.223 "YOUR COMMAND HERE"
+
+# Examples:
+ssh way@15.204.156.235 "docker ps"
+ssh way@15.204.156.235 "docker logs --tail 50 sela-postgres"
+ssh way@15.204.156.223 "docker logs --tail 50 cgog4w8wgsk0w4gogc4ocsco-*"
+```
+
+If key auth ever stops working (e.g. container rebuilt), use sshpass fallback:
+```bash
+sshpass -p 'SamasemTanash12$$..' ssh -o StrictHostKeyChecking=no way@15.204.156.235 "COMMAND"
+```
+
+## Database (Production)
+
+- **Container:** sela-postgres (postgres:16-alpine)
+- **Host:** 15.204.156.235
+- **Port:** 5433
+- **Database:** sela_cabinets
+- **User:** sela_app
+- **Password:** sela_secure_2024
+- **SSL:** Enabled (self-signed cert)
+- **Docker compose:** /home/way/sela-postgres/docker-compose.yml
+- **Data directory:** /home/way/sela-postgres/data/
+- **Connection string:** `postgresql://sela_app:sela_secure_2024@15.204.156.235:5433/sela_cabinets`
+- **Tables:** leads, customers, estimates, estimate_requests, appointments, jobs, chat_logs, chatbot_config, chat_messages, chat_sessions
+
+### Maintenance Commands
+- Check status: `docker ps --filter name=sela-postgres`
+- View logs: `docker logs --tail 50 sela-postgres`
+- Restart: `docker restart sela-postgres`
+- Connect: `docker exec -it sela-postgres psql -U sela_app -d sela_cabinets`
+
+## Coolify (Deployment Platform)
+
+- **Server:** 15.204.156.223:8000
+- **Login:** admin@selatrade.com
+- **SELA Cabinets app UUID:** cgog4w8wgsk0w4gogc4ocsco
+- **Git repo:** moeelzayyat/sela-cabinets (branch: main)
+- **Build pack:** Nixpacks
+- **Domains:** selacabinets.com, www.selacabinets.com
+- **Deploy flow:** Push to `moeelzayyat/sela-cabinets` main branch → trigger redeploy in Coolify UI → build takes ~3 minutes
+- **Note:** Real-time service is often disconnected (warning banner) but deploys still work
 
 ## Accounts & Integrations
 
@@ -64,200 +118,3 @@ _(Add as connected)_
 ---
 
 _Update with specific tools, accounts, and templates as the business grows._
-
-## GitHub Integration
-
-- **Skills installed:** github (gh CLI), gh-issues (auto-fix issues with sub-agents)
-- **CLI:** gh v2.87.0
-- **Auth:** Needs GitHub token configured (see `gh auth login`)
-- **Capabilities:**
-  - Create/manage issues and PRs
-  - Check CI/workflow status
-  - Code review operations
-  - Auto-fix issues with parallel sub-agents
-  - Monitor PR reviews and address comments
-
-
----
-
-## Browser Tools
-
-Mango has full browser automation capabilities via headless Chromium:
-
-- **Navigate**: Visit any URL, load pages, follow links
-- **Screenshot**: Capture screenshots of any webpage
-- **Snapshot**: Get the accessibility tree/DOM structure for AI analysis
-- **Click/Type/Fill**: Interact with page elements by reference
-- **Tabs**: Open, close, switch between browser tabs
-- **Wait**: Wait for text, elements, or page load
-- **Console/Network**: Monitor page console messages and network requests
-
-### Usage
-
-The browser uses the "openclaw" profile with headless Chromium. It auto-starts with the gateway container.
-
-### IMPORTANT: Displaying Images from Screenshots
-
-When the browser tool takes a screenshot, it saves the image and returns a path like:
-`MEDIA:/home/node/.openclaw/media/browser/abc123.png`
-
-Screenshots are automatically served via the canvas at:
-`/__openclaw__/canvas/<filename>`
-
-To display the image to the user, extract the **filename** from the MEDIA: path and use a markdown image with the canvas URL:
-
-**Correct format:**
-```
-Here's the screenshot of Google.com:
-
-![Screenshot](/__openclaw__/canvas/abc123.png)
-
-Let me know if you need anything else!
-```
-
-**WRONG formats (cause broken images):**
-```
-![Screenshot](MEDIA:/home/node/.openclaw/media/browser/abc123.png)
-MEDIA:/home/node/.openclaw/media/browser/abc123.png
-![Screenshot](/home/node/.openclaw/media/browser/abc123.png)
-```
-
-**Rule:** Always convert the MEDIA: path to `/__openclaw__/canvas/<filename>` before displaying.
-
-### Browser Action Reference
-
-**Top-level actions** (use as `action` parameter):
-- `navigate` — Go to a URL (`targetUrl` param)
-- `snapshot` — Get page accessibility tree with element refs (use `interactive: true` for only interactive elements)
-- `screenshot` — Take a screenshot
-- `tabs` — List open browser tabs
-- `act` — Perform an interaction (click, type, fill, etc.) via the `request` param
-
-**Act kinds** (use as `request.kind`):
-- `click` — Click an element (`ref` from snapshot, optional `doubleClick`, `button`, `modifiers`)
-- `type` — Type text into a field (`ref`, `text`) — **USE THIS FOR LOGIN FORMS AND INDIVIDUAL INPUTS**
-- `fill` — Fill multiple form fields at once (`fields: [{ref, type, value}, ...]`) — for batch form filling only
-- `press` — Press a keyboard key (`key`, e.g. "Enter", "Tab", "Escape")
-- `hover` — Hover over an element (`ref`)
-- `select` — Select dropdown option (`ref`, `values: ["option"]`)
-- `wait` — Wait for text to appear (`text`) or disappear (`textGone`) or fixed time (`timeMs`)
-- `drag` — Drag from one element to another (`startRef`, `endRef`)
-- `evaluate` — Run JavaScript on the page (`fn`)
-- `resize` — Resize viewport (`width`, `height`)
-
-### How to Automate Login / Forms (IMPORTANT)
-
-Follow this exact pattern for filling forms and logging in:
-
-**Step 1: Navigate to the page**
-```json
-{ "action": "navigate", "targetUrl": "https://example.com/login" }
-```
-Save the `targetId` from the response for ALL subsequent calls.
-
-**Step 2: Take a snapshot to get element refs**
-```json
-{ "action": "snapshot", "targetId": "<targetId from step 1>", "interactive": true }
-```
-This returns elements like:
-- `ref: "e3"` — Email input
-- `ref: "e4"` — Password input  
-- `ref: "e5"` — Login button
-
-**Step 3: Clear and type the email — MUST select-all first since `type` appends!**
-```json
-{ "action": "act", "request": { "kind": "click", "ref": "e3", "targetId": "<targetId>" } }
-```
-```json
-{ "action": "act", "request": { "kind": "press", "key": "Control+a", "targetId": "<targetId>" } }
-```
-```json
-{ "action": "act", "request": { "kind": "type", "ref": "e3", "text": "user@example.com", "targetId": "<targetId>" } }
-```
-
-**Step 4: Clear and type the password — same pattern**
-```json
-{ "action": "act", "request": { "kind": "click", "ref": "e4", "targetId": "<targetId>" } }
-```
-```json
-{ "action": "act", "request": { "kind": "press", "key": "Control+a", "targetId": "<targetId>" } }
-```
-```json
-{ "action": "act", "request": { "kind": "type", "ref": "e4", "text": "mypassword123", "targetId": "<targetId>" } }
-```
-
-**Step 5: Click the login button**
-```json
-{ "action": "act", "request": { "kind": "click", "ref": "e5", "targetId": "<targetId>" } }
-```
-
-**Step 6: WAIT then VERIFY — always check the result!**
-```json
-{ "action": "act", "request": { "kind": "wait", "timeMs": 3000, "targetId": "<targetId>" } }
-```
-Then take a **snapshot** to check if login succeeded (look for dashboard elements, NOT just the URL):
-```json
-{ "action": "snapshot", "targetId": "<targetId>", "interactive": true }
-```
-
-### Filling Multiple Form Fields at Once (Advanced)
-
-To fill an entire form in one call, use `fill` with a `fields` array:
-```json
-{
-  "action": "act",
-  "request": {
-    "kind": "fill",
-    "targetId": "<targetId>",
-    "fields": [
-      { "ref": "e3", "type": "fill", "value": "user@example.com" },
-      { "ref": "e4", "type": "fill", "value": "mypassword123" }
-    ]
-  }
-}
-```
-Note: `fill` requires `fields` as an array — do NOT pass `ref`/`text` directly.
-
-### Form Automation Tips
-
-1. **CRITICAL: `type` APPENDS text — it does NOT clear the field first!** Always select-all before typing:
-   - Click the field first: `{ "kind": "click", "ref": "e3" }`
-   - Select all: `{ "kind": "press", "key": "Control+a" }`
-   - Then type: `{ "kind": "type", "ref": "e3", "text": "value" }`
-2. **Use `fill` for multi-field form submission** — `fill` requires a `fields` array: `{ "kind": "fill", "fields": [{"ref": "e3", "type": "fill", "value": "text"}] }`.
-3. **CRITICAL: Never use `fill` with `ref`/`text` directly** — this will cause "fields are required" errors.
-4. **Always include `targetId`** in every request after the initial navigate. Get it from the navigate response.
-5. **Always snapshot first** to get element refs. Refs change on every page load.
-6. **Use `interactive: true`** in snapshot to only see clickable/fillable elements.
-7. **ALWAYS verify login/form results** — after clicking submit, WAIT 3 seconds then take a SNAPSHOT to check the page state. Don't assume success or failure from the click response alone.
-8. **For submit**, either click the submit button OR use `type` with `submit: true` on the last field (this presses Enter).
-9. **If a button click doesn't work**, try `press` with `key: "Enter"` as an alternative.
-10. **Pass each step's tool call SEQUENTIALLY** — do not send type and click in parallel. Wait for each to complete.
-11. **On retry, navigate to a fresh page** — don't try to re-fill existing fields that may have stale content.
-
-### Notes
-
-- Browser runs headless (no visible window) inside the Docker container
-- Screenshots are served at `/__openclaw__/canvas/<filename>` for display
-- Default viewport: 1280x800
-- Chromium is auto-installed on container restart
-
-
----
-
-## Model Restrictions — READ THIS BEFORE CHANGING MODELS
-
-**You are NOT allowed to change your primary model. Your primary model is `zai/glm-5` — this is set by the boss and must stay.**
-
-For heartbeat/background tasks, you may ONLY use `openai/gpt-4o-mini`. Do NOT use `openai/gpt-4o` — the API key does not have access to it and it will break everything.
-
-**Allowed models:**
-- `zai/glm-5` — primary (DO NOT CHANGE)
-- `openai/gpt-4o-mini` — heartbeat/subagent tasks only
-
-**Forbidden models (will cause errors):**
-- `openai/gpt-4o` — NO ACCESS
-- Any anthropic model — NO API KEY
-- Any model not listed above
-
-If the boss asks you to change models, confirm with them first before applying. Never change your own model on your own initiative.

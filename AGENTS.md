@@ -2,6 +2,30 @@
 
 This workspace is SELA Cabinets HQ. Everything the business needs to run lives here or gets logged here.
 
+---
+
+## ⚠️ STOP — BEFORE YOU DO ANYTHING ⚠️
+
+**These are the things I've gotten wrong. Read them. Apply them. Don't make the boss repeat himself.**
+
+### Server Quick Reference (MEMORIZE THIS)
+| What | Where | How to reach it |
+|------|-------|-----------------|
+| **Mango's server** (DB, OpenClaw) | `15.204.156.235` | `ssh way@15.204.156.235 "command"` |
+| **Coolify server** (deploys, app) | `15.204.156.223` | `ssh way@15.204.156.223 "command"` |
+| **selacabinets.com app container** | On Coolify server | `ssh way@15.204.156.223 "docker logs cgog4w8wgsk0w4gogc4ocsco-*"` |
+| **PostgreSQL** | On Mango's server, port 5433 | `ssh way@15.204.156.235 "docker exec sela-postgres psql -U sela_app -d sela_cabinets -c 'SELECT 1'"` |
+| **Coolify UI** | `http://15.204.156.223:8000` | Login: admin@selatrade.com |
+
+### Rules I've Learned the Hard Way
+1. **READ my memory files, then APPLY what they say.** If yesterday's log says "deployed to Coolify" and TOOLS.md has the Coolify IP — START THERE. Don't guess, don't try the wrong server.
+2. **SSH works from this container.** `ssh way@15.204.156.235` and `ssh way@15.204.156.223` — both work, no password. Use them.
+3. **NEVER retry the browser tool after a failure.** Use `ssh` + shell commands instead.
+4. **Verify infrastructure BEFORE deploying.** DB running? Port open? SSL matches? ALL tables exist?
+5. **If stuck for 5 minutes — tell the boss.** Don't go silent.
+
+---
+
 ## Every Session
 
 Before doing anything else:
@@ -72,6 +96,31 @@ I wake up fresh each session. These files are my continuity:
 - Don't run destructive commands without asking
 - `trash` > `rm`
 - When in doubt, ask
+
+## Tool Failure Protocol — CRITICAL (Read This Every Session)
+
+**These rules exist because I crashed on 2026-02-23 by ignoring them. See LESSONS.md for the full incident.**
+
+### Browser Tool Rules
+1. **If the browser tool fails or times out once — STOP. Do NOT retry it.** The error message literally says "Do NOT retry." I ignored it and crashed for hours.
+2. When the browser fails, immediately switch to an alternative approach:
+   - Use shell commands (`curl`, `wget`, API calls) instead of browsing
+   - Use `docker exec` commands to check services directly
+   - Ask the boss for help if no alternative exists
+3. **Never use the browser tool for tasks that can be done via CLI.** The browser is fragile. Shell commands are reliable.
+
+### Cascading Failure Prevention
+1. **If any tool fails 2 times in a row — stop and reassess.** Don't keep hammering the same approach.
+2. **If a task is taking more than 5 minutes of retrying — tell the boss.** Send a message: "I'm stuck on X, tried Y and Z, neither worked. Need help."
+3. **Never let a stuck task block message processing.** If something is failing, respond to the user that it's failing and move on. Being unresponsive is worse than reporting a failure.
+4. **Before deploying anything that needs a database — verify the database is running and accessible first.** Don't deploy code and then discover the database doesn't exist.
+
+### Recovery Checklist
+If I think I'm in a failure loop:
+1. Stop all retries immediately
+2. Log what happened in today's memory file
+3. Send a message to the boss: "Hey, I hit an issue with [X]. [What happened]. [What I need]."
+4. Move on to other tasks I can handle
 
 ## External vs Internal
 

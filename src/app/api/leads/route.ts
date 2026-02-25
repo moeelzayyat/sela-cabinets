@@ -63,30 +63,32 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { status, notes, timeline, style_preference } = body
+    
+    // Support all new fields from Phase 1.2
+    const allowedFields = [
+      'status', 'notes', 'timeline', 'style_preference',
+      'budget', 'project_type', 'room_size', 'cabinet_line',
+      'referral_source', 'priority', 'next_follow_up', 'assigned_to'
+    ]
 
     const client = await pool.connect()
     try {
+      // Get old values for activity logging
+      const oldLead = await client.query('SELECT * FROM leads WHERE id = $1', [parseInt(id)])
+      if (oldLead.rows.length === 0) {
+        return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+      }
+
       // Build dynamic update query
       const updates: string[] = []
       const values: any[] = []
       let paramCount = 1
 
-      if (status) {
-        updates.push(`status = $${paramCount++}`)
-        values.push(status)
-      }
-      if (notes !== undefined) {
-        updates.push(`notes = $${paramCount++}`)
-        values.push(notes)
-      }
-      if (timeline !== undefined) {
-        updates.push(`timeline = $${paramCount++}`)
-        values.push(timeline)
-      }
-      if (style_preference !== undefined) {
-        updates.push(`style_preference = $${paramCount++}`)
-        values.push(style_preference)
+      for (const field of allowedFields) {
+        if (body[field] !== undefined) {
+          updates.push(`${field} = $${paramCount++}`)
+          values.push(body[field])
+        }
       }
 
       if (updates.length === 0) {
@@ -99,8 +101,22 @@ export async function PATCH(request: NextRequest) {
       const query = `UPDATE leads SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING *`
       const result = await client.query(query, values)
 
-      if (result.rows.length === 0) {
-        return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+      // Log activity for status changes
+      if (body.status && body.status !== oldLead.rows[0].status) {
+        await client.query(
+          `INSERT INTO lead_activities (lead_id, activity_type, description, old_value, new_value)
+           VALUES ($1, 'status_change', $2, $3, $4)`,
+          [parseInt(id), `Status changed to ${body.status}`, oldLead.rows[0].status, body.status]
+        )
+      }
+
+      // Log activity for other significant changes
+      if (body.notes !== undefined && body.notes !== oldLead.rows[0].notes && body.notes) {
+        await client.query(
+          `INSERT INTO lead_activities (lead_id, activity_type, description)
+           VALUES ($1, 'note_added', 'Note added')`,
+          [parseInt(id)]
+        )
       }
 
       return NextResponse.json({ success: true, lead: result.rows[0] })

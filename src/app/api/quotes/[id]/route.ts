@@ -83,6 +83,40 @@ export async function PUT(
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
       }
 
+      const oldQuote = existingQuote.rows[0]
+
+      // Get existing items for version history
+      const existingItems = await client.query(
+        'SELECT * FROM quote_items WHERE quote_id = $1 ORDER BY section, sort_order',
+        [parseInt(params.id)]
+      )
+
+      // Get next version number
+      const versionResult = await client.query(
+        'SELECT COALESCE(MAX(version_number), 0) + 1 as next_version FROM quote_versions WHERE quote_id = $1',
+        [parseInt(params.id)]
+      )
+      const nextVersion = versionResult.rows[0].next_version
+
+      // Save current version before updating (only if items or totals are changing)
+      if (items && items.length > 0) {
+        await client.query(`
+          INSERT INTO quote_versions (quote_id, version_number, subtotal, tax_rate, tax_amount, discount_percent, discount_amount, total, items, created_by, notes)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Way', $10)
+        `, [
+          parseInt(params.id),
+          nextVersion,
+          oldQuote.subtotal,
+          oldQuote.tax_rate,
+          oldQuote.tax_amount,
+          oldQuote.discount_percent,
+          oldQuote.discount_amount,
+          oldQuote.total,
+          JSON.stringify(existingItems.rows),
+          `Auto-saved before update (v${nextVersion})`
+        ])
+      }
+
       // If items provided, recalculate totals
       let subtotal = existingQuote.rows[0].subtotal
       let taxAmount = existingQuote.rows[0].tax_amount

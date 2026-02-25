@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { 
   Plus, Search, Filter, FileText, Eye, Send, Download, MoreHorizontal,
   X, RefreshCw, ChevronLeft, ChevronRight, DollarSign, Calendar, User
@@ -203,7 +204,9 @@ export default function QuotesPage() {
                 quotes.map((quote) => (
                   <tr key={quote.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
-                      <span className="font-mono text-sm font-medium text-slate-900">{quote.quote_number}</span>
+                      <Link href={`/admin/quotes/${quote.id}`} className="font-mono text-sm font-medium text-slate-900 hover:text-amber-600">
+                        {quote.quote_number}
+                      </Link>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -232,13 +235,39 @@ export default function QuotesPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors" title="View">
+                        <Link 
+                          href={`/admin/quotes/${quote.id}`}
+                          className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors" 
+                          title="View"
+                        >
                           <Eye className="w-4 h-4" />
-                        </button>
+                        </Link>
                         <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Send">
                           <Send className="w-4 h-4" />
                         </button>
-                        <button className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" title="Download PDF">
+                        <button 
+                          onClick={async (e) => {
+                            e.preventDefault()
+                            try {
+                              const response = await fetch(`/api/quotes/${quote.id}/pdf`, {
+                                headers: { 'Authorization': `Bearer ${API_KEY}` }
+                              })
+                              if (response.ok) {
+                                const blob = await response.blob()
+                                const url = window.URL.createObjectURL(blob)
+                                const a = document.createElement('a')
+                                a.href = url
+                                a.download = `${quote.quote_number}.pdf`
+                                a.click()
+                                window.URL.revokeObjectURL(url)
+                              }
+                            } catch (err) {
+                              console.error('Failed to download PDF:', err)
+                            }
+                          }}
+                          className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" 
+                          title="Download PDF"
+                        >
                           <Download className="w-4 h-4" />
                         </button>
                       </div>

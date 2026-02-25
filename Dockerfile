@@ -18,6 +18,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN npm run build
 
+# Copy pdfkit font files to the standalone build location
+RUN mkdir -p /app/.next/server/chunks/data && \
+    cp /app/node_modules/pdfkit/js/data/* /app/.next/server/chunks/data/ 2>/dev/null || true
+
 # Create non-root user
 RUN groupadd --system --gid 1001 nodejs && \
     useradd --system --uid 1001 nextjs

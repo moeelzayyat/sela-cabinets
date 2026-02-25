@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
-import PDFDocument from 'pdfkit'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -37,10 +36,15 @@ export async function GET(
       const quote = quoteResult.rows[0]
       const items = itemsResult.rows
 
-      // Generate PDF using PDFKit
-      const doc = new PDFDocument({ size: 'A4', margin: 50 })
+      // Generate PDF using dynamic import of pdfkit
+      const PDFDocument = (await import('pdfkit')).default
+      const doc = new PDFDocument({ 
+        size: 'A4', 
+        margin: 50,
+        bufferPages: true
+      })
+      
       const chunks: Buffer[] = []
-
       doc.on('data', (chunk) => chunks.push(chunk))
 
       const pdfPromise = new Promise<Buffer>((resolve) => {
@@ -59,6 +63,9 @@ export async function GET(
         })
       }
 
+      // Register fonts - use built-in fonts
+      doc.registerFont('Helvetica', 'Helvetica')
+      
       // Header
       doc.fontSize(24).fillColor('#F59E0B').text('SELA Cabinets', 50, 50)
       doc.fontSize(10).fillColor('#64748B')
@@ -71,7 +78,6 @@ export async function GET(
         .text('selacabinets.com', 400, 74)
 
       // Quote title
-      doc.moveDown(3)
       doc.fontSize(28).fillColor('#F59E0B').text('QUOTE', 50, 130)
       doc.fontSize(12).fillColor('#334155')
         .text(quote.quote_number, 50, 165)
@@ -80,12 +86,9 @@ export async function GET(
         doc.text(`Valid Until: ${formatDate(quote.valid_until)}`, 50, 195)
       }
 
-      // Status badge
-      const statusColors: Record<string, string> = {
-        draft: '#64748B', sent: '#2563EB', accepted: '#059669', declined: '#DC2626'
-      }
-      doc.fontSize(10).fillColor(statusColors[quote.status] || '#64748B')
-        .text(quote.status.toUpperCase(), 450, 165)
+      // Status
+      doc.fontSize(10).fillColor('#64748B')
+        .text(`Status: ${quote.status.toUpperCase()}`, 450, 165)
 
       // Customer info
       doc.moveDown(3)
@@ -203,7 +206,8 @@ export async function GET(
 
       // Footer
       doc.fontSize(8).fillColor('#94A3B8')
-        .text('Thank you for choosing SELA Cabinets! • (313) 246-7903 • selacabinets.com', 50, 780, { align: 'center', width: 495 })
+        .text('Thank you for choosing SELA Cabinets!', 50, 780, { align: 'center', width: 495 })
+        .text('(313) 246-7903 | selacabinets.com', 50, 792, { align: 'center', width: 495 })
 
       doc.end()
 

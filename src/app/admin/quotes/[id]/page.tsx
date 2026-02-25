@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   ArrowLeft, Download, Send, Edit, Trash2, Copy, Check, 
   FileText, User, MapPin, Mail, Phone, Calendar, Clock,
@@ -28,8 +28,8 @@ const sectionLabels: Record<string, string> = {
 
 const API_KEY = 'sela-admin-2026'
 
-export default function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params)
+export default function QuoteDetailPage({ params }: { params: { id: string } }) {
+  const quoteId = params.id
   const [quote, setQuote] = useState<any>(null)
   const [items, setItems] = useState<any[]>([])
   const [versions, setVersions] = useState<any[]>([])
@@ -46,13 +46,13 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   useEffect(() => {
     fetchQuote()
     fetchVersions()
-  }, [resolvedParams.id])
+  }, [quoteId])
 
   const fetchQuote = async () => {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch(`/api/quotes/${resolvedParams.id}`, {
+      const response = await fetch(`/api/quotes/${quoteId}`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       })
       if (!response.ok) throw new Error('Failed to fetch quote')
@@ -68,7 +68,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
 
   const fetchVersions = async () => {
     try {
-      const response = await fetch(`/api/quotes/${resolvedParams.id}/versions`, {
+      const response = await fetch(`/api/quotes/${quoteId}/versions`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       })
       if (response.ok) {
@@ -83,7 +83,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   const downloadPdf = async () => {
     setDownloadingPdf(true)
     try {
-      const response = await fetch(`/api/quotes/${resolvedParams.id}/pdf`, {
+      const response = await fetch(`/api/quotes/${quoteId}/pdf`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       })
       if (!response.ok) throw new Error('Failed to generate PDF')
@@ -107,7 +107,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   const updateStatus = async (newStatus: string) => {
     setUpdatingStatus(true)
     try {
-      const response = await fetch(`/api/quotes/${resolvedParams.id}`, {
+      const response = await fetch(`/api/quotes/${quoteId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${API_KEY}`,
@@ -132,7 +132,7 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
     setSendingEmail(true)
     setError(null)
     try {
-      const response = await fetch(`/api/quotes/${resolvedParams.id}/email`, {
+      const response = await fetch(`/api/quotes/${quoteId}/email`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${API_KEY}`,

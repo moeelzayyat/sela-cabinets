@@ -14,14 +14,15 @@ import {
   Save,
   Check,
   Edit3,
-  FileText,
+  MessageSquare,
   Clock,
-  MessageCircle,
   Flame,
-  AlertTriangle,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink
+  FileText,
+  ChevronRight,
+  Briefcase,
+  Home,
+  Building,
+  Loader2
 } from 'lucide-react'
 
 // Pipeline stages
@@ -36,38 +37,38 @@ const stages = [
   { id: 'complete', label: 'Complete', color: 'bg-emerald-500' },
 ]
 
-// Budget options
-const budgetOptions = ['Under $5k', '$5k–$10k', '$10k–$20k', '$20k+', 'Unknown']
-
-// Project types
-const projectTypes = ['Kitchen', 'Bathroom', 'Laundry', 'Office', 'Other']
-
-// Referral sources
-const referralSources = ['Google Search', 'Google Maps', 'Instagram', 'Facebook', 'Referral', 'Website', 'Walk-in', 'Other']
-
-// Priority levels
-const priorities = [
-  { id: 'hot', label: 'Hot', emoji: '🔥', color: 'text-red-500' },
-  { id: 'warm', label: 'Warm', emoji: '🟡', color: 'text-amber-500' },
-  { id: 'cold', label: 'Cold', emoji: '🔵', color: 'text-blue-500' },
+const budgetOptions = [
+  { value: '', label: 'Not specified' },
+  { value: 'under_5k', label: 'Under $5,000' },
+  { value: '5k_10k', label: '$5,000 - $10,000' },
+  { value: '10k_20k', label: '$10,000 - $20,000' },
+  { value: '20k_plus', label: '$20,000+' },
 ]
 
-interface Activity {
-  id: number
-  activity_type: string
-  description: string
-  old_value: string
-  new_value: string
-  created_by: string
-  created_at: string
-}
+const projectTypes = [
+  { value: 'kitchen', label: 'Kitchen' },
+  { value: 'bathroom', label: 'Bathroom' },
+  { value: 'laundry', label: 'Laundry' },
+  { value: 'office', label: 'Office' },
+  { value: 'other', label: 'Other' },
+]
 
-interface Quote {
-  id: number
-  quote_number: string
-  total: number
-  status: string
-  created_at: string
+const referralSources = [
+  { value: '', label: 'Not specified' },
+  { value: 'google_search', label: 'Google Search' },
+  { value: 'google_maps', label: 'Google Maps' },
+  { value: 'instagram', label: 'Instagram' },
+  { value: 'facebook', label: 'Facebook' },
+  { value: 'referral', label: 'Referral' },
+  { value: 'website', label: 'Website' },
+  { value: 'walk_in', label: 'Walk-in' },
+  { value: 'other', label: 'Other' },
+]
+
+const priorityConfig: Record<string, { label: string; emoji: string; bg: string; text: string }> = {
+  hot: { label: 'Hot', emoji: '🔥', bg: 'bg-red-100', text: 'text-red-700' },
+  warm: { label: 'Warm', emoji: '🟡', bg: 'bg-amber-100', text: 'text-amber-700' },
+  cold: { label: 'Cold', emoji: '🔵', bg: 'bg-blue-100', text: 'text-blue-700' },
 }
 
 interface Lead {
@@ -95,6 +96,25 @@ interface Lead {
   updated_at: string
 }
 
+interface Activity {
+  id: number
+  lead_id: number
+  activity_type: string
+  description?: string
+  old_value?: string
+  new_value?: string
+  created_by: string
+  created_at: string
+}
+
+interface LinkedQuote {
+  id: number
+  quote_number: string
+  total: number
+  status: string
+  created_at: string
+}
+
 export default function LeadsKanban() {
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
@@ -102,26 +122,24 @@ export default function LeadsKanban() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [draggedLead, setDraggedLead] = useState<number | null>(null)
   const [updating, setUpdating] = useState(false)
-  
-  // Edit state
   const [notes, setNotes] = useState('')
   const [savingNotes, setSavingNotes] = useState(false)
   const [notesSaved, setNotesSaved] = useState(false)
-  
-  // Additional fields
-  const [budget, setBudget] = useState('')
-  const [projectType, setProjectType] = useState<string[]>([])
-  const [roomSize, setRoomSize] = useState<number | undefined>()
-  const [cabinetLine, setCabinetLine] = useState('')
-  const [referralSource, setReferralSource] = useState('')
-  const [priority, setPriority] = useState('warm')
-  const [nextFollowUp, setNextFollowUp] = useState('')
-  const [savingFields, setSavingFields] = useState(false)
-  
-  // Activity timeline
   const [activities, setActivities] = useState<Activity[]>([])
-  const [linkedQuotes, setLinkedQuotes] = useState<Quote[]>([])
-  const [showActivities, setShowActivities] = useState(true)
+  const [linkedQuotes, setLinkedQuotes] = useState<LinkedQuote[]>([])
+  const [loadingActivities, setLoadingActivities] = useState(false)
+  const [showQuoteBuilder, setShowQuoteBuilder] = useState(false)
+
+  // Editable fields
+  const [editingField, setEditingField] = useState<string | null>(null)
+  const [editBudget, setEditBudget] = useState('')
+  const [editPriority, setEditPriority] = useState('')
+  const [editProjectType, setEditProjectType] = useState<string[]>([])
+  const [editRoomSize, setEditRoomSize] = useState('')
+  const [editCabinetLine, setCabinetLine] = useState('')
+  const [editReferralSource, setEditReferralSource] = useState('')
+  const [editNextFollowUp, setEditNextFollowUp] = useState('')
+  const [editAssignedTo, setEditAssignedTo] = useState('')
 
   const API_KEY = 'sela-admin-2026'
 
@@ -142,56 +160,53 @@ export default function LeadsKanban() {
     }
   }
 
+  const fetchLeadDetails = async (leadId: number) => {
+    setLoadingActivities(true)
+    try {
+      // Fetch activities
+      const activitiesRes = await fetch(`/api/leads/${leadId}/activities`, {
+        headers: { 'Authorization': `Bearer ${API_KEY}` }
+      })
+      if (activitiesRes.ok) {
+        const data = await activitiesRes.json()
+        setActivities(data.activities || [])
+      }
+
+      // Fetch linked quotes
+      const quotesRes = await fetch(`/api/quotes?lead_id=${leadId}`, {
+        headers: { 'Authorization': `Bearer ${API_KEY}` }
+      })
+      if (quotesRes.ok) {
+        const data = await quotesRes.json()
+        setLinkedQuotes(data.quotes || [])
+      }
+    } catch (err) {
+      console.error('Error fetching lead details:', err)
+    } finally {
+      setLoadingActivities(false)
+    }
+  }
+
   useEffect(() => {
     fetchLeads()
   }, [])
 
-  // Load additional data when lead is selected
+  // Fetch details when lead selected
   useEffect(() => {
     if (selectedLead) {
       setNotes(selectedLead.notes || '')
       setNotesSaved(false)
-      setBudget(selectedLead.budget || '')
-      setProjectType(selectedLead.project_type || [])
-      setRoomSize(selectedLead.room_size)
+      setEditBudget(selectedLead.budget || '')
+      setEditPriority(selectedLead.priority || 'warm')
+      setEditProjectType(selectedLead.project_type || [])
+      setEditRoomSize(selectedLead.room_size?.toString() || '')
       setCabinetLine(selectedLead.cabinet_line || '')
-      setReferralSource(selectedLead.referral_source || '')
-      setPriority(selectedLead.priority || 'warm')
-      setNextFollowUp(selectedLead.next_follow_up?.split('T')[0] || '')
-      
-      // Fetch activities and quotes
-      fetchActivities(selectedLead.id)
-      fetchLinkedQuotes(selectedLead.id)
+      setEditReferralSource(selectedLead.referral_source || '')
+      setEditNextFollowUp(selectedLead.next_follow_up?.split('T')[0] || '')
+      setEditAssignedTo(selectedLead.assigned_to || 'Way')
+      fetchLeadDetails(selectedLead.id)
     }
-  }, [selectedLead?.id])
-
-  const fetchActivities = async (leadId: number) => {
-    try {
-      const response = await fetch(`/api/leads/activities?lead_id=${leadId}`, {
-        headers: { 'Authorization': `Bearer ${API_KEY}` }
-      })
-      if (response.ok) {
-        const data = await response.json()
-        setActivities(data.activities || [])
-      }
-    } catch (err) {
-      console.error('Failed to fetch activities:', err)
-    }
-  }
-
-  const fetchLinkedQuotes = async (leadId: number) => {
-    try {
-      const response = await fetch(`/api/quotes?lead_id=${leadId}`, {
-        headers: { 'Authorization': `Bearer ${API_KEY}` }
-      })
-      if (response.ok) {
-        const data = await response.json()
-        setLinkedQuotes(data.quotes || [])
-      }
-    } catch (err) {
-      console.error('Failed to fetch quotes:', err)
-    }
-  }
+  }, [selectedLead])
 
   const getLeadsByStage = (stageId: string) => {
     return leads.filter(lead => lead.status === stageId)
@@ -259,9 +274,6 @@ export default function LeadsKanban() {
       setSelectedLead({ ...selectedLead, notes })
       setNotesSaved(true)
       setTimeout(() => setNotesSaved(false), 2000)
-      
-      // Log activity
-      fetchActivities(selectedLead.id)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save notes')
     } finally {
@@ -269,10 +281,9 @@ export default function LeadsKanban() {
     }
   }
 
-  const handleSaveFields = async () => {
+  const handleUpdateField = async (field: string, value: any) => {
     if (!selectedLead) return
-    
-    setSavingFields(true)
+
     try {
       const response = await fetch(`/api/leads?id=${selectedLead.id}`, {
         method: 'PATCH',
@@ -280,42 +291,25 @@ export default function LeadsKanban() {
           'Authorization': `Bearer ${API_KEY}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          budget,
-          project_type: projectType,
-          room_size: roomSize,
-          cabinet_line: cabinetLine,
-          referral_source: referralSource,
-          priority,
-          next_follow_up: nextFollowUp || null
-        })
+        body: JSON.stringify({ [field]: value })
       })
       
-      if (!response.ok) throw new Error('Failed to save')
+      if (!response.ok) throw new Error('Failed to update')
       
       setLeads(leads.map(lead => 
         lead.id === selectedLead.id 
-          ? { ...lead, budget, project_type: projectType, room_size: roomSize, cabinet_line: cabinetLine, referral_source: referralSource, priority, next_follow_up: nextFollowUp }
+          ? { ...lead, [field]: value }
           : lead
       ))
       
-      setSelectedLead({ ...selectedLead, budget, project_type: projectType, room_size: roomSize, cabinet_line: cabinetLine, referral_source: referralSource, priority, next_follow_up: nextFollowUp })
-      
-      // Refresh activities
-      fetchActivities(selectedLead.id)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save')
-    } finally {
-      setSavingFields(false)
-    }
-  }
+      setSelectedLead({ ...selectedLead, [field]: value })
+      setEditingField(null)
 
-  const toggleProjectType = (type: string) => {
-    setProjectType(prev => 
-      prev.includes(type) 
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
-    )
+      // Refresh activities
+      fetchLeadDetails(selectedLead.id)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update')
+    }
   }
 
   const formatDate = (dateString: string) => {
@@ -326,16 +320,22 @@ export default function LeadsKanban() {
     })
   }
 
+  const formatDateTime = (dateString: string) => {
+    return new Date(dateString).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    })
+  }
+
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount)
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
   }
 
   const getSourceBadge = (source: string) => {
     const colors: Record<string, string> = {
-      estimate: 'bg-orange-100 text-orange-700',
+      estimate: 'bg-amber-100 text-amber-700',
       booking: 'bg-blue-100 text-blue-700',
       contact: 'bg-purple-100 text-purple-700',
       chatbot: 'bg-green-100 text-green-700',
@@ -350,12 +350,19 @@ export default function LeadsKanban() {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'status_change': return '↻'
-      case 'note_added': return '📝'
-      case 'quote_created': return '📄'
-      case 'call_logged': return '📞'
-      case 'email_sent': return '✉️'
-      default: return '•'
+      case 'status_change': return <ChevronRight className="w-4 h-4 text-blue-500" />
+      case 'note_added': return <Edit3 className="w-4 h-4 text-purple-500" />
+      case 'quote_created': return <FileText className="w-4 h-4 text-amber-500" />
+      case 'quote_sent': return <Mail className="w-4 h-4 text-green-500" />
+      default: return <Clock className="w-4 h-4 text-slate-400" />
+    }
+  }
+
+  const toggleProjectType = (type: string) => {
+    if (editProjectType.includes(type)) {
+      setEditProjectType(editProjectType.filter(t => t !== type))
+    } else {
+      setEditProjectType([...editProjectType, type])
     }
   }
 
@@ -390,8 +397,9 @@ export default function LeadsKanban() {
             className="flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
           </button>
-          <button className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/20">
+          <button className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-lg font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/20">
             <Plus className="w-5 h-5" />
             Add Lead
           </button>
@@ -418,6 +426,7 @@ export default function LeadsKanban() {
               onDragOver={handleDragOver}
               onDrop={() => handleDrop(stage.id)}
             >
+              {/* Column Header */}
               <div className="p-4 border-b border-slate-200 bg-white rounded-t-xl">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -430,6 +439,7 @@ export default function LeadsKanban() {
                 </div>
               </div>
 
+              {/* Cards */}
               <div className="flex-1 p-3 space-y-3 overflow-y-auto">
                 {getLeadsByStage(stage.id).map((lead) => (
                   <div
@@ -437,26 +447,26 @@ export default function LeadsKanban() {
                     draggable={!updating}
                     onDragStart={() => handleDragStart(lead.id)}
                     onClick={() => setSelectedLead(lead)}
-                    className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-md hover:border-orange-300 transition-all group"
+                    className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-md hover:border-amber-300 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-sm font-bold text-slate-900">
-                          {lead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                        <div className="relative">
+                          <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-sm font-bold text-slate-900">
+                            {lead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                          </div>
+                          {lead.priority === 'hot' && (
+                            <span className="absolute -top-1 -right-1 text-xs">🔥</span>
+                          )}
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 group-hover:text-orange-600 transition-colors">
+                          <p className="font-medium text-slate-900 group-hover:text-amber-600 transition-colors">
                             {lead.name}
                           </p>
                           <p className="text-xs text-slate-400">{formatDate(lead.created_at)}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        {lead.priority === 'hot' && (
-                          <Flame className="w-4 h-4 text-red-500" />
-                        )}
-                        <GripVertical className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
+                      <GripVertical className="w-4 h-4 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
 
                     <div className="space-y-2 text-sm text-slate-500">
@@ -467,15 +477,21 @@ export default function LeadsKanban() {
                         </div>
                       )}
                       <div className="flex items-center gap-2 flex-wrap">
-                        {lead.timeline && (
-                          <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
-                            {lead.timeline}
+                        {lead.budget && (
+                          <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
+                            {budgetOptions.find(b => b.value === lead.budget)?.label || lead.budget}
                           </span>
                         )}
                         <span className={`text-xs px-2 py-0.5 rounded-full ${getSourceBadge(lead.source)}`}>
                           {lead.source}
                         </span>
                       </div>
+                      {lead.next_follow_up && new Date(lead.next_follow_up) > new Date() && (
+                        <div className="flex items-center gap-2 text-amber-600">
+                          <Clock className="w-3 h-3" />
+                          <span className="text-xs">Follow-up: {formatDate(lead.next_follow_up)}</span>
+                        </div>
+                      )}
                       {lead.notes && (
                         <p className="text-xs text-slate-400 truncate mt-2">
                           📝 {lead.notes.substring(0, 40)}{lead.notes.length > 40 ? '...' : ''}
@@ -496,19 +512,41 @@ export default function LeadsKanban() {
         </div>
       </div>
 
-      {/* Lead Detail Slide-out - Enhanced */}
+      {/* Lead Detail Slide-out */}
       {selectedLead && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div 
             className="absolute inset-0 bg-black/20 backdrop-blur-sm"
-            onClick={() => setSelectedLead(null)}
+            onClick={() => {
+              setSelectedLead(null)
+              setShowQuoteBuilder(false)
+            }}
           />
           <div className="relative w-full max-w-lg bg-white shadow-2xl overflow-y-auto">
             {/* Header */}
             <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between z-10">
-              <h2 className="text-lg font-semibold text-slate-900">Lead Details</h2>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-lg font-bold text-slate-900">
+                  {selectedLead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900">{selectedLead.name}</h2>
+                  <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 ${getStatusColor(selectedLead.status)} rounded-full`} />
+                    <p className="text-sm text-slate-500 capitalize">{selectedLead.status}</p>
+                    {selectedLead.priority && (
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${priorityConfig[selectedLead.priority]?.bg} ${priorityConfig[selectedLead.priority]?.text}`}>
+                        {priorityConfig[selectedLead.priority]?.emoji} {priorityConfig[selectedLead.priority]?.label}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
               <button 
-                onClick={() => setSelectedLead(null)}
+                onClick={() => {
+                  setSelectedLead(null)
+                  setShowQuoteBuilder(false)
+                }}
                 className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-slate-500" />
@@ -517,189 +555,283 @@ export default function LeadsKanban() {
 
             {/* Content */}
             <div className="p-6 space-y-6">
-              {/* Profile + Priority */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center text-2xl font-bold text-slate-900">
-                    {selectedLead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-900">{selectedLead.name}</h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className={`w-2 h-2 ${getStatusColor(selectedLead.status)} rounded-full`} />
-                      <p className="text-slate-500 capitalize">{selectedLead.status}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Priority Toggle */}
-                <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1">
-                  {priorities.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => setPriority(p.id)}
-                      className={`px-2 py-1 rounded text-sm transition-colors ${
-                        priority === p.id 
-                          ? 'bg-white shadow-sm font-medium' 
-                          : 'hover:bg-slate-50'
-                      }`}
-                      title={p.label}
-                    >
-                      {p.emoji}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Quick Actions */}
-              <div className="flex gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 <a 
                   href={`tel:${selectedLead.phone}`}
-                  className="flex-1 flex items-center justify-center gap-2 bg-emerald-100 text-emerald-700 py-3 rounded-xl font-medium hover:bg-emerald-200 transition-colors"
+                  className="flex flex-col items-center gap-1 bg-emerald-50 text-emerald-700 py-3 rounded-xl font-medium hover:bg-emerald-100 transition-colors"
                 >
                   <Phone className="w-5 h-5" />
-                  Call
+                  <span className="text-xs">Call</span>
                 </a>
                 <a 
                   href={`mailto:${selectedLead.email}`}
-                  className="flex-1 flex items-center justify-center gap-2 bg-blue-100 text-blue-700 py-3 rounded-xl font-medium hover:bg-blue-200 transition-colors"
+                  className="flex flex-col items-center gap-1 bg-blue-50 text-blue-700 py-3 rounded-xl font-medium hover:bg-blue-100 transition-colors"
                 >
                   <Mail className="w-5 h-5" />
-                  Email
+                  <span className="text-xs">Email</span>
                 </a>
-                <button className="flex-1 flex items-center justify-center gap-2 bg-purple-100 text-purple-700 py-3 rounded-xl font-medium hover:bg-purple-200 transition-colors">
+                <button className="flex flex-col items-center gap-1 bg-purple-50 text-purple-700 py-3 rounded-xl font-medium hover:bg-purple-100 transition-colors">
+                  <MessageSquare className="w-5 h-5" />
+                  <span className="text-xs">SMS</span>
+                </button>
+                <button className="flex flex-col items-center gap-1 bg-cyan-50 text-cyan-700 py-3 rounded-xl font-medium hover:bg-cyan-100 transition-colors">
                   <Calendar className="w-5 h-5" />
-                  Schedule
+                  <span className="text-xs">Schedule</span>
+                </button>
+                <button 
+                  onClick={() => setShowQuoteBuilder(true)}
+                  className="flex flex-col items-center gap-1 bg-amber-50 text-amber-700 py-3 rounded-xl font-medium hover:bg-amber-100 transition-colors"
+                >
+                  <FileText className="w-5 h-5" />
+                  <span className="text-xs">Quote</span>
                 </button>
               </div>
 
               {/* Contact Info */}
-              <div className="bg-slate-50 rounded-xl p-4">
-                <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Contact Info</h4>
+              <div className="bg-slate-50 rounded-xl p-4 space-y-3">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact Info</h3>
                 <div className="space-y-2 text-sm">
-                  <p className="text-slate-700">{selectedLead.phone}</p>
-                  <p className="text-slate-700">{selectedLead.email}</p>
+                  <p className="flex items-center gap-2 text-slate-700">
+                    <Phone className="w-4 h-4 text-slate-400" />
+                    {selectedLead.phone}
+                  </p>
+                  <p className="flex items-center gap-2 text-slate-700">
+                    <Mail className="w-4 h-4 text-slate-400" />
+                    {selectedLead.email}
+                  </p>
                   {(selectedLead.address || selectedLead.city) && (
-                    <p className="text-slate-700">
-                      {[selectedLead.address, selectedLead.city, selectedLead.zip].filter(Boolean).join(', ')}
+                    <p className="flex items-start gap-2 text-slate-700">
+                      <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
+                      <span>{[selectedLead.address, selectedLead.city, selectedLead.zip].filter(Boolean).join(', ')}</span>
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Project Details */}
+              {/* Lead Details - New Fields */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider">Project Details</h4>
-                  <button
-                    onClick={handleSaveFields}
-                    disabled={savingFields}
-                    className="text-xs text-orange-600 hover:text-orange-700 font-medium disabled:opacity-50"
-                  >
-                    {savingFields ? 'Saving...' : 'Save Changes'}
-                  </button>
-                </div>
-
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Lead Details</h3>
+                
                 <div className="grid grid-cols-2 gap-4">
                   {/* Budget */}
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Budget</label>
-                    <select
-                      value={budget}
-                      onChange={(e) => setBudget(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                    >
-                      <option value="">Select...</option>
-                      {budgetOptions.map(opt => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
+                    {editingField === 'budget' ? (
+                      <select
+                        value={editBudget}
+                        onChange={(e) => setEditBudget(e.target.value)}
+                        onBlur={() => handleUpdateField('budget', editBudget)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      >
+                        {budgetOptions.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('budget')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
+                      >
+                        {budgetOptions.find(b => b.value === selectedLead.budget)?.label || 'Not specified'}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Priority */}
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Priority</label>
+                    {editingField === 'priority' ? (
+                      <select
+                        value={editPriority}
+                        onChange={(e) => {
+                          setEditPriority(e.target.value)
+                          handleUpdateField('priority', e.target.value)
+                        }}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      >
+                        <option value="hot">🔥 Hot</option>
+                        <option value="warm">🟡 Warm</option>
+                        <option value="cold">🔵 Cold</option>
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('priority')}
+                        className={`w-full text-left px-2 py-1.5 rounded-lg text-sm transition-colors ${priorityConfig[selectedLead.priority || 'warm']?.bg} ${priorityConfig[selectedLead.priority || 'warm']?.text}`}
+                      >
+                        {priorityConfig[selectedLead.priority || 'warm']?.emoji} {priorityConfig[selectedLead.priority || 'warm']?.label}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Project Type */}
+                  <div className="col-span-2">
+                    <label className="block text-xs text-slate-500 mb-1">Project Type</label>
+                    {editingField === 'project_type' ? (
+                      <div className="flex flex-wrap gap-2 bg-slate-50 p-2 rounded-lg">
+                        {projectTypes.map(type => (
+                          <button
+                            key={type.value}
+                            type="button"
+                            onClick={() => toggleProjectType(type.value)}
+                            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                              editProjectType.includes(type.value)
+                                ? 'bg-amber-500 text-white'
+                                : 'bg-white border border-slate-200 text-slate-600 hover:border-amber-300'
+                            }`}
+                          >
+                            {type.label}
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => handleUpdateField('project_type', editProjectType)}
+                          className="px-3 py-1 bg-emerald-500 text-white rounded-full text-xs font-medium"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('project_type')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
+                      >
+                        {selectedLead.project_type?.length 
+                          ? selectedLead.project_type.map(t => projectTypes.find(p => p.value === t)?.label || t).join(', ')
+                          : 'Not specified'}
+                      </button>
+                    )}
                   </div>
 
                   {/* Room Size */}
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Room Size (sq ft)</label>
-                    <input
-                      type="number"
-                      value={roomSize || ''}
-                      onChange={(e) => setRoomSize(parseInt(e.target.value) || undefined)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                      placeholder="e.g., 100"
-                    />
-                  </div>
-                </div>
-
-                {/* Project Type */}
-                <div>
-                  <label className="block text-xs text-slate-500 mb-2">Project Type</label>
-                  <div className="flex flex-wrap gap-2">
-                    {projectTypes.map(type => (
+                    {editingField === 'room_size' ? (
+                      <input
+                        type="number"
+                        value={editRoomSize}
+                        onChange={(e) => setEditRoomSize(e.target.value)}
+                        onBlur={() => handleUpdateField('room_size', editRoomSize ? parseInt(editRoomSize) : null)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      />
+                    ) : (
                       <button
-                        key={type}
-                        onClick={() => toggleProjectType(type)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                          projectType.includes(type)
-                            ? 'bg-orange-500 text-white'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                        }`}
+                        onClick={() => setEditingField('room_size')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
                       >
-                        {type}
+                        {selectedLead.room_size ? `${selectedLead.room_size} sq ft` : 'Not specified'}
                       </button>
-                    ))}
+                    )}
+                  </div>
+
+                  {/* Cabinet Line */}
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Cabinet Line</label>
+                    {editingField === 'cabinet_line' ? (
+                      <input
+                        type="text"
+                        value={editCabinetLine}
+                        onChange={(e) => setCabinetLine(e.target.value)}
+                        onBlur={() => handleUpdateField('cabinet_line', editCabinetLine)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      />
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('cabinet_line')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
+                      >
+                        {selectedLead.cabinet_line || 'Not specified'}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Referral Source */}
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Referral Source</label>
+                    {editingField === 'referral_source' ? (
+                      <select
+                        value={editReferralSource}
+                        onChange={(e) => setEditReferralSource(e.target.value)}
+                        onBlur={() => handleUpdateField('referral_source', editReferralSource)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      >
+                        {referralSources.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('referral_source')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
+                      >
+                        {referralSources.find(r => r.value === selectedLead.referral_source)?.label || 'Not specified'}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Assigned To */}
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Assigned To</label>
+                    {editingField === 'assigned_to' ? (
+                      <input
+                        type="text"
+                        value={editAssignedTo}
+                        onChange={(e) => setEditAssignedTo(e.target.value)}
+                        onBlur={() => handleUpdateField('assigned_to', editAssignedTo)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      />
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('assigned_to')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors"
+                      >
+                        {selectedLead.assigned_to || 'Way'}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Next Follow-up */}
+                  <div className="col-span-2">
+                    <label className="block text-xs text-slate-500 mb-1">Next Follow-up</label>
+                    {editingField === 'next_follow_up' ? (
+                      <input
+                        type="datetime-local"
+                        value={editNextFollowUp}
+                        onChange={(e) => setEditNextFollowUp(e.target.value)}
+                        onBlur={() => handleUpdateField('next_follow_up', editNextFollowUp || null)}
+                        className="w-full px-2 py-1.5 border border-amber-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500"
+                        autoFocus
+                      />
+                    ) : (
+                      <button
+                        onClick={() => setEditingField('next_follow_up')}
+                        className="w-full text-left px-2 py-1.5 bg-slate-50 rounded-lg text-sm hover:bg-slate-100 transition-colors flex items-center gap-2"
+                      >
+                        <Clock className="w-4 h-4 text-slate-400" />
+                        {selectedLead.next_follow_up ? formatDateTime(selectedLead.next_follow_up) : 'Not scheduled'}
+                      </button>
+                    )}
                   </div>
                 </div>
 
-                {/* Cabinet Line */}
-                <div>
-                  <label className="block text-xs text-slate-500 mb-1">Cabinet Line/Brand</label>
-                  <input
-                    type="text"
-                    value={cabinetLine}
-                    onChange={(e) => setCabinetLine(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                    placeholder="e.g., Shaker, Traditional"
-                  />
-                </div>
-
-                {/* Referral Source */}
-                <div>
-                  <label className="block text-xs text-slate-500 mb-1">Referral Source</label>
-                  <select
-                    value={referralSource}
-                    onChange={(e) => setReferralSource(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                  >
-                    <option value="">Select...</option>
-                    {referralSources.map(src => (
-                      <option key={src} value={src}>{src}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Next Follow-up */}
-                <div>
-                  <label className="block text-xs text-slate-500 mb-1">Next Follow-up</label>
-                  <input
-                    type="date"
-                    value={nextFollowUp}
-                    onChange={(e) => setNextFollowUp(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                  />
-                </div>
-
-                {/* Style Preference (existing) */}
+                {/* Style Preference */}
                 {selectedLead.style_preference && (
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Style Preference</label>
-                    <p className="text-slate-700">{selectedLead.style_preference}</p>
+                    <p className="text-sm text-slate-700 bg-slate-50 px-2 py-1.5 rounded-lg">{selectedLead.style_preference}</p>
                   </div>
                 )}
 
-                {/* Timeline (existing) */}
+                {/* Timeline */}
                 {selectedLead.timeline && (
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Timeline</label>
-                    <p className="text-slate-700">{selectedLead.timeline}</p>
+                    <p className="text-sm text-slate-700 bg-slate-50 px-2 py-1.5 rounded-lg">{selectedLead.timeline}</p>
                   </div>
                 )}
               </div>
@@ -707,7 +839,7 @@ export default function LeadsKanban() {
               {/* Notes */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Notes</label>
+                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Notes</label>
                   {notesSaved && (
                     <span className="text-xs text-emerald-600 flex items-center gap-1">
                       <Check className="w-3 h-3" />
@@ -724,7 +856,7 @@ export default function LeadsKanban() {
                     }}
                     placeholder="Add notes about this lead..."
                     rows={4}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
                   />
                   <button
                     onClick={handleSaveNotes}
@@ -734,7 +866,7 @@ export default function LeadsKanban() {
                         ? 'bg-slate-100 text-slate-400' 
                         : notes === (selectedLead.notes || '')
                         ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                        : 'bg-orange-500 text-white hover:bg-orange-600'
+                        : 'bg-amber-500 text-white hover:bg-amber-600'
                     }`}
                   >
                     {savingNotes ? (
@@ -753,99 +885,68 @@ export default function LeadsKanban() {
               </div>
 
               {/* Linked Quotes */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider">Linked Quotes</h4>
-                  <a
-                    href={`/admin/quotes/new?lead=${selectedLead.id}`}
-                    className="text-xs text-orange-600 hover:text-orange-700 font-medium"
-                  >
-                    + Create Quote
-                  </a>
-                </div>
-                {linkedQuotes.length > 0 ? (
+              {linkedQuotes.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Linked Quotes</h3>
                   <div className="space-y-2">
                     {linkedQuotes.map(quote => (
-                      <a
-                        key={quote.id}
-                        href={`/admin/quotes/${quote.id}`}
-                        className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-4 h-4 text-slate-400" />
-                          <span className="text-sm font-medium text-slate-700">{quote.quote_number}</span>
+                      <div key={quote.id} className="flex items-center justify-between bg-slate-50 rounded-lg p-3">
+                        <div>
+                          <p className="font-mono text-sm font-medium text-slate-900">{quote.quote_number}</p>
+                          <p className="text-xs text-slate-500">{formatDate(quote.created_at)}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-semibold text-slate-900">{formatCurrency(quote.total)}</p>
-                          <p className="text-xs text-slate-500 capitalize">{quote.status}</p>
+                          <p className="font-semibold text-slate-900">{formatCurrency(quote.total)}</p>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            quote.status === 'accepted' ? 'bg-emerald-100 text-emerald-700' :
+                            quote.status === 'sent' ? 'bg-blue-100 text-blue-700' :
+                            'bg-slate-100 text-slate-600'
+                          }`}>
+                            {quote.status}
+                          </span>
                         </div>
-                      </a>
+                      </div>
                     ))}
                   </div>
-                ) : (
-                  <p className="text-sm text-slate-400">No quotes yet</p>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Activity Timeline */}
               <div>
-                <button
-                  onClick={() => setShowActivities(!showActivities)}
-                  className="flex items-center justify-between w-full mb-3"
-                >
-                  <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider">Activity Timeline</h4>
-                  {showActivities ? (
-                    <ChevronUp className="w-4 h-4 text-slate-400" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
-                  )}
-                </button>
-                
-                {showActivities && (
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Activity Timeline</h3>
+                {loadingActivities ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="w-5 h-5 text-slate-300 animate-spin" />
+                  </div>
+                ) : activities.length === 0 ? (
+                  <p className="text-sm text-slate-400 text-center py-4">No activity yet</p>
+                ) : (
                   <div className="space-y-3">
-                    {activities.length > 0 ? (
-                      activities.map(activity => (
-                        <div key={activity.id} className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center text-xs">
-                            {getActivityIcon(activity.activity_type)}
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm text-slate-700">{activity.description}</p>
-                            <p className="text-xs text-slate-400 mt-0.5">
-                              {formatDate(activity.created_at)} • {activity.created_by}
-                            </p>
-                          </div>
+                    {activities.slice(0, 10).map(activity => (
+                      <div key={activity.id} className="flex gap-3">
+                        <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          {getActivityIcon(activity.activity_type)}
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-400">No activity yet</p>
-                    )}
-                    
-                    {/* Initial creation activity */}
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center text-xs">
-                        🎯
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-slate-700">{activity.description}</p>
+                          <p className="text-xs text-slate-400">
+                            {formatDateTime(activity.created_at)} • {activity.created_by}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-slate-700">Lead created from {selectedLead.source}</p>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          {formatDate(selectedLead.created_at)}
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 )}
               </div>
 
               {/* Actions */}
               <div className="pt-4 border-t border-slate-200 space-y-3">
-                <a
-                  href={`/admin/quotes/new?lead=${selectedLead.id}`}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-xl font-medium hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/20"
+                <button 
+                  onClick={() => setShowQuoteBuilder(true)}
+                  className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 rounded-xl font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/20"
                 >
-                  <FileText className="w-5 h-5" />
                   Create Quote
-                </a>
+                </button>
               </div>
             </div>
           </div>

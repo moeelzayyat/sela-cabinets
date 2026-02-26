@@ -1,128 +1,64 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { 
-  ArrowLeft,
-  Save,
-  Send,
-  Download,
-  Trash2,
-  Plus,
-  Calculator,
-  X,
-  AlertCircle,
-  Eye,
-  FileText
+  ArrowLeft, Download, Send, Edit, Trash2, Copy, Check, 
+  FileText, User, MapPin, Mail, Phone, Calendar, Clock,
+  RefreshCw, X, Printer, History, Loader2
 } from 'lucide-react'
+import Link from 'next/link'
 
-interface LineItem {
-  id?: number
-  section: string
-  description: string
-  quantity: number
-  unit_price: number
-  discount_percent: number
-  line_total: number
+const statusConfig: Record<string, { label: string; bg: string; text: string }> = {
+  draft: { label: 'Draft', bg: 'bg-slate-100', text: 'text-slate-700' },
+  sent: { label: 'Sent', bg: 'bg-blue-100', text: 'text-blue-700' },
+  viewed: { label: 'Viewed', bg: 'bg-purple-100', text: 'text-purple-700' },
+  accepted: { label: 'Accepted', bg: 'bg-emerald-100', text: 'text-emerald-700' },
+  declined: { label: 'Declined', bg: 'bg-red-100', text: 'text-red-700' },
+  expired: { label: 'Expired', bg: 'bg-amber-100', text: 'text-amber-700' },
 }
 
-interface Quote {
-  id: number
-  quote_number: string
-  lead_id: number | null
-  customer_name: string
-  customer_email: string
-  customer_phone: string
-  customer_address: string
-  subtotal: number
-  tax_rate: number
-  tax_amount: number
-  discount_percent: number
-  discount_amount: number
-  total: number
-  deposit_amount: number
-  deposit_percent: number
-  status: string
-  valid_until: string
-  terms: string
-  internal_notes: string
-  created_at: string
-  items: LineItem[]
+const sectionLabels: Record<string, string> = {
+  cabinets: 'Cabinets',
+  hardware: 'Hardware',
+  labor: 'Labor',
+  countertops: 'Countertops',
+  delivery: 'Delivery',
+  other: 'Other',
 }
 
-const sections = [
-  { id: 'cabinets', label: 'Cabinets' },
-  { id: 'hardware', label: 'Hardware' },
-  { id: 'labor', label: 'Labor' },
-  { id: 'countertops', label: 'Countertops' },
-  { id: 'delivery', label: 'Delivery' },
-  { id: 'other', label: 'Other' },
-]
+const API_KEY = 'sela-admin-2026'
 
-const statusColors: Record<string, string> = {
-  draft: 'bg-slate-100 text-slate-700',
-  sent: 'bg-blue-100 text-blue-700',
-  viewed: 'bg-purple-100 text-purple-700',
-  accepted: 'bg-emerald-100 text-emerald-700',
-  declined: 'bg-red-100 text-red-700',
-  expired: 'bg-amber-100 text-amber-700',
-}
-
-export default function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
-  const router = useRouter()
-  
-  const [quote, setQuote] = useState<Quote | null>(null)
+export default function QuoteDetailPage({ params }: { params: { id: string } }) {
+  const quoteId = params.id
+  const [quote, setQuote] = useState<any>(null)
+  const [items, setItems] = useState<any[]>([])
+  const [versions, setVersions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [validationErrors, setValidationErrors] = useState<string[]>([])
-  
-  // Form state
-  const [customerName, setCustomerName] = useState('')
-  const [customerEmail, setCustomerEmail] = useState('')
-  const [customerPhone, setCustomerPhone] = useState('')
-  const [customerAddress, setCustomerAddress] = useState('')
-  const [items, setItems] = useState<LineItem[]>([])
-  const [taxRate, setTaxRate] = useState(6)
-  const [discountPercent, setDiscountPercent] = useState(0)
-  const [depositPercent, setDepositPercent] = useState(50)
-  const [validUntil, setValidUntil] = useState('')
-  const [terms, setTerms] = useState('')
-  const [internalNotes, setInternalNotes] = useState('')
-  const [status, setStatus] = useState('draft')
-
-  const API_KEY = 'sela-admin-2026'
+  const [success, setSuccess] = useState<string | null>(null)
+  const [downloadingPdf, setDownloadingPdf] = useState(false)
+  const [updatingStatus, setUpdatingStatus] = useState(false)
+  const [showStatusMenu, setShowStatusMenu] = useState(false)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [sendingEmail, setSendingEmail] = useState(false)
+  const [showVersions, setShowVersions] = useState(false)
 
   useEffect(() => {
     fetchQuote()
-  }, [id])
+    fetchVersions()
+  }, [quoteId])
 
   const fetchQuote = async () => {
     setLoading(true)
+    setError(null)
     try {
-      const response = await fetch(`/api/quotes?id=${id}`, {
+      const response = await fetch(`/api/quotes/${quoteId}`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       })
-      
       if (!response.ok) throw new Error('Failed to fetch quote')
-      
       const data = await response.json()
-      const q = data.quote
-      
-      setQuote(q)
-      setCustomerName(q.customer_name || '')
-      setCustomerEmail(q.customer_email || '')
-      setCustomerPhone(q.customer_phone || '')
-      setCustomerAddress(q.customer_address || '')
-      setItems(q.items || [])
-      setTaxRate(q.tax_rate || 6)
-      setDiscountPercent(q.discount_percent || 0)
-      setDepositPercent(q.deposit_percent || 50)
-      setValidUntil(q.valid_until?.split('T')[0] || '')
-      setTerms(q.terms || '')
-      setInternalNotes(q.internal_notes || '')
-      setStatus(q.status || 'draft')
+      setQuote(data.quote)
+      setItems(data.items || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load quote')
     } finally {
@@ -130,118 +66,102 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  // Calculate totals
-  const subtotal = items.reduce((sum, item) => {
-    const lineTotal = (item.quantity || 0) * (item.unit_price || 0) * (1 - (item.discount_percent || 0) / 100)
-    return sum + lineTotal
-  }, 0)
-
-  const discountAmount = subtotal * (discountPercent / 100)
-  const taxableAmount = subtotal - discountAmount
-  const taxAmount = taxableAmount * (taxRate / 100)
-  const total = taxableAmount + taxAmount
-  const depositAmount = total * (depositPercent / 100)
-
-  const updateItem = (index: number, field: keyof LineItem, value: any) => {
-    const newItems = [...items]
-    newItems[index] = { ...newItems[index], [field]: value }
-    
-    const item = newItems[index]
-    item.line_total = (item.quantity || 0) * (item.unit_price || 0) * (1 - (item.discount_percent || 0) / 100)
-    
-    setItems(newItems)
-  }
-
-  const addItem = () => {
-    setItems([...items, {
-      section: 'cabinets',
-      description: '',
-      quantity: 1,
-      unit_price: 0,
-      discount_percent: 0,
-      line_total: 0
-    }])
-  }
-
-  const removeItem = (index: number) => {
-    if (items.length > 1) {
-      setItems(items.filter((_, i) => i !== index))
+  const fetchVersions = async () => {
+    try {
+      const response = await fetch(`/api/quotes/${quoteId}/versions`, {
+        headers: { 'Authorization': `Bearer ${API_KEY}` }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setVersions(data.versions || [])
+      }
+    } catch (err) {
+      console.error('Failed to fetch versions:', err)
     }
   }
 
-  const validate = (): boolean => {
-    const errors: string[] = []
-    if (!customerName.trim()) errors.push('Customer name is required')
-    const hasValidItem = items.some(item => item.description.trim() && item.unit_price > 0)
-    if (!hasValidItem) errors.push('At least one line item with description and price is required')
-    setValidationErrors(errors)
-    return errors.length === 0
+  const downloadPdf = async () => {
+    setDownloadingPdf(true)
+    try {
+      const response = await fetch(`/api/quotes/${quoteId}/pdf`, {
+        headers: { 'Authorization': `Bearer ${API_KEY}` }
+      })
+      if (!response.ok) throw new Error('Failed to generate PDF')
+      
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${quote.quote_number}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to download PDF')
+    } finally {
+      setDownloadingPdf(false)
+    }
   }
 
-  const handleSave = async () => {
-    if (!validate()) return
-    
-    setSaving(true)
-    setError(null)
-    
+  const updateStatus = async (newStatus: string) => {
+    setUpdatingStatus(true)
     try {
-      const response = await fetch(`/api/quotes?id=${id}`, {
-        method: 'PATCH',
+      const response = await fetch(`/api/quotes/${quoteId}`, {
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${API_KEY}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          customer_name: customerName,
-          customer_email: customerEmail,
-          customer_phone: customerPhone,
-          customer_address: customerAddress,
-          items: items.filter(item => item.description.trim()),
-          tax_rate: taxRate,
-          discount_percent: discountPercent,
-          deposit_percent: depositPercent,
-          valid_until: validUntil || null,
-          terms,
-          internal_notes: internalNotes,
-          status
-        })
+        body: JSON.stringify({ status: newStatus })
+      })
+      if (!response.ok) throw new Error('Failed to update status')
+      const data = await response.json()
+      setQuote(data.quote)
+      setShowStatusMenu(false)
+      setSuccess('Status updated')
+      setTimeout(() => setSuccess(null), 3000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update status')
+    } finally {
+      setUpdatingStatus(false)
+    }
+  }
+
+  const sendEmail = async (emailData: { to: string; subject: string; message: string }) => {
+    setSendingEmail(true)
+    setError(null)
+    try {
+      const response = await fetch(`/api/quotes/${quoteId}/email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(emailData)
       })
       
       const data = await response.json()
       
-      if (!response.ok) throw new Error(data.error || 'Failed to update quote')
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send email')
+      }
       
-      setQuote(data.quote)
-      router.refresh()
+      setShowEmailModal(false)
+      setSuccess('Quote sent successfully!')
+      setTimeout(() => setSuccess(null), 5000)
+      
+      // Refresh quote to get updated status
+      fetchQuote()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save quote')
+      setError(err instanceof Error ? err.message : 'Failed to send email')
     } finally {
-      setSaving(false)
-    }
-  }
-
-  const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this quote?')) return
-    
-    try {
-      const response = await fetch(`/api/quotes?id=${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${API_KEY}` }
-      })
-      
-      if (!response.ok) throw new Error('Failed to delete quote')
-      
-      router.push('/admin/quotes')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete')
+      setSendingEmail(false)
     }
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount)
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
   }
 
   const formatDate = (dateString: string) => {
@@ -253,340 +173,442 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
     })
   }
 
+  const formatDateTime = (dateString: string) => {
+    if (!dateString) return '-'
+    return new Date(dateString).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    })
+  }
+
+  // Group items by section
+  const groupedItems = items.reduce((acc, item) => {
+    const section = item.section || 'other'
+    if (!acc[section]) acc[section] = []
+    acc[section].push(item)
+    return acc
+  }, {} as Record<string, any[]>)
+
+  const sectionOrder = ['cabinets', 'hardware', 'labor', 'countertops', 'delivery', 'other']
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-slate-500">Loading quote...</div>
+      <div className="flex items-center justify-center h-96">
+        <RefreshCw className="w-8 h-8 text-slate-300 animate-spin" />
       </div>
     )
   }
 
-  if (!quote) {
+  if (error && !quote) {
     return (
       <div className="text-center py-12">
-        <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-        <h2 className="text-lg font-semibold text-slate-900">Quote not found</h2>
-        <button
-          onClick={() => router.push('/admin/quotes')}
-          className="mt-4 text-orange-600 hover:text-orange-700"
-        >
-          Back to Quotes
-        </button>
+        <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+        <p className="text-red-600">{error}</p>
+        <Link href="/admin/quotes" className="text-amber-600 hover:text-amber-700 mt-4 inline-block">
+          ← Back to Quotes
+        </Link>
       </div>
     )
   }
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
+      {/* Success/Error Toasts */}
+      {success && (
+        <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2">
+          <Check className="w-5 h-5" />
+          {success}
+        </div>
+      )}
+      {error && (
+        <div className="fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={() => setError(null)}><X className="w-4 h-4 ml-4" /></button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-slate-600" />
-          </button>
+          <Link href="/admin/quotes" className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <ArrowLeft className="w-5 h-5 text-slate-500" />
+          </Link>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-slate-900">{quote.quote_number}</h1>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${statusColors[status]}`}>
-                {status}
-              </span>
-            </div>
-            <p className="text-slate-500 mt-1">Created {formatDate(quote.created_at)}</p>
+            <h1 className="text-2xl font-bold text-slate-900">{quote.quote_number}</h1>
+            <p className="text-slate-500">
+              Created {formatDate(quote.created_at)} by {quote.created_by}
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {versions.length > 0 && (
+            <button
+              onClick={() => setShowVersions(!showVersions)}
+              className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors"
+            >
+              <History className="w-4 h-4" />
+              v{versions.length + 1}
+            </button>
+          )}
           <button
-            onClick={handleDelete}
-            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            onClick={downloadPdf}
+            disabled={downloadingPdf}
+            className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
           >
-            <Trash2 className="w-5 h-5" />
-          </button>
-          <button
-            className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg font-medium hover:bg-slate-200 transition-colors"
-          >
-            <Download className="w-4 h-4" />
+            {downloadingPdf ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
             PDF
           </button>
           <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg shadow-orange-500/20 disabled:opacity-50"
+            onClick={() => setShowEmailModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/20"
           >
-            <Save className="w-4 h-4" />
-            {saving ? 'Saving...' : 'Save Changes'}
+            <Send className="w-4 h-4" />
+            Send to Customer
           </button>
         </div>
       </div>
 
-      {/* Validation Errors */}
-      {validationErrors.length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-            <ul className="text-sm text-red-700 list-disc list-inside">
-              {validationErrors.map((err, i) => <li key={i}>{err}</li>)}
-            </ul>
+      {/* Version History Panel */}
+      {showVersions && versions.length > 0 && (
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+            <History className="w-4 h-4 text-amber-500" />
+            Version History
+          </h3>
+          <div className="space-y-2">
+            {versions.map((version) => (
+              <div key={version.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                <div>
+                  <span className="font-medium text-slate-900">Version {version.version_number}</span>
+                  <span className="text-slate-500 ml-2">- {formatCurrency(version.total)}</span>
+                </div>
+                <div className="text-sm text-slate-400">
+                  {formatDateTime(version.created_at)} by {version.created_by}
+                </div>
+              </div>
+            ))}
+            <div className="flex items-center justify-between p-3 bg-amber-50 rounded-lg border border-amber-200">
+              <div>
+                <span className="font-medium text-amber-900">Current Version {versions.length + 1}</span>
+                <span className="text-amber-700 ml-2">- {formatCurrency(quote.total)}</span>
+              </div>
+              <div className="text-sm text-amber-600">Latest</div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Error */}
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-red-700 flex items-center justify-between">
-          <span>{error}</span>
-          <button onClick={() => setError(null)}><X className="w-4 h-4" /></button>
-        </div>
-      )}
-
-      {/* Status Change */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-medium text-slate-700">Update Status:</span>
-          <div className="flex gap-2">
-            {['draft', 'sent', 'viewed', 'accepted', 'declined', 'expired'].map((s) => (
+      {/* Status & Quick Info */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="relative">
               <button
-                key={s}
-                onClick={() => setStatus(s)}
-                className={`px-3 py-1 rounded-full text-xs font-medium capitalize transition-colors ${
-                  status === s ? statusColors[s] : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                onClick={() => setShowStatusMenu(!showStatusMenu)}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium ${
+                  statusConfig[quote.status]?.bg || 'bg-slate-100'
+                } ${statusConfig[quote.status]?.text || 'text-slate-700'}`}
               >
-                {s}
+                {statusConfig[quote.status]?.label || quote.status}
+                {updatingStatus && <RefreshCw className="w-3 h-3 animate-spin" />}
               </button>
-            ))}
+              {showStatusMenu && (
+                <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-10 min-w-[150px]">
+                  {Object.entries(statusConfig).map(([key, { label, bg, text }]) => (
+                    <button
+                      key={key}
+                      onClick={() => updateStatus(key)}
+                      className={`w-full text-left px-4 py-2 hover:bg-slate-50 ${text}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {quote.valid_until && (
+              <span className="text-sm text-slate-500 flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                Valid until {formatDate(quote.valid_until)}
+              </span>
+            )}
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-slate-500">Total Amount</p>
+            <p className="text-3xl font-bold text-slate-900">{formatCurrency(quote.total)}</p>
+          </div>
+        </div>
+
+        {/* Customer Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-slate-50 rounded-lg p-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Bill To</p>
+            <p className="font-semibold text-slate-900 text-lg">{quote.customer_name}</p>
+            {quote.customer_phone && (
+              <p className="text-sm text-slate-600 flex items-center gap-2 mt-2">
+                <Phone className="w-4 h-4 text-slate-400" />
+                {quote.customer_phone}
+              </p>
+            )}
+            {quote.customer_email && (
+              <p className="text-sm text-slate-600 flex items-center gap-2 mt-1">
+                <Mail className="w-4 h-4 text-slate-400" />
+                {quote.customer_email}
+              </p>
+            )}
+            {quote.customer_address && (
+              <p className="text-sm text-slate-600 flex items-start gap-2 mt-1">
+                <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
+                {quote.customer_address}
+              </p>
+            )}
+          </div>
+          <div className="bg-slate-50 rounded-lg p-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Deposit Required</p>
+            <p className="text-2xl font-bold text-emerald-600">{formatCurrency(quote.deposit_amount)}</p>
+            <p className="text-sm text-slate-500">{quote.deposit_percent}% of total</p>
+            {quote.sent_at && (
+              <p className="text-xs text-slate-400 mt-4 flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                Sent {formatDateTime(quote.sent_at)}
+              </p>
+            )}
+            {quote.viewed_at && (
+              <p className="text-xs text-slate-400 flex items-center gap-1">
+                <Check className="w-3 h-3" />
+                Viewed {formatDateTime(quote.viewed_at)}
+              </p>
+            )}
+            {quote.accepted_at && (
+              <p className="text-xs text-emerald-600 flex items-center gap-1">
+                <Check className="w-3 h-3" />
+                Accepted {formatDateTime(quote.accepted_at)}
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Form */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Customer Info */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Customer Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Customer Name *</label>
-                <input
-                  type="text"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
-                <input
-                  type="tel"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
-                <input
-                  type="text"
-                  value={customerAddress}
-                  onChange={(e) => setCustomerAddress(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                />
-              </div>
-            </div>
-          </div>
+      {/* Line Items */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="p-4 border-b border-slate-200">
+          <h2 className="font-semibold text-slate-900">Line Items</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Description</th>
+                <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Qty</th>
+                <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Unit Price</th>
+                <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Disc</th>
+                <th className="text-right px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Total</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {sectionOrder.map(section => {
+                const sectionItems = groupedItems[section]
+                if (!sectionItems || sectionItems.length === 0) return null
 
-          {/* Line Items */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Line Items</h2>
-              <button
-                onClick={addItem}
-                className="flex items-center gap-1 text-sm text-orange-600 hover:text-orange-700 font-medium"
-              >
-                <Plus className="w-4 h-4" />
-                Add Item
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {items.map((item, index) => (
-                <div key={index} className="p-4 bg-slate-50 rounded-lg space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-1 grid grid-cols-2 md:grid-cols-6 gap-3">
-                      <div className="col-span-2">
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Description</label>
-                        <input
-                          type="text"
-                          value={item.description}
-                          onChange={(e) => updateItem(index, 'description', e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Section</label>
-                        <select
-                          value={item.section}
-                          onChange={(e) => updateItem(index, 'section', e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                        >
-                          {sections.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Qty</label>
-                        <input
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => updateItem(index, 'quantity', parseFloat(e.target.value) || 0)}
-                          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                          min="0" step="0.5"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Price</label>
-                        <input
-                          type="number"
-                          value={item.unit_price}
-                          onChange={(e) => updateItem(index, 'unit_price', parseFloat(e.target.value) || 0)}
-                          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                          min="0" step="0.01"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Total</label>
-                        <div className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium">
-                          {formatCurrency(item.line_total)}
-                        </div>
-                      </div>
-                    </div>
-                    {items.length > 1 && (
-                      <button
-                        onClick={() => removeItem(index)}
-                        className="p-2 text-slate-400 hover:text-red-600 rounded-lg mt-5"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Terms */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Terms & Conditions</h2>
-            <textarea
-              value={terms}
-              onChange={(e) => setTerms(e.target.value)}
-              rows={6}
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm"
-            />
-          </div>
-
-          {/* Internal Notes */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Internal Notes</h2>
-            <textarea
-              value={internalNotes}
-              onChange={(e) => setInternalNotes(e.target.value)}
-              rows={3}
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm"
-            />
-          </div>
+                return (
+                  <>
+                    <tr key={section} className="bg-slate-100">
+                      <td colSpan={5} className="px-6 py-2 text-xs font-semibold text-slate-600 uppercase">
+                        {sectionLabels[section] || section}
+                      </td>
+                    </tr>
+                    {sectionItems.map((item) => (
+                      <tr key={item.id} className="hover:bg-slate-50">
+                        <td className="px-6 py-3 text-slate-700">{item.description}</td>
+                        <td className="px-6 py-3 text-right text-slate-600">{item.quantity}</td>
+                        <td className="px-6 py-3 text-right text-slate-600">{formatCurrency(item.unit_price)}</td>
+                        <td className="px-6 py-3 text-right text-slate-600">{item.discount_percent}%</td>
+                        <td className="px-6 py-3 text-right font-medium text-slate-900">{formatCurrency(item.line_total)}</td>
+                      </tr>
+                    ))}
+                  </>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
 
-        {/* Sidebar - Summary */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 sticky top-24">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-orange-500" />
-              Quote Summary
-            </h2>
-
-            <div className="space-y-4">
+        {/* Totals */}
+        <div className="border-t border-slate-200 p-6">
+          <div className="flex justify-end">
+            <div className="w-64 space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Subtotal</span>
-                <span className="font-medium">{formatCurrency(subtotal)}</span>
+                <span className="text-slate-500">Subtotal</span>
+                <span className="text-slate-900">{formatCurrency(quote.subtotal)}</span>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-600">Discount</span>
-                  <input
-                    type="number"
-                    value={discountPercent}
-                    onChange={(e) => setDiscountPercent(parseFloat(e.target.value) || 0)}
-                    className="w-16 px-2 py-1 border border-slate-200 rounded text-sm text-center"
-                    min="0" max="100"
-                  />
-                  <span className="text-sm text-slate-400">%</span>
+              {quote.discount_percent > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Discount ({quote.discount_percent}%)</span>
+                  <span className="text-red-600">-{formatCurrency(quote.discount_amount)}</span>
                 </div>
-                <span className="text-sm text-red-600">-{formatCurrency(discountAmount)}</span>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Tax ({quote.tax_rate}%)</span>
+                <span className="text-slate-900">{formatCurrency(quote.tax_amount)}</span>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-slate-600">Tax</span>
-                  <input
-                    type="number"
-                    value={taxRate}
-                    onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                    className="w-16 px-2 py-1 border border-slate-200 rounded text-sm text-center"
-                    min="0" max="100"
-                  />
-                  <span className="text-sm text-slate-400">%</span>
-                </div>
-                <span className="text-sm">{formatCurrency(taxAmount)}</span>
-              </div>
-
-              <div className="border-t border-slate-200 pt-4">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-lg font-semibold">Total</span>
-                  <span className="text-2xl font-bold text-orange-600">{formatCurrency(total)}</span>
-                </div>
-              </div>
-
-              <div className="bg-orange-50 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-orange-800">Deposit Required</span>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      value={depositPercent}
-                      onChange={(e) => setDepositPercent(parseFloat(e.target.value) || 0)}
-                      className="w-16 px-2 py-1 border border-orange-200 rounded text-sm text-center bg-white"
-                      min="0" max="100"
-                    />
-                    <span className="text-sm text-orange-600">%</span>
-                  </div>
-                </div>
-                <div className="text-2xl font-bold text-orange-600">{formatCurrency(depositAmount)}</div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Valid Until</label>
-                <input
-                  type="date"
-                  value={validUntil}
-                  onChange={(e) => setValidUntil(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                />
+              <div className="flex justify-between text-lg font-bold pt-2 border-t border-slate-200">
+                <span className="text-slate-900">Total</span>
+                <span className="text-slate-900">{formatCurrency(quote.total)}</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Terms & Internal Notes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {quote.terms && (
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h3 className="font-semibold text-slate-900 mb-3">Terms & Conditions</h3>
+            <p className="text-sm text-slate-600 whitespace-pre-line">{quote.terms}</p>
+          </div>
+        )}
+        {quote.internal_notes && (
+          <div className="bg-amber-50 rounded-xl border border-amber-200 p-6">
+            <h3 className="font-semibold text-amber-900 mb-3">📝 Internal Notes</h3>
+            <p className="text-sm text-amber-800 whitespace-pre-line">{quote.internal_notes}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Email Modal */}
+      {showEmailModal && (
+        <EmailModal
+          quote={quote}
+          onClose={() => setShowEmailModal(false)}
+          onSend={sendEmail}
+          sending={sendingEmail}
+        />
+      )}
+    </div>
+  )
+}
+
+// Email Modal Component
+function EmailModal({ quote, onClose, onSend, sending }: { 
+  quote: any
+  onClose: () => void
+  onSend: (data: { to: string; subject: string; message: string }) => void
+  sending: boolean
+}) {
+  const [to, setTo] = useState(quote.customer_email || '')
+  const [subject, setSubject] = useState(`Your Quote from SELA Cabinets - ${quote.quote_number}`)
+  const [message, setMessage] = useState(`Dear ${quote.customer_name},
+
+Thank you for considering SELA Cabinets for your kitchen project!
+
+Please find attached your detailed quote (${quote.quote_number}).
+
+If you have any questions or would like to proceed, please don't hesitate to contact us at (313) 246-7903 or reply to this email.
+
+We look forward to working with you!
+
+Best regards,
+The SELA Cabinets Team
+(313) 246-7903
+selacabinets.com`)
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!to.trim()) return
+    onSend({ to, subject, message })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">Send Quote</h2>
+            <p className="text-sm text-slate-500">Email {quote.quote_number} to customer</p>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg">
+            <X className="w-5 h-5 text-slate-500" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">To *</label>
+            <input
+              type="email"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              placeholder="customer@example.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Subject</label>
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Message</label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={8}
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
+            />
+          </div>
+
+          <div className="bg-slate-50 rounded-lg p-4">
+            <p className="text-sm text-slate-600">
+              📎 <strong>Attachment:</strong> {quote.quote_number}.pdf ({formatCurrency(quote.total)})
+            </p>
+          </div>
+        </form>
+
+        <div className="sticky bottom-0 bg-white border-t border-slate-200 px-6 py-4 flex items-center justify-between">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={sending || !to.trim()}
+            className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-6 py-2 rounded-lg font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50"
+          >
+            {sending ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                Send Email
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>

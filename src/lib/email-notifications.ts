@@ -5,7 +5,7 @@
 
 import { Resend } from 'resend'
 
-// Lazy-load Resend client to avoid build-time errors
+// Lazy initialization to avoid build-time errors when API key is not set
 let resendInstance: Resend | null = null
 
 function getResend(): Resend | null {

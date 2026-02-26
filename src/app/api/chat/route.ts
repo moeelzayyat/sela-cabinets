@@ -8,13 +8,22 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 })
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://coolify:dFVc16CJwW02ogeO9pQt5rBPSE0%2FKPp6Tyjar2w6eS4%3D@coolify-db:5432/coolify?sslmode=disable',
-})
+// Lazy pool initialization to avoid connection during build
+let pool: Pool | null = null
+
+function getPool(): Pool {
+  if (!pool) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+    })
+  }
+  return pool
+}
 
 async function getSystemPrompt(): Promise<string> {
   try {
-    const client = await pool.connect()
+    const client = await getPool().connect()
     try {
       const result = await client.query(
         "SELECT value FROM chatbot_config WHERE key = 'system_prompt' LIMIT 1"
@@ -70,7 +79,7 @@ RULES:
 // Save chat message to database
 async function saveChatMessage(sessionId: string, message: string, sender: string) {
   try {
-    const client = await pool.connect()
+    const client = await getPool().connect()
     try {
       // Save message
       await client.query(

@@ -5,7 +5,18 @@
 
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-load Resend client to avoid build-time errors
+let resendInstance: Resend | null = null
+
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    return null
+  }
+  if (!resendInstance) {
+    resendInstance = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resendInstance
+}
 
 interface LeadEmailData {
   name: string
@@ -18,7 +29,8 @@ interface LeadEmailData {
 }
 
 export async function sendLeadNotification(lead: LeadEmailData): Promise<{ success: boolean; error?: string }> {
-  if (!process.env.RESEND_API_KEY) {
+  const resend = getResend()
+  if (!resend) {
     console.log('No RESEND_API_KEY configured, skipping email notification')
     return { success: false, error: 'No API key' }
   }

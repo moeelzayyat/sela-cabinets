@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Phone, Video, Home, Calendar, ArrowRight, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { siteConfig } from '@/config/site'
-import { trackBookClick } from '@/lib/analytics'
+import { Button } from '../../components/ui/button'
+import { siteConfig } from '../../config/site'
+import { trackBookClick } from '../../lib/analytics'
 
 const appointmentTypes = [
   {

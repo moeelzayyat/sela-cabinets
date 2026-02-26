@@ -14,8 +14,9 @@ import {
   LogOut,
   Bell,
   TrendingUp,
-  Target,
-  DollarSign
+  Package,
+  DollarSign,
+  BookUser
 } from 'lucide-react'
 
 const navItems = [
@@ -24,6 +25,8 @@ const navItems = [
   { href: '/admin/calendar', label: 'Calendar', icon: Calendar },
   { href: '/admin/quotes', label: 'Quotes', icon: FileText },
   { href: '/admin/installations', label: 'Installs', icon: Wrench },
+  { href: '/admin/contacts', label: 'Contacts', icon: BookUser },
+  { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/chats', label: 'Messages', icon: MessageSquare },
   { href: '/admin/chatbot', label: 'Chatbot', icon: Bot },
 ]

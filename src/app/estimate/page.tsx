@@ -7,21 +7,21 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { Textarea } from '../../components/ui/textarea'
+import { Label } from '../../components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { siteConfig } from '@/config/site'
-import { submitEstimateRequest } from '@/app/actions/estimate'
-import { trackEstimateSubmit, trackFormStart } from '@/lib/analytics'
-import { estimateImages } from '@/config/images'
+} from '../../components/ui/select'
+import { siteConfig } from '../../config/site'
+import { submitEstimateRequest } from '../actions/estimate'
+import { trackEstimateSubmit, trackFormStart } from '../../lib/analytics'
+import { estimateImages } from '../../config/images'
 
 const estimateSchema = z.object({
   name: z.string().min(2, 'Name is required'),

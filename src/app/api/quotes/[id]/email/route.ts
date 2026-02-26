@@ -255,7 +255,7 @@ selacabinets.com
       const resend = new Resend(process.env.RESEND_API_KEY)
       
       const emailData: any = {
-        from: 'SELA Cabinets <quotes@selacabinets.com>',
+        from: 'SELA Cabinets <quotes@selatrade.com>',
         to: Array.isArray(to) ? to : [to],
         subject: emailSubject,
         text: emailMessage,

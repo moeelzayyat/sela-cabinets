@@ -1,16 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 interface Invoice {
   id: number
   invoice_number: string
   customer_name: string | null
   customer_email: string | null
+  project_name?: string | null
   status: string
   issue_date: string | null
   due_date: string | null
   total: string
+  tax_amount?: string
   amount_paid: string
   balance_due: string
 }
@@ -101,27 +104,35 @@ export default function InvoicesPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-100">
             <tr>
-              <th className="text-left p-3">Invoice</th>
+              <th className="text-left p-3">Invoice #</th>
+              <th className="text-left p-3">Amount</th>
+              <th className="text-left p-3">Total Tax</th>
+              <th className="text-left p-3">Date</th>
               <th className="text-left p-3">Customer</th>
+              <th className="text-left p-3">Project</th>
+              <th className="text-left p-3">Due Date</th>
               <th className="text-left p-3">Status</th>
-              <th className="text-left p-3">Total</th>
-              <th className="text-left p-3">Paid</th>
-              <th className="text-left p-3">Balance</th>
               <th className="text-left p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {loading ? <tr><td colSpan={7} className="p-4">Loading...</td></tr> : invoices.length === 0 ? <tr><td colSpan={7} className="p-4 text-slate-500">No invoices yet</td></tr> : invoices.map(inv => (
+            {loading ? <tr><td colSpan={9} className="p-4">Loading...</td></tr> : invoices.length === 0 ? <tr><td colSpan={9} className="p-4 text-slate-500">No invoices yet</td></tr> : invoices.map(inv => (
               <tr key={inv.id} className="border-t">
-                <td className="p-3 font-medium">{inv.invoice_number}</td>
-                <td className="p-3">{inv.customer_name || '—'}<div className="text-xs text-slate-500">{inv.customer_email || ''}</div></td>
-                <td className="p-3">{inv.status}</td>
+                <td className="p-3 font-medium text-blue-700">
+                  <Link href={`/admin/invoices/${inv.id}`}>{inv.invoice_number}</Link>
+                </td>
                 <td className="p-3">${Number(inv.total || 0).toLocaleString()}</td>
-                <td className="p-3">${Number(inv.amount_paid || 0).toLocaleString()}</td>
-                <td className="p-3">${Number(inv.balance_due || 0).toLocaleString()}</td>
+                <td className="p-3">${Number(inv.tax_amount || 0).toLocaleString()}</td>
+                <td className="p-3">{inv.issue_date ? new Date(inv.issue_date).toLocaleDateString() : '—'}</td>
+                <td className="p-3">{inv.customer_name || '—'}</td>
+                <td className="p-3">{inv.project_name || '—'}</td>
+                <td className="p-3">{inv.due_date ? new Date(inv.due_date).toLocaleDateString() : '—'}</td>
+                <td className="p-3">{inv.status}</td>
                 <td className="p-3 space-x-2">
-                  {inv.status === 'draft' && <button onClick={() => markSent(inv)} className="px-2 py-1 text-xs border rounded">Mark Sent</button>}
-                  <button onClick={() => addPayment(inv)} className="px-2 py-1 text-xs border rounded">Add Payment</button>
+                  <Link href={`/admin/invoices/${inv.id}`} className="px-2 py-1 text-xs border rounded inline-block">View</Link>
+                  <Link href={`/admin/invoices/${inv.id}/edit`} className="px-2 py-1 text-xs border rounded inline-block">Edit</Link>
+                  {inv.status === 'draft' && <button onClick={() => markSent(inv)} className="px-2 py-1 text-xs border rounded">Send</button>}
+                  <button onClick={() => addPayment(inv)} className="px-2 py-1 text-xs border rounded">Pay</button>
                 </td>
               </tr>
             ))}

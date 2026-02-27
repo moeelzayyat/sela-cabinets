@@ -43,8 +43,10 @@ export async function POST(request: NextRequest) {
   const result = await pool.query(
     `INSERT INTO invoices (
       quote_id, lead_id, customer_name, customer_email, customer_phone,
-      invoice_number, status, issue_date, due_date, tax_rate, discount_amount, notes
-    ) VALUES ($1,$2,$3,$4,$5,$6,COALESCE($7,'draft'),$8,$9,COALESCE($10,0),COALESCE($11,0),$12)
+      invoice_number, project_name, tags, payment_methods, currency, sale_agent,
+      discount_type, adjustment_amount, client_note, terms_conditions, recurring_invoice, prevent_overdue_reminders,
+      status, issue_date, due_date, tax_rate, discount_amount, notes
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,COALESCE($10,'USD'),$11,COALESCE($12,'fixed'),COALESCE($13,0),$14,$15,COALESCE($16,false),COALESCE($17,false),COALESCE($18,'draft'),$19,$20,COALESCE($21,0),COALESCE($22,0),$23)
     RETURNING *`,
     [
       body.quoteId || null,
@@ -53,6 +55,17 @@ export async function POST(request: NextRequest) {
       body.customerEmail || null,
       body.customerPhone || null,
       invoiceNumber,
+      body.projectName || null,
+      Array.isArray(body.tags) ? body.tags : null,
+      Array.isArray(body.paymentMethods) ? body.paymentMethods : ['bank', 'stripe'],
+      body.currency || 'USD',
+      body.saleAgent || null,
+      body.discountType || 'fixed',
+      body.adjustmentAmount || 0,
+      body.clientNote || null,
+      body.termsConditions || null,
+      !!body.recurringInvoice,
+      !!body.preventOverdueReminders,
       body.status || 'draft',
       body.issueDate || new Date().toISOString().slice(0, 10),
       body.dueDate || null,
@@ -69,9 +82,18 @@ export async function POST(request: NextRequest) {
     const unitPrice = Number(item.unitPrice || 0)
     const lineTotal = Number((qty * unitPrice).toFixed(2))
     await pool.query(
-      `INSERT INTO invoice_items (invoice_id, description, qty, unit_price, line_total)
-       VALUES ($1,$2,$3,$4,$5)`,
-      [invoice.id, item.description || 'Item', qty, unitPrice, lineTotal]
+      `INSERT INTO invoice_items (invoice_id, description, long_description, qty, unit, unit_price, tax_rate, line_total)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+      [
+        invoice.id,
+        item.description || 'Item',
+        item.longDescription || null,
+        qty,
+        item.unit || 'Unit',
+        unitPrice,
+        Number(item.taxRate || 0),
+        lineTotal,
+      ]
     )
   }
 

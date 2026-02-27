@@ -33,18 +33,40 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       customer_name = COALESCE($1, customer_name),
       customer_email = COALESCE($2, customer_email),
       customer_phone = COALESCE($3, customer_phone),
-      status = COALESCE($4, status),
-      issue_date = COALESCE($5, issue_date),
-      due_date = COALESCE($6, due_date),
-      tax_rate = COALESCE($7, tax_rate),
-      discount_amount = COALESCE($8, discount_amount),
-      notes = COALESCE($9, notes),
+      project_name = COALESCE($4, project_name),
+      tags = COALESCE($5, tags),
+      payment_methods = COALESCE($6, payment_methods),
+      currency = COALESCE($7, currency),
+      sale_agent = COALESCE($8, sale_agent),
+      discount_type = COALESCE($9, discount_type),
+      adjustment_amount = COALESCE($10, adjustment_amount),
+      client_note = COALESCE($11, client_note),
+      terms_conditions = COALESCE($12, terms_conditions),
+      recurring_invoice = COALESCE($13, recurring_invoice),
+      prevent_overdue_reminders = COALESCE($14, prevent_overdue_reminders),
+      status = COALESCE($15, status),
+      issue_date = COALESCE($16, issue_date),
+      due_date = COALESCE($17, due_date),
+      tax_rate = COALESCE($18, tax_rate),
+      discount_amount = COALESCE($19, discount_amount),
+      notes = COALESCE($20, notes),
       updated_at = now()
-     WHERE id = $10`,
+     WHERE id = $21`,
     [
       body.customerName ?? null,
       body.customerEmail ?? null,
       body.customerPhone ?? null,
+      body.projectName ?? null,
+      Array.isArray(body.tags) ? body.tags : null,
+      Array.isArray(body.paymentMethods) ? body.paymentMethods : null,
+      body.currency ?? null,
+      body.saleAgent ?? null,
+      body.discountType ?? null,
+      body.adjustmentAmount ?? null,
+      body.clientNote ?? null,
+      body.termsConditions ?? null,
+      typeof body.recurringInvoice === 'boolean' ? body.recurringInvoice : null,
+      typeof body.preventOverdueReminders === 'boolean' ? body.preventOverdueReminders : null,
       body.status ?? null,
       body.issueDate ?? null,
       body.dueDate ?? null,
@@ -62,9 +84,18 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       const unitPrice = Number(item.unitPrice || 0)
       const lineTotal = Number((qty * unitPrice).toFixed(2))
       await pool.query(
-        `INSERT INTO invoice_items (invoice_id, description, qty, unit_price, line_total)
-         VALUES ($1,$2,$3,$4,$5)`,
-        [id, item.description || 'Item', qty, unitPrice, lineTotal]
+        `INSERT INTO invoice_items (invoice_id, description, long_description, qty, unit, unit_price, tax_rate, line_total)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+        [
+          id,
+          item.description || 'Item',
+          item.longDescription || null,
+          qty,
+          item.unit || 'Unit',
+          unitPrice,
+          Number(item.taxRate || 0),
+          lineTotal,
+        ]
       )
     }
   }

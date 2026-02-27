@@ -10,6 +10,17 @@ export async function ensureInvoicesTables() {
       customer_email TEXT,
       customer_phone TEXT,
       invoice_number TEXT UNIQUE NOT NULL,
+      project_name TEXT,
+      tags TEXT[],
+      payment_methods TEXT[],
+      currency TEXT DEFAULT 'USD',
+      sale_agent TEXT,
+      discount_type TEXT DEFAULT 'fixed',
+      adjustment_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
+      client_note TEXT,
+      terms_conditions TEXT,
+      recurring_invoice BOOLEAN DEFAULT false,
+      prevent_overdue_reminders BOOLEAN DEFAULT false,
       status TEXT NOT NULL DEFAULT 'draft',
       issue_date DATE,
       due_date DATE,
@@ -26,17 +37,36 @@ export async function ensureInvoicesTables() {
     )
   `)
 
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS project_name TEXT`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS tags TEXT[]`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS payment_methods TEXT[]`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'USD'`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS sale_agent TEXT`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS discount_type TEXT DEFAULT 'fixed'`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS adjustment_amount NUMERIC(12,2) NOT NULL DEFAULT 0`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS client_note TEXT`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS terms_conditions TEXT`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS recurring_invoice BOOLEAN DEFAULT false`)
+  await pool.query(`ALTER TABLE invoices ADD COLUMN IF NOT EXISTS prevent_overdue_reminders BOOLEAN DEFAULT false`)
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS invoice_items (
       id SERIAL PRIMARY KEY,
       invoice_id INTEGER NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
       description TEXT NOT NULL,
+      long_description TEXT,
       qty NUMERIC(12,2) NOT NULL DEFAULT 1,
+      unit TEXT DEFAULT 'Unit',
       unit_price NUMERIC(12,2) NOT NULL DEFAULT 0,
+      tax_rate NUMERIC(5,2) NOT NULL DEFAULT 0,
       line_total NUMERIC(12,2) NOT NULL DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `)
+
+  await pool.query(`ALTER TABLE invoice_items ADD COLUMN IF NOT EXISTS long_description TEXT`)
+  await pool.query(`ALTER TABLE invoice_items ADD COLUMN IF NOT EXISTS unit TEXT DEFAULT 'Unit'`)
+  await pool.query(`ALTER TABLE invoice_items ADD COLUMN IF NOT EXISTS tax_rate NUMERIC(5,2) NOT NULL DEFAULT 0`)
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS invoice_payments (
@@ -64,9 +94,20 @@ export async function recalcInvoiceTotals(invoiceId: number) {
      UPDATE invoices i
      SET subtotal = item_sum.subtotal,
          tax_amount = ROUND((item_sum.subtotal * (i.tax_rate / 100.0))::numeric, 2),
-         total = ROUND((item_sum.subtotal + (item_sum.subtotal * (i.tax_rate / 100.0)) - i.discount_amount)::numeric, 2),
+         total = ROUND((
+           item_sum.subtotal
+           + (item_sum.subtotal * (i.tax_rate / 100.0))
+           - CASE WHEN i.discount_type = 'percent' THEN (item_sum.subtotal * (i.discount_amount / 100.0)) ELSE i.discount_amount END
+           + i.adjustment_amount
+         )::numeric, 2),
          amount_paid = payment_sum.paid,
-         balance_due = ROUND((item_sum.subtotal + (item_sum.subtotal * (i.tax_rate / 100.0)) - i.discount_amount - payment_sum.paid)::numeric, 2),
+         balance_due = ROUND((
+           item_sum.subtotal
+           + (item_sum.subtotal * (i.tax_rate / 100.0))
+           - CASE WHEN i.discount_type = 'percent' THEN (item_sum.subtotal * (i.discount_amount / 100.0)) ELSE i.discount_amount END
+           + i.adjustment_amount
+           - payment_sum.paid
+         )::numeric, 2),
          updated_at = now()
      FROM item_sum, payment_sum
      WHERE i.id = $1`,

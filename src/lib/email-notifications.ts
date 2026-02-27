@@ -5,19 +5,6 @@
 
 import { Resend } from 'resend'
 
-// Lazy initialization to avoid build-time errors when API key is not set
-let resendInstance: Resend | null = null
-
-function getResend(): Resend | null {
-  if (!process.env.RESEND_API_KEY) {
-    return null
-  }
-  if (!resendInstance) {
-    resendInstance = new Resend(process.env.RESEND_API_KEY)
-  }
-  return resendInstance
-}
-
 interface LeadEmailData {
   name: string
   phone?: string
@@ -29,13 +16,13 @@ interface LeadEmailData {
 }
 
 export async function sendLeadNotification(lead: LeadEmailData): Promise<{ success: boolean; error?: string }> {
-  const resend = getResend()
-  if (!resend) {
+  if (!process.env.RESEND_API_KEY) {
     console.log('No RESEND_API_KEY configured, skipping email notification')
     return { success: false, error: 'No API key' }
   }
 
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { data, error } = await resend.emails.send({
       from: 'SELA Cabinets <leads@selacabinets.com>',
       to: ['info@selatrade.com'],

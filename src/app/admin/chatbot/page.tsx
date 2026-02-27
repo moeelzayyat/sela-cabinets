@@ -96,7 +96,7 @@ export default function ChatbotConfigPage() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Chatbot Configuration</h1>
-            <p className="text-gray-600 mt-1">Customize your AI assistant's behavior and responses</p>
+            <p className="text-gray-600 mt-1">Customize your AI assistant&apos;s behavior and responses</p>
           </div>
           <button
             onClick={fetchConfig}

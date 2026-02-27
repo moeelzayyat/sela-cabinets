@@ -143,7 +143,7 @@ export default function LeadsKanban() {
 
   const API_KEY = 'sela-admin-2026'
 
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
@@ -158,7 +158,7 @@ export default function LeadsKanban() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [statusFilter, sourceFilter])
 
   const fetchLeadDetails = async (leadId: number) => {
     setLoadingActivities(true)

@@ -90,7 +90,7 @@ export default function InvoicesPage() {
           <h1 className="text-2xl font-bold text-slate-900">Invoices</h1>
           <p className="text-slate-500">Create, send, and track payments</p>
         </div>
-        <button className="px-4 py-2 bg-amber-600 text-white rounded" onClick={() => setShowNew(true)}>New Invoice</button>
+        <Link href="/admin/invoices/new" className="px-4 py-2 bg-amber-600 text-white rounded">New Invoice</Link>
       </div>
 
       <div className="bg-white border rounded-xl p-4">

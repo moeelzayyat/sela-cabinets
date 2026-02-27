@@ -11,7 +11,7 @@ import { trackCallClick, trackBookClick } from '@/lib/analytics'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -29,19 +29,14 @@ export function Header() {
     }
   }, [pathname])
 
-  const handleCallClick = () => {
-    trackCallClick()
-  }
-
-  const handleBookClick = () => {
-    trackBookClick('header')
-  }
+  const handleCallClick = () => trackCallClick()
+  const handleBookClick = () => trackBookClick('header')
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-charcoal-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="container-wide">
-        <div className="flex h-[72px] items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
+        <div className="flex h-[72px] items-center justify-between gap-4">
+          <Link href="/" className="flex items-center space-x-2 shrink-0">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-charcoal-900">
               <span className="font-display text-lg font-bold text-white">★</span>
             </div>
@@ -51,13 +46,13 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-1 lg:flex flex-1 justify-center">
             {siteConfig.navigation.main.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+                  'rounded-md px-3 py-2 text-sm font-medium transition-colors',
                   pathname === item.href
                     ? 'bg-charcoal-100 text-charcoal-900'
                     : 'text-charcoal-600 hover:bg-charcoal-50 hover:text-charcoal-900'
@@ -68,27 +63,25 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
-            {isAuthenticated ? (
-              <>
-                <Link href="/account" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900">Client Portal</Link>
-                <Link href="/account/logout" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900">Logout</Link>
-              </>
-            ) : (
-              <>
-                <Link href="/account/login" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900">Login</Link>
-                <Link href="/account/register" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900">Register</Link>
-              </>
+          <div className="hidden items-center gap-2 lg:flex shrink-0">
+            <Link href="/account" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900 px-2">
+              Client Portal
+            </Link>
+            {isAuthenticated && (
+              <Link href="/account/logout" className="text-sm font-medium text-charcoal-700 hover:text-charcoal-900 px-2">
+                Logout
+              </Link>
             )}
 
             <a
               href={siteConfig.phoneLink}
               onClick={handleCallClick}
-              className="flex items-center gap-2 text-sm font-semibold text-charcoal-700 transition-colors hover:text-charcoal-900"
+              className="hidden xl:flex items-center gap-2 text-sm font-semibold text-charcoal-700 transition-colors hover:text-charcoal-900 px-2"
             >
               <Phone className="h-4 w-4" />
               {siteConfig.phoneFormatted}
             </a>
+
             <Link href="/estimate">
               <Button variant="outline" size="sm">Get an Estimate</Button>
             </Link>
@@ -123,16 +116,10 @@ export function Header() {
                 </Link>
               ))}
               <div className="mt-4 flex flex-col gap-2 px-4">
-                {isAuthenticated ? (
-                  <>
-                    <Link href="/account" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="outline" className="w-full">Client Portal</Button>
-                    </Link>
-                    <Link href="/account/logout" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="outline" className="w-full">Logout</Button>
-                    </Link>
-                  </>
-                ) : (
+                <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">Client Portal</Button>
+                </Link>
+                {!isAuthenticated && (
                   <>
                     <Link href="/account/login" onClick={() => setIsMenuOpen(false)}>
                       <Button variant="outline" className="w-full">Login</Button>
@@ -141,6 +128,11 @@ export function Header() {
                       <Button variant="outline" className="w-full">Register</Button>
                     </Link>
                   </>
+                )}
+                {isAuthenticated && (
+                  <Link href="/account/logout" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="w-full">Logout</Button>
+                  </Link>
                 )}
                 <Link href="/estimate" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="outline" className="w-full">Get an Estimate</Button>

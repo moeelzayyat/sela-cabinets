@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
   const clientId = process.env.GOOGLE_CLIENT_ID
 
   if (!clientId) {
-    return NextResponse.redirect(new URL('/admin/login?error=google_not_configured', request.url))
+    const baseUrl = getBaseUrl(request)
+    return NextResponse.redirect(new URL('/admin/login?error=google_not_configured', baseUrl))
   }
 
   const state = randomBytes(16).toString('hex')

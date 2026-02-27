@@ -25,19 +25,19 @@ export async function GET(request: NextRequest) {
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 
     if (!clientId || !clientSecret) {
-      return NextResponse.redirect(new URL('/admin/login?error=google_not_configured', request.url))
+      const baseUrl = getBaseUrl(request)
+      return NextResponse.redirect(new URL('/admin/login?error=google_not_configured', baseUrl))
     }
 
     const url = request.nextUrl
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
     const cookieState = request.cookies.get('admin_google_state')?.value
+    const baseUrl = getBaseUrl(request)
 
     if (!code || !state || !cookieState || state !== cookieState) {
-      return NextResponse.redirect(new URL('/admin/login?error=invalid_google_state', request.url))
+      return NextResponse.redirect(new URL('/admin/login?error=invalid_google_state', baseUrl))
     }
-
-    const baseUrl = getBaseUrl(request)
     const redirectUri = `${baseUrl}/api/admin/google/callback`
 
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -53,14 +53,14 @@ export async function GET(request: NextRequest) {
     })
 
     if (!tokenRes.ok) {
-      return NextResponse.redirect(new URL('/admin/login?error=google_token_exchange_failed', request.url))
+      return NextResponse.redirect(new URL('/admin/login?error=google_token_exchange_failed', baseUrl))
     }
 
     const tokenJson = await tokenRes.json()
     const idToken = tokenJson.id_token as string | undefined
 
     if (!idToken) {
-      return NextResponse.redirect(new URL('/admin/login?error=missing_google_id_token', request.url))
+      return NextResponse.redirect(new URL('/admin/login?error=missing_google_id_token', baseUrl))
     }
 
     const { payload } = await jwtVerify(idToken, GOOGLE_JWKS, {
@@ -72,12 +72,12 @@ export async function GET(request: NextRequest) {
     const emailVerified = payload.email_verified === true
 
     if (!email || !emailVerified) {
-      return NextResponse.redirect(new URL('/admin/login?error=google_email_not_verified', request.url))
+      return NextResponse.redirect(new URL('/admin/login?error=google_email_not_verified', baseUrl))
     }
 
     const allowedEmails = getAllowedEmails()
     if (allowedEmails.length > 0 && !allowedEmails.includes(email)) {
-      return NextResponse.redirect(new URL('/admin/login?error=google_email_not_allowed', request.url))
+      return NextResponse.redirect(new URL('/admin/login?error=google_email_not_allowed', baseUrl))
     }
 
     await upsertGoogleAdminUser(email)
@@ -85,11 +85,12 @@ export async function GET(request: NextRequest) {
     const session = await createSession({ authenticated: true, email, provider: 'google' })
     await setAdminSession(session)
 
-    const response = NextResponse.redirect(new URL('/admin', request.url))
+    const response = NextResponse.redirect(new URL('/admin', baseUrl))
     response.cookies.delete('admin_google_state')
     return response
   } catch (error) {
     console.error('Google admin login callback error:', error)
-    return NextResponse.redirect(new URL('/admin/login?error=google_callback_failed', request.url))
+    const baseUrl = getBaseUrl(request)
+    return NextResponse.redirect(new URL('/admin/login?error=google_callback_failed', baseUrl))
   }
 }

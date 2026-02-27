@@ -42,9 +42,9 @@ export default async function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-slate-50 flex print:block print:bg-white">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col fixed h-full z-40">
+      <aside className="w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col fixed h-full z-40 print:hidden">
         {/* Logo */}
         <div className="p-6 border-b border-slate-700/50">
           <div className="flex items-center gap-3">
@@ -91,9 +91,9 @@ export default async function AdminLayout({
       </aside>
       
       {/* Main Content Area */}
-      <div className="flex-1 ml-64">
+      <div className="flex-1 ml-64 print:ml-0">
         {/* Top Header Bar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-30">
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-30 print:hidden">
           <div className="flex items-center gap-4">
             {/* Breadcrumb or page title will go here */}
           </div>
@@ -112,7 +112,7 @@ export default async function AdminLayout({
         </header>
         
         {/* Page Content */}
-        <main className="p-8">
+        <main className="p-8 print:p-0 print:m-0">
           {children}
         </main>
       </div>

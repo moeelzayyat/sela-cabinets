@@ -18,8 +18,12 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
   const { invoice, items, payments } = data
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 print:space-y-2 print:bg-white">
+      <div className="hidden print:block mb-4">
+        <h1 className="text-2xl font-bold">{invoice.invoice_number}</h1>
+        <p className="text-slate-500">{invoice.status}</p>
+      </div>
+      <div className="flex items-center justify-between print:hidden">
         <div>
           <h1 className="text-2xl font-bold">{invoice.invoice_number}</h1>
           <p className="text-slate-500">{invoice.status}</p>
@@ -30,7 +34,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
         </div>
       </div>
 
-      <div className="bg-white border rounded-xl p-6">
+      <div className="bg-white border rounded-xl p-6 print:border-0 print:rounded-none print:p-0">
         <div className="grid grid-cols-2 gap-6 text-sm">
           <div>
             <div className="font-semibold mb-2">Bill To</div>

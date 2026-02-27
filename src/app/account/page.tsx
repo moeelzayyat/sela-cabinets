@@ -13,7 +13,22 @@ export default async function AccountPage() {
      ORDER BY created_at DESC`,
     [session.email]
   )
-  const data = { jobs: result.rows }
+
+  let invoices: any[] = []
+  try {
+    const inv = await pool.query(
+      `SELECT id, invoice_number, status, issue_date, due_date, total, amount_paid, balance_due
+       FROM invoices
+       WHERE lower(customer_email) = lower($1)
+       ORDER BY created_at DESC`,
+      [session.email]
+    )
+    invoices = inv.rows
+  } catch {
+    invoices = []
+  }
+
+  const data = { jobs: result.rows, invoices }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -28,7 +43,8 @@ export default async function AccountPage() {
           </form>
         </div>
 
-        <div className="bg-white border rounded-xl overflow-hidden">
+        <div className="bg-white border rounded-xl overflow-hidden mb-6">
+          <div className="px-4 py-3 border-b bg-gray-50 font-semibold">Installations</div>
           <table className="w-full text-sm">
             <thead className="bg-gray-100">
               <tr>
@@ -49,6 +65,38 @@ export default async function AccountPage() {
                   <td className="p-3">{job.status || '—'}</td>
                   <td className="p-3">{job.start_date ? new Date(job.start_date).toLocaleDateString() : '—'}</td>
                   <td className="p-3">{job.address || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="bg-white border rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b bg-gray-50 font-semibold">Invoices</div>
+          <table className="w-full text-sm">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="text-left p-3">Invoice #</th>
+                <th className="text-left p-3">Status</th>
+                <th className="text-left p-3">Issue Date</th>
+                <th className="text-left p-3">Due Date</th>
+                <th className="text-left p-3">Total</th>
+                <th className="text-left p-3">Paid</th>
+                <th className="text-left p-3">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(data.invoices || []).length === 0 ? (
+                <tr><td className="p-4 text-gray-500" colSpan={7}>No invoices yet.</td></tr>
+              ) : (data.invoices || []).map((inv: any) => (
+                <tr key={inv.id} className="border-t">
+                  <td className="p-3 font-medium">{inv.invoice_number}</td>
+                  <td className="p-3">{inv.status}</td>
+                  <td className="p-3">{inv.issue_date ? new Date(inv.issue_date).toLocaleDateString() : '—'}</td>
+                  <td className="p-3">{inv.due_date ? new Date(inv.due_date).toLocaleDateString() : '—'}</td>
+                  <td className="p-3">${Number(inv.total || 0).toLocaleString()}</td>
+                  <td className="p-3">${Number(inv.amount_paid || 0).toLocaleString()}</td>
+                  <td className="p-3">${Number(inv.balance_due || 0).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>

@@ -24,6 +24,7 @@ const navItems = [
   { href: '/admin/leads', label: 'Leads', icon: Users },
   { href: '/admin/calendar', label: 'Calendar', icon: Calendar },
   { href: '/admin/quotes', label: 'Quotes', icon: FileText },
+  { href: '/admin/invoices', label: 'Invoices', icon: DollarSign },
   { href: '/admin/installations', label: 'Installs', icon: Wrench },
   { href: '/admin/contacts', label: 'Contacts', icon: BookUser },
   { href: '/admin/products', label: 'Products', icon: Package },

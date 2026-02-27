@@ -86,14 +86,17 @@ export async function createUser(email: string, password: string, fullName?: str
   return result.rows[0] || null
 }
 
-export async function upsertGoogleUser(email: string, isAdmin = false) {
+export async function upsertGoogleUser(email: string, isAdmin = false, fullName?: string) {
   await ensureAdminUsersTable()
   const result = await pool.query(
-    `INSERT INTO admin_users (email, provider, is_admin)
-     VALUES ($1, 'google', $2)
-     ON CONFLICT (email) DO UPDATE SET provider = 'google'
+    `INSERT INTO admin_users (email, full_name, provider, is_admin)
+     VALUES ($1, $2, 'google', $3)
+     ON CONFLICT (email) DO UPDATE SET
+       provider = 'google',
+       full_name = COALESCE(admin_users.full_name, EXCLUDED.full_name),
+       is_admin = CASE WHEN $3 = true THEN true ELSE admin_users.is_admin END
      RETURNING id, email, full_name, phone, password_hash, provider, is_admin, created_at`,
-    [email.toLowerCase().trim(), isAdmin]
+    [email.toLowerCase().trim(), fullName || null, isAdmin]
   )
   return result.rows[0] || null
 }

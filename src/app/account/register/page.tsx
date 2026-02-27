@@ -46,6 +46,7 @@ export default function AccountRegisterPage() {
         <input className="w-full border rounded px-3 py-2" type="password" placeholder="Confirm password" value={confirm} onChange={e=>setConfirm(e.target.value)} required />
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button disabled={loading} className="w-full bg-amber-600 text-white py-2 rounded">{loading ? 'Creating...' : 'Register'}</button>
+        <a href="/api/auth/google/start" className="block w-full text-center border rounded py-2 hover:bg-gray-50">Continue with Google</a>
         <p className="text-sm text-gray-600 text-center">Already have an account? <a className="text-amber-700" href="/account/login">Login</a></p>
       </form>
     </div>

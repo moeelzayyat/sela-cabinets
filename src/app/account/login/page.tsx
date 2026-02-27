@@ -39,6 +39,7 @@ export default function AccountLoginPage() {
         <input className="w-full border rounded px-3 py-2" type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required />
         {error && <p className="text-red-600 text-sm">{error}</p>}
         <button disabled={loading} className="w-full bg-amber-600 text-white py-2 rounded">{loading ? 'Signing in...' : 'Sign In'}</button>
+        <a href="/api/auth/google/start" className="block w-full text-center border rounded py-2 hover:bg-gray-50">Continue with Google</a>
         <p className="text-sm text-gray-600 text-center">No account? <a className="text-amber-700" href="/account/register">Register</a></p>
       </form>
     </div>

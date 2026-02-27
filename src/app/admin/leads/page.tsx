@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { 
   Plus, 
   Phone, 
@@ -158,7 +158,7 @@ export default function LeadsKanban() {
     } finally {
       setLoading(false)
     }
-  }, [statusFilter, sourceFilter])
+  }, [])
 
   const fetchLeadDetails = async (leadId: number) => {
     setLoadingActivities(true)

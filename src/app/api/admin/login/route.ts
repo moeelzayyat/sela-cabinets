@@ -1,29 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession, setAdminSession } from '@/lib/auth'
+import { findAdminByEmail, passwordMatches } from '@/lib/admin-users'
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sela2024'
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'info@selatrade.com').toLowerCase().trim()
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { password } = body
+    const email = (body?.email || '').toLowerCase().trim()
+    const password = body?.password
 
-    if (!password) {
+    if (!email || !password) {
       return NextResponse.json(
-        { success: false, error: 'Password is required' },
+        { success: false, error: 'Email and password are required' },
         { status: 400 }
       )
     }
 
-    if (password !== ADMIN_PASSWORD) {
+    const user = await findAdminByEmail(email)
+
+    const validDbLogin = !!user && user.provider === 'password' && passwordMatches(password, user.password_hash)
+    const validFallbackLogin = email === ADMIN_EMAIL && password === ADMIN_PASSWORD
+
+    if (!validDbLogin && !validFallbackLogin) {
       return NextResponse.json(
-        { success: false, error: 'Invalid password' },
+        { success: false, error: 'Invalid email or password' },
         { status: 401 }
       )
     }
 
     // Create session token
-    const token = await createSession()
+    const token = await createSession({ authenticated: true, email, provider: 'password' })
     
     // Set session cookie
     await setAdminSession(token)

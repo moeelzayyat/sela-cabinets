@@ -192,7 +192,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-          <p className="text-slate-500 mt-1">Welcome back, Way. Here's what's happening today.</p>
+          <p className="text-slate-500 mt-1">Welcome back, Way. Here&apos;s what&apos;s happening today.</p>
         </div>
         <button
           onClick={fetchDashboardData}

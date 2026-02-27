@@ -12,6 +12,7 @@ export async function middleware(request: NextRequest) {
   // Only protect /admin routes (but not /admin/login or /admin/api)
   if (pathname.startsWith('/admin') && 
       !pathname.startsWith('/admin/login') && 
+      !pathname.startsWith('/admin/register') && 
       !pathname.startsWith('/admin/api')) {
     
     const token = request.cookies.get('admin_session')?.value

@@ -7,11 +7,13 @@ const SECRET_KEY = new TextEncoder().encode(
 
 export interface AdminSession {
   authenticated: boolean
+  email?: string
+  provider?: 'password' | 'google'
   exp?: number
 }
 
-export async function createSession(): Promise<string> {
-  const token = await new SignJWT({ authenticated: true })
+export async function createSession(payload: AdminSession = { authenticated: true }): Promise<string> {
+  const token = await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('24h')
     .sign(SECRET_KEY)

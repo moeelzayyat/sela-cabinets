@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Lock, AlertCircle } from 'lucide-react'
+import { Lock, AlertCircle, Mail } from 'lucide-react'
 
 export default function AdminLoginPage() {
   const router = useRouter()
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -19,7 +20,7 @@ export default function AdminLoginPage() {
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
@@ -49,9 +50,28 @@ export default function AdminLoginPage() {
         </div>
 
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Admin Email
+            </label>
+            <div className="relative">
+              <Mail className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+                placeholder="you@company.com"
+                required
+                autoFocus
+              />
+            </div>
+          </div>
+
           <div className="mb-6">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Admin Password
+              Password
             </label>
             <input
               type="password"
@@ -61,7 +81,6 @@ export default function AdminLoginPage() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
               placeholder="Enter admin password"
               required
-              autoFocus
             />
           </div>
 
@@ -74,16 +93,24 @@ export default function AdminLoginPage() {
 
           <button
             type="submit"
-            disabled={loading || !password}
+            disabled={loading || !email || !password}
             className="w-full bg-amber-700 text-white py-3 rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign In with Email'}
           </button>
+
+          <a
+            href="/api/admin/google/start"
+            className="mt-3 block w-full border border-gray-300 text-gray-800 py-3 rounded-lg hover:bg-gray-50 font-medium transition text-center"
+          >
+            Continue with Google
+          </a>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Contact administrator for access credentials
-        </p>
+        <div className="mt-6 text-center text-sm text-gray-500">
+          <p>Don&apos;t have an account yet?</p>
+          <a href="/admin/register" className="text-amber-700 hover:text-amber-800 font-medium">Create one now</a>
+        </div>
       </div>
     </div>
   )

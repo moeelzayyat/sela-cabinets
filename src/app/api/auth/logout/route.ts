@@ -1,7 +1,13 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { clearUserSession } from '@/lib/user-auth'
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   await clearUserSession()
-  return NextResponse.json({ success: true })
+
+  const accept = request.headers.get('accept') || ''
+  if (accept.includes('application/json')) {
+    return NextResponse.json({ success: true })
+  }
+
+  return NextResponse.redirect(new URL('/account/login', request.url))
 }

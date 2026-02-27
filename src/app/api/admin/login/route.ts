@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession, setAdminSession } from '@/lib/auth'
-import { findAdminByEmail, passwordMatches } from '@/lib/admin-users'
+import { findUserByEmail, passwordMatches } from '@/lib/admin-users'
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sela2024'
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'info@selatrade.com').toLowerCase().trim()
@@ -18,9 +18,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const user = await findAdminByEmail(email)
+    const user = await findUserByEmail(email)
 
-    const validDbLogin = !!user && user.provider === 'password' && passwordMatches(password, user.password_hash)
+    const validDbLogin = !!user && user.is_admin && user.provider === 'password' && passwordMatches(password, user.password_hash)
     const validFallbackLogin = email === ADMIN_EMAIL && password === ADMIN_PASSWORD
 
     if (!validDbLogin && !validFallbackLogin) {

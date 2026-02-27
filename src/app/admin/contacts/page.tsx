@@ -16,6 +16,16 @@ interface Contact {
   created_at: string
 }
 
+interface RegisteredUser {
+  id: number
+  email: string
+  full_name: string | null
+  phone: string | null
+  provider: 'password' | 'google'
+  is_admin: boolean
+  created_at: string
+}
+
 const contactTypes = [
   { value: 'customer', label: 'Past Customer', icon: '👤', color: 'emerald' },
   { value: 'supplier', label: 'Supplier', icon: '📦', color: 'blue' },
@@ -36,6 +46,7 @@ const typeColors: Record<string, { bg: string; text: string }> = {
 
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([])
+  const [users, setUsers] = useState<RegisteredUser[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState('')
@@ -55,6 +66,7 @@ export default function ContactsPage() {
 
   useEffect(() => {
     fetchContacts()
+    fetchUsers()
   }, [typeFilter])
 
   const fetchContacts = async () => {
@@ -71,6 +83,29 @@ export default function ContactsPage() {
       console.error('Error fetching contacts:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch('/api/admin/users')
+      const data = await res.json()
+      setUsers(data.users || [])
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  const toggleAdminAccess = async (user: RegisteredUser) => {
+    try {
+      await fetch(`/api/admin/users/${user.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isAdmin: !user.is_admin })
+      })
+      fetchUsers()
+    } catch (error) {
+      console.error('Error updating admin access:', error)
     }
   }
 
@@ -216,6 +251,32 @@ export default function ContactsPage() {
             Search
           </button>
         </form>
+      </div>
+
+      {/* Registered Website Users */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold text-slate-900">Registered Website Users</h2>
+          <span className="text-sm text-slate-500">{users.length} users</span>
+        </div>
+        <div className="space-y-2">
+          {users.length === 0 ? (
+            <p className="text-sm text-slate-500">No registered users yet.</p>
+          ) : users.map(user => (
+            <div key={user.id} className="flex items-center justify-between border border-slate-200 rounded-lg p-3">
+              <div>
+                <div className="font-medium text-slate-900">{user.full_name || 'Unnamed User'} <span className="text-xs text-slate-500">({user.provider})</span></div>
+                <div className="text-sm text-slate-600">{user.email}{user.phone ? ` • ${user.phone}` : ''}</div>
+              </div>
+              <button
+                onClick={() => toggleAdminAccess(user)}
+                className={`px-3 py-1.5 text-xs rounded-lg ${user.is_admin ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'}`}
+              >
+                {user.is_admin ? 'Revoke Admin' : 'Grant Admin'}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Stats */}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify, createRemoteJWKSet } from 'jose'
 import { createSession, setAdminSession } from '@/lib/auth'
-import { upsertGoogleAdminUser } from '@/lib/admin-users'
+import { upsertGoogleUser } from '@/lib/admin-users'
 
 const GOOGLE_JWKS = createRemoteJWKSet(new URL('https://www.googleapis.com/oauth2/v3/certs'))
 
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/admin/login?error=google_email_not_allowed', baseUrl))
     }
 
-    await upsertGoogleAdminUser(email)
+    await upsertGoogleUser(email, true)
 
     const session = await createSession({ authenticated: true, email, provider: 'google' })
     await setAdminSession(session)

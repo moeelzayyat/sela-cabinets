@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAdminUser, findAdminByEmail } from '@/lib/admin-users'
+import { createUser, findUserByEmail } from '@/lib/admin-users'
 import { createSession, setAdminSession } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
@@ -18,12 +18,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Password must be at least 8 characters' }, { status: 400 })
     }
 
-    const exists = await findAdminByEmail(email)
+    const exists = await findUserByEmail(email)
     if (exists) {
       return NextResponse.json({ success: false, error: 'Email already registered' }, { status: 409 })
     }
 
-    const user = await createAdminUser(email, password)
+    const allowedEmail = (process.env.ADMIN_EMAIL || '').toLowerCase().trim()
+    if (allowedEmail && email !== allowedEmail) {
+      return NextResponse.json({ success: false, error: 'Not allowed to self-register as admin' }, { status: 403 })
+    }
+
+    const user = await createUser(email, password, undefined, undefined, true)
     if (!user) {
       return NextResponse.json({ success: false, error: 'Failed to create account' }, { status: 500 })
     }

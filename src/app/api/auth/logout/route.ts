@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { clearUserSession } from '@/lib/user-auth'
+import { getAppBaseUrl } from '@/lib/url'
 
 export async function POST(request: NextRequest) {
   await clearUserSession()
@@ -9,5 +10,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   }
 
-  return NextResponse.redirect(new URL('/', request.url))
+  const baseUrl = getAppBaseUrl(request.nextUrl.origin)
+  return NextResponse.redirect(new URL('/', baseUrl))
 }

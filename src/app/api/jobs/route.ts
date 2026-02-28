@@ -56,6 +56,97 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Helper to ensure appointments table has job_id column
+async function ensureJobIdColumn() {
+  try {
+    await pool.query(`
+      ALTER TABLE appointments 
+      ADD COLUMN IF NOT EXISTS job_id UUID
+    `)
+  } catch (error) {
+    // Column might already exist, ignore
+  }
+}
+
+// Helper to create calendar appointment from job
+async function createJobAppointment(job: any, leadName?: string) {
+  if (!job.start_date) return null
+  
+  await ensureJobIdColumn()
+  
+  const eventTitle = `Installation: ${leadName || job.job_number || 'New Job'}`
+  
+  const result = await pool.query(`
+    INSERT INTO appointments (
+      title, appointment_date, end_time, all_day, event_type,
+      notes, crew_members, lead_id, job_id, appointment_type, status
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'scheduled')
+    RETURNING *
+  `, [
+    eventTitle,
+    job.start_date,
+    null, // end_time - could calculate if needed
+    true, // all_day for installations
+    'installation',
+    job.notes || `Job: ${job.job_number}${job.order_details ? '\n\n' + job.order_details : ''}`,
+    job.crew_members || [],
+    job.lead_id,
+    job.id,
+    'in-home'
+  ])
+  
+  return result.rows[0]
+}
+
+// Helper to update calendar appointment when job changes
+async function updateJobAppointment(jobId: string, job: any, leadName?: string) {
+  await ensureJobIdColumn()
+  
+  // Check if appointment exists for this job
+  const existingResult = await pool.query(
+    'SELECT id FROM appointments WHERE job_id = $1',
+    [jobId]
+  )
+  
+  if (job.start_date) {
+    const eventTitle = `Installation: ${leadName || job.job_number || 'Job'}`
+    
+    if (existingResult.rows.length > 0) {
+      // Update existing appointment
+      await pool.query(`
+        UPDATE appointments SET
+          title = $1,
+          appointment_date = $2,
+          notes = $3,
+          crew_members = $4,
+          status = CASE 
+            WHEN $5 = 'completed' THEN 'completed'
+            WHEN $5 = 'cancelled' THEN 'cancelled'
+            ELSE 'scheduled'
+          END,
+          updated_at = now()
+        WHERE job_id = $6
+      `, [
+        eventTitle,
+        job.start_date,
+        job.notes || `Job: ${job.job_number}${job.order_details ? '\n\n' + job.order_details : ''}`,
+        job.crew_members || [],
+        job.status,
+        jobId
+      ])
+    } else {
+      // Create new appointment if job has a date but no appointment exists
+      await createJobAppointment(job, leadName)
+    }
+  } else if (existingResult.rows.length > 0) {
+    // Job no longer has a date, cancel the appointment
+    await pool.query(
+      "UPDATE appointments SET status = 'cancelled', updated_at = now() WHERE job_id = $1",
+      [jobId]
+    )
+  }
+}
+
 // POST /api/jobs - Create new job
 export async function POST(request: NextRequest) {
   try {
@@ -85,10 +176,12 @@ export async function POST(request: NextRequest) {
     }
     
     // Get lead info if not provided
-    if (leadId && (!address || !customerPhone)) {
+    let leadName: string | undefined
+    if (leadId) {
       const leadResult = await pool.query('SELECT * FROM leads WHERE id = $1', [leadId])
       if (leadResult.rows[0]) {
         const lead = leadResult.rows[0]
+        leadName = lead.name
         if (!address) data.address = `${lead.address || ''} ${lead.city || ''}`.trim()
         if (!customerPhone) data.customerPhone = lead.phone
         if (!customerEmail) data.customerEmail = lead.email
@@ -108,7 +201,14 @@ export async function POST(request: NextRequest) {
       totalAmount, notes
     ])
     
-    return NextResponse.json({ job: result.rows[0] }, { status: 201 })
+    const job = result.rows[0]
+    
+    // Automatically create calendar appointment if job has a start date
+    if (startDate) {
+      await createJobAppointment(job, leadName)
+    }
+    
+    return NextResponse.json({ job }, { status: 201 })
   } catch (error) {
     console.error('Error creating job:', error)
     return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })

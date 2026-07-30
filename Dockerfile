@@ -18,6 +18,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 RUN npm run build
 
+# Next standalone output does not include browser assets automatically.
+RUN cp -r /app/.next/static /app/.next/standalone/.next/static && \
+    cp -r /app/public /app/.next/standalone/public
+
 # Copy pdfkit font files to the standalone build location
 RUN mkdir -p /app/.next/server/chunks/data && \
     cp /app/node_modules/pdfkit/js/data/* /app/.next/server/chunks/data/ 2>/dev/null || true

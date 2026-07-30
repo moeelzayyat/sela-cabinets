@@ -8,7 +8,7 @@ COPY package*.json ./
 
 # Install dependencies with memory optimization
 ENV NODE_OPTIONS="--max-old-space-size=2048"
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+RUN if [ -f package-lock.json ]; then npm ci --include=dev; else npm install --include=dev; fi
 
 # Copy source code
 COPY . .

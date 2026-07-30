@@ -1,5 +1,5 @@
 # Simple single-stage build for SELA Cabinets
-FROM node:20
+FROM node:22
 
 WORKDIR /app
 

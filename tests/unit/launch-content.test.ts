@@ -29,9 +29,10 @@ describe('launch messaging and inspiration claims', () => {
       label: 'Style Inspiration',
       href: '/gallery',
     })
-    expect(siteConfig.navigation.main).not.toContainEqual(
-      expect.objectContaining({ href: '/products' })
-    )
+    expect(siteConfig.navigation.main).toContainEqual({
+      label: 'Cabinet Styles',
+      href: '/products',
+    })
   })
 
   it('does not represent inspiration images as completed local projects', () => {
@@ -85,7 +86,7 @@ describe('launch messaging and inspiration claims', () => {
 
     expect(catalogSource).not.toMatch(/aline|supplier|https?:\/\//i)
     expect(nextConfig).not.toMatch(/aline|shop\.aline/i)
-    expect(catalogSource).toMatch(/framed:\s*\[\]/)
-    expect(catalogSource).toMatch(/frameless:\s*\[\]/)
+    expect(catalogSource).toMatch(/Shaker Charcoal/)
+    expect(catalogSource).toMatch(/Matte Ivory/)
   })
 })

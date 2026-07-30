@@ -5,6 +5,7 @@ import { siteConfig } from '@/config/site'
 const launchRoutes = [
   '/',
   '/services',
+  '/products',
   '/pricing',
   '/gallery',
   '/about',

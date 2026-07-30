@@ -17,11 +17,7 @@ export async function middleware(request: NextRequest) {
   const normalizedPathname =
     pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
 
-  if (
-    DISABLED_PUBLIC_PATHS.has(normalizedPathname) ||
-    normalizedPathname === '/products' ||
-    normalizedPathname.startsWith('/products/')
-  ) {
+  if (DISABLED_PUBLIC_PATHS.has(normalizedPathname)) {
     return new NextResponse(null, {
       status: 404,
       headers: {
@@ -61,5 +57,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/account/:path*', '/products/:path*', '/api/chat'],
+  matcher: ['/admin/:path*', '/account/:path*', '/api/chat'],
 }

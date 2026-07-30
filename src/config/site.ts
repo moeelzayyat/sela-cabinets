@@ -125,6 +125,7 @@ export const siteConfig = {
     main: [
       { label: 'Home', href: '/' },
       { label: 'Services', href: '/services' },
+      { label: 'Cabinet Styles', href: '/products' },
       { label: 'Style Inspiration', href: '/gallery' },
       { label: 'About', href: '/about' },
       { label: 'FAQs', href: '/faqs' },

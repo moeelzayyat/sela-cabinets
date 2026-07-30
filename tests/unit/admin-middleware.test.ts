@@ -57,8 +57,6 @@ describe('admin page middleware', () => {
     '/account',
     '/account/login',
     '/account/register',
-    '/products',
-    '/products/shaker-white',
     '/api/chat',
   ])('returns an exact 404 for disabled public surface %s', async (pathname) => {
     const response = await middleware(publicRequest(pathname))
@@ -68,11 +66,17 @@ describe('admin page middleware', () => {
     expect(response.headers.get('x-robots-tag')).toBe('noindex, nofollow')
   })
 
+  it('allows the published cabinet catalog page', async () => {
+    const response = await middleware(publicRequest('/products'))
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('x-middleware-next')).toBe('1')
+  })
+
   it('matches all protected and disabled route families', () => {
     expect(config.matcher).toEqual([
       '/admin/:path*',
       '/account/:path*',
-      '/products/:path*',
       '/api/chat',
     ])
   })

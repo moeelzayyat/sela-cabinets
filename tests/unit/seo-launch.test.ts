@@ -12,6 +12,7 @@ const source = (...parts: string[]) =>
 const visibleRoutes = [
   '/',
   '/services',
+  '/products',
   '/pricing',
   '/gallery',
   '/about',
@@ -26,6 +27,7 @@ const visibleRoutes = [
 const metadataFiles: Record<(typeof visibleRoutes)[number], string[]> = {
   '/': ['page.tsx'],
   '/services': ['services', 'page.tsx'],
+  '/products': ['products', 'page.tsx'],
   '/pricing': ['pricing', 'page.tsx'],
   '/gallery': ['gallery', 'page.tsx'],
   '/about': ['about', 'page.tsx'],
@@ -49,7 +51,7 @@ describe('launch SEO surface', () => {
     )
 
     expect(urls).toEqual(expected)
-    expect(urls.join('\n')).not.toMatch(/products|service-areas|\/locations\//)
+    expect(urls.join('\n')).not.toMatch(/service-areas|\/locations\//)
   })
 
   it('does not block Next assets and disallows disabled/private surfaces', () => {
@@ -60,7 +62,7 @@ describe('launch SEO surface', () => {
     expect(serialized).toContain('/api/')
     expect(serialized).toContain('/admin/')
     expect(serialized).toContain('/account/')
-    expect(serialized).toContain('/products')
+    expect(serialized).not.toContain('/products')
   })
 
   it('does not apply the homepage canonical globally', () => {

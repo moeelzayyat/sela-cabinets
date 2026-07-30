@@ -5,6 +5,7 @@ export const serverEnv = parseServerEnv({
   ADMIN_SECRET: process.env.ADMIN_SECRET,
   USER_AUTH_SECRET: process.env.USER_AUTH_SECRET,
   DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE_CA_CERT: process.env.DATABASE_CA_CERT,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,

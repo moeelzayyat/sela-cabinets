@@ -5,6 +5,7 @@ export interface ServerEnvironment {
   ADMIN_SECRET: string
   USER_AUTH_SECRET: string
   DATABASE_URL?: string
+  DATABASE_CA_CERT?: string
   NEXT_PUBLIC_APP_URL?: string
   GOOGLE_CLIENT_ID?: string
   GOOGLE_CLIENT_SECRET?: string
@@ -16,3 +17,5 @@ export interface ServerEnvironment {
 export function parseServerEnv(
   input: ServerEnvironmentInput
 ): ServerEnvironment
+
+export function usesVerifiedPostgresTls(value: string): boolean

@@ -44,7 +44,9 @@ describe('database configuration consumers', () => {
 
     expect(databaseSource).not.toMatch(/process\.env\.(?:DATABASE_URL|DB_\w+)/)
     expect(databaseSource).toMatch(/from ['"]@\/env\/server-runtime['"]/)
-    expect(databaseSource).toMatch(/connectionString:\s*serverEnv\.DATABASE_URL/)
+    expect(databaseSource).toMatch(/createPostgresPoolConfig\(/)
+    expect(databaseSource).toMatch(/serverEnv\.DATABASE_URL/)
+    expect(databaseSource).toMatch(/serverEnv\.DATABASE_CA_CERT/)
     expect(databaseSource).not.toMatch(/rejectUnauthorized:\s*false|ssl:\s*false/)
 
     expect(adminDatabaseSource).not.toMatch(/process\.env|new Pool|password\s*:/)

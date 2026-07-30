@@ -10,7 +10,7 @@ function isPostgresUrl(value) {
   }
 }
 
-function usesVerifiedPostgresTls(value) {
+export function usesVerifiedPostgresTls(value) {
   if (!isPostgresUrl(value)) return false
   if (
     value.trim() !== value ||
@@ -21,6 +21,10 @@ function usesVerifiedPostgresTls(value) {
   }
   const url = new URL(value)
   const hostname = url.hostname.replace(/^\[|\]$/g, '')
+  const lowerHostname = hostname.toLowerCase()
+  if (lowerHostname === 'localhost' || lowerHostname.endsWith('.localhost')) {
+    return false
+  }
   const labels = hostname.split('.')
   const validDnsHostname =
     hostname.length <= 253 &&
@@ -39,7 +43,11 @@ function usesVerifiedPostgresTls(value) {
     return false
   }
   const isIpv4Literal = /^\d{1,3}(?:\.\d{1,3}){3}$/.test(canonicalHostname)
-  return !isIpv4Literal && url.search === '?sslmode=verify-full'
+  return (
+    canonicalHostname === hostname &&
+    !isIpv4Literal &&
+    url.search === '?sslmode=verify-full'
+  )
 }
 
 function isSafePublicAppUrl(value) {
@@ -113,6 +121,7 @@ const serverEnvironmentBase = z.object({
   ADMIN_SECRET: z.string().trim().min(32),
   USER_AUTH_SECRET: z.string().trim().min(32),
   DATABASE_URL: z.string().optional(),
+  DATABASE_CA_CERT: z.string().trim().min(1).optional(),
   NEXT_PUBLIC_APP_URL: z.string().optional(),
   GOOGLE_CLIENT_ID: z.string().trim().optional(),
   GOOGLE_CLIENT_SECRET: z.string().trim().optional(),

@@ -1,10 +1,14 @@
 import { Pool } from 'pg'
 
 import { serverEnv } from '@/env/server-runtime'
+import { createPostgresPoolConfig } from '@/lib/postgres-config'
 
-const pool = new Pool({
-  connectionString: serverEnv.DATABASE_URL,
-})
+const pool = new Pool(
+  createPostgresPoolConfig(
+    serverEnv.DATABASE_URL,
+    serverEnv.DATABASE_CA_CERT
+  )
+)
 
 export { pool }
 

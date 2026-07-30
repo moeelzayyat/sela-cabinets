@@ -36,7 +36,7 @@ export default function BirminghamPage() {
                   </Button>
                 </Link>
                 <a href={siteConfig.phoneLink}>
-                  <Button size="lg" variant="outline" className="border-white/50">
+                  <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white hover:text-charcoal-900">
                     <Phone className="mr-2 h-5 w-5" />
                     Call {siteConfig.phoneFormatted}
                   </Button>

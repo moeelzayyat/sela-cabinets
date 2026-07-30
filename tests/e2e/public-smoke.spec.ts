@@ -20,6 +20,7 @@ const launchRoutes = [
   '/estimate',
   '/blog',
   '/blog/kitchen-cabinet-costs-detroit',
+  '/locations/royal-oak',
 ] as const
 
 async function expectNoAxeViolations(page: Page, route: string) {

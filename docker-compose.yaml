@@ -1,0 +1,75 @@
+services:
+    cgog4w8wgsk0w4gogc4ocsco-224122747592:
+        image: 'cgog4w8wgsk0w4gogc4ocsco:6174036841f8a7f4338e1dab964c55f15b6afa87'
+        container_name: cgog4w8wgsk0w4gogc4ocsco-224122747592
+        restart: unless-stopped
+        expose:
+            - '3000'
+        networks:
+            coolify:
+                aliases:
+                    - cgog4w8wgsk0w4gogc4ocsco-224122747592
+        mem_limit: '0'
+        memswap_limit: '0'
+        mem_swappiness: 60
+        mem_reservation: '0'
+        cpus: 0.0
+        cpu_shares: 1024
+        env_file:
+            - .env
+        labels:
+            - traefik.enable=true
+            - traefik.http.middlewares.gzip.compress=true
+            - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+            - traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.entryPoints=http
+            - traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.middlewares=redirect-to-https
+            - 'traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.rule=Host(`selacabinets.com`) && PathPrefix(`/`)'
+            - traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.service=http-0-cgog4w8wgsk0w4gogc4ocsco
+            - traefik.http.routers.http-1-cgog4w8wgsk0w4gogc4ocsco.entryPoints=http
+            - traefik.http.routers.http-1-cgog4w8wgsk0w4gogc4ocsco.middlewares=redirect-to-https
+            - 'traefik.http.routers.http-1-cgog4w8wgsk0w4gogc4ocsco.rule=Host(`www.selacabinets.com`) && PathPrefix(`/`)'
+            - traefik.http.routers.http-1-cgog4w8wgsk0w4gogc4ocsco.service=http-1-cgog4w8wgsk0w4gogc4ocsco
+            - traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.entryPoints=https
+            - traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.middlewares=gzip
+            - 'traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.rule=Host(`selacabinets.com`) && PathPrefix(`/`)'
+            - traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.service=https-0-cgog4w8wgsk0w4gogc4ocsco
+            - traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.tls.certresolver=letsencrypt
+            - traefik.http.routers.https-0-cgog4w8wgsk0w4gogc4ocsco.tls=true
+            - traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.entryPoints=https
+            - traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.middlewares=gzip
+            - 'traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.rule=Host(`www.selacabinets.com`) && PathPrefix(`/`)'
+            - traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.service=https-1-cgog4w8wgsk0w4gogc4ocsco
+            - traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.tls.certresolver=letsencrypt
+            - traefik.http.routers.https-1-cgog4w8wgsk0w4gogc4ocsco.tls=true
+            - traefik.http.services.http-0-cgog4w8wgsk0w4gogc4ocsco.loadbalancer.server.port=3000
+            - traefik.http.services.http-1-cgog4w8wgsk0w4gogc4ocsco.loadbalancer.server.port=3000
+            - traefik.http.services.https-0-cgog4w8wgsk0w4gogc4ocsco.loadbalancer.server.port=3000
+            - traefik.http.services.https-1-cgog4w8wgsk0w4gogc4ocsco.loadbalancer.server.port=3000
+            - 'caddy_0.encode=zstd gzip'
+            - 'caddy_0.handle_path.0_reverse_proxy={{upstreams 3000}}'
+            - 'caddy_0.handle_path=/*'
+            - caddy_0.header=-Server
+            - 'caddy_0.try_files={path} /index.html /index.php'
+            - 'caddy_0=https://selacabinets.com'
+            - 'caddy_1.encode=zstd gzip'
+            - 'caddy_1.handle_path.1_reverse_proxy={{upstreams 3000}}'
+            - 'caddy_1.handle_path=/*'
+            - caddy_1.header=-Server
+            - 'caddy_1.try_files={path} /index.html /index.php'
+            - 'caddy_1=https://www.selacabinets.com'
+            - caddy_ingress_network=coolify
+            - coolify.managed=true
+            - coolify.version=4.0.0-beta.462
+            - coolify.applicationId=4
+            - coolify.type=application
+            - coolify.name=cgog4w8wgsk0w4gogc4ocsco
+            - coolify.resourceName=sela-cabinets-website
+            - coolify.projectName=websites
+            - coolify.serviceName=sela-cabinets-website
+            - coolify.environmentName=production
+            - coolify.pullRequestId=0
+networks:
+    coolify:
+        external: true
+        name: coolify
+        attachable: true

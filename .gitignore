@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js
+.next/
+.next-playwright/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Production/build artifacts
+dist/
+build/
+coverage/
+*.log
+*.err
+logs/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.example.*
+!.env.sample
+!.env.sample.*
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local handoff/audit scratch
+.ui-audit/
+tmp/
+temp/
+*.bak
+*.backup
+.nixpacks/

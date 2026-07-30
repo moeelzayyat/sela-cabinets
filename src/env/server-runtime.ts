@@ -1,0 +1,14 @@
+import { parseServerEnv } from './server'
+
+export const serverEnv = parseServerEnv({
+  NODE_ENV: process.env.NODE_ENV,
+  ADMIN_SECRET: process.env.ADMIN_SECRET,
+  USER_AUTH_SECRET: process.env.USER_AUTH_SECRET,
+  DATABASE_URL: process.env.DATABASE_URL,
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  ADMIN_GOOGLE_EMAILS: process.env.ADMIN_GOOGLE_EMAILS,
+  SELA_AUTH_CONTRACT_USER_ID: process.env.SELA_AUTH_CONTRACT_USER_ID,
+  ENABLE_CUSTOMER_PORTAL: process.env.ENABLE_CUSTOMER_PORTAL,
+})

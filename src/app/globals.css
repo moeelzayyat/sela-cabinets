@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-main: #F8F5EF;
+    --bg-soft: #EFE6D8;
+    --surface: #FFFFFF;
+    --text-main: #1F2933;
+    --text-muted: #5F6B73;
+    --primary-hex: #1F5F5B;
+    --primary-hover: #184A47;
+    --accent-hex: #B96A45;
+    --accent-soft: #F1D8CB;
+    --dark: #16232E;
+    --border-hex: #D8D0C3;
+
+    --background: 40 39% 95%;
+    --foreground: 210 24% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 24% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 24% 16%;
+
+    --primary: 176 51% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 34 35% 89%;
+    --secondary-foreground: 210 24% 16%;
+
+    --muted: 34 35% 89%;
+    --muted-foreground: 203 9% 41%;
+
+    --accent: 19 46% 50%;
+    --accent-foreground: 40 39% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 17% 81%;
+    --input: 36 17% 81%;
+    --ring: 176 51% 25%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .text-gradient {
+    @apply text-charcoal-900;
+  }
+
+  .wood-grain-bg {
+    background-color: #efe6d8;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(248, 245, 239, 0.62));
+    background-repeat: repeat;
+  }
+}
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Selection color */
+::selection {
+  @apply bg-wood-200 text-charcoal-950;
+}
+
+/* Calendly embed container */
+.calendly-inline-widget {
+  min-width: 320px;
+  height: 700px;
+}
+
+@media (max-width: 640px) {
+  .calendly-inline-widget {
+    height: 1000px;
+  }
+}

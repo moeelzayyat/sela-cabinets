@@ -1,0 +1,101 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { withAdminSession } from '@/lib/api-authorization'
+import { pool } from '@/lib/db'
+
+async function GETHandler(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 100
+    
+    const client = await pool.connect()
+    try {
+      // Get recent chat sessions with message counts
+      const sessionsResult = await client.query(`
+        SELECT 
+          cs.session_id,
+          cs.first_message_at,
+          cs.last_message_at,
+          cs.message_count,
+          cs.lead_captured,
+          cs.contact_info,
+          (
+            SELECT message 
+            FROM chat_messages cm 
+            WHERE cm.session_id = cs.session_id 
+            AND cm.sender = 'user'
+            ORDER BY cm.created_at ASC 
+            LIMIT 1
+          ) as first_user_message
+        FROM chat_sessions cs
+        ORDER BY cs.last_message_at DESC
+        LIMIT $1
+      `, [limit])
+
+      // Get recent messages
+      const messagesResult = await client.query(`
+        SELECT 
+          session_id,
+          message,
+          sender,
+          created_at
+        FROM chat_messages
+        ORDER BY created_at DESC
+        LIMIT 500
+      `)
+
+      // Get stats
+      const statsResult = await client.query(`
+        SELECT 
+          COUNT(DISTINCT session_id) as total_sessions,
+          COUNT(*) as total_messages,
+          COUNT(CASE WHEN sender = 'user' THEN 1 END) as user_messages,
+          COUNT(CASE WHEN sender = 'bot' THEN 1 END) as bot_messages
+        FROM chat_messages
+      `)
+
+      return NextResponse.json({
+        sessions: sessionsResult.rows,
+        recentMessages: messagesResult.rows,
+        stats: statsResult.rows[0]
+      })
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error fetching chat logs:', error)
+    return NextResponse.json({ error: 'Failed to fetch chat logs' }, { status: 500 })
+  }
+}
+
+async function DELETEHandler(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const sessionId = searchParams.get('session_id')
+    const deleteAll = searchParams.get('all') === 'true'
+
+    const client = await pool.connect()
+    try {
+      if (deleteAll) {
+        // Delete all chat sessions and messages
+        await client.query('DELETE FROM chat_messages')
+        await client.query('DELETE FROM chat_sessions')
+        return NextResponse.json({ success: true, message: 'All chat history deleted' })
+      } else if (sessionId) {
+        // Delete specific session
+        await client.query('DELETE FROM chat_messages WHERE session_id = $1', [sessionId])
+        await client.query('DELETE FROM chat_sessions WHERE session_id = $1', [sessionId])
+        return NextResponse.json({ success: true, message: 'Session deleted' })
+      } else {
+        return NextResponse.json({ error: 'Missing session_id or all parameter' }, { status: 400 })
+      }
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error('Error deleting chat logs:', error)
+    return NextResponse.json({ error: 'Failed to delete chat logs' }, { status: 500 })
+  }
+}
+
+export const GET = withAdminSession(GETHandler)
+export const DELETE = withAdminSession(DELETEHandler)

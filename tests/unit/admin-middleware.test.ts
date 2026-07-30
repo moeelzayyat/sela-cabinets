@@ -1,0 +1,50 @@
+// @vitest-environment node
+
+import { NextRequest } from 'next/server'
+import { SignJWT } from 'jose'
+import { describe, expect, it, vi } from 'vitest'
+
+const { ADMIN_SECRET } = vi.hoisted(() => ({
+  ADMIN_SECRET: 'synthetic-middleware-admin-secret-32-chars',
+}))
+
+vi.mock('@/env/server-runtime', () => ({
+  serverEnv: { ADMIN_SECRET },
+}))
+
+import { middleware } from '@/middleware'
+
+async function session(payload: Record<string, unknown>) {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('10m')
+    .sign(Buffer.from(ADMIN_SECRET))
+}
+
+function adminRequest(token: string) {
+  return new NextRequest('http://127.0.0.1:3013/admin', {
+    headers: { cookie: `admin_session=${token}` },
+  })
+}
+
+describe('admin page middleware', () => {
+  it('redirects a legacy authenticated token without a user ID', async () => {
+    const token = await session({ authenticated: true })
+
+    const response = await middleware(adminRequest(token))
+
+    expect(response.status).toBe(307)
+    expect(new URL(response.headers.get('location')!).pathname).toBe(
+      '/admin/login'
+    )
+  })
+
+  it('accepts a signed authenticated token with a positive user ID', async () => {
+    const token = await session({ authenticated: true, userId: 7 })
+
+    const response = await middleware(adminRequest(token))
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('x-middleware-next')).toBe('1')
+  })
+})

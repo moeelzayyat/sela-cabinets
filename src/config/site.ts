@@ -49,14 +49,10 @@ export const siteConfig = {
   ],
   
   // ============================================
-  // CALENDLY LINKS
-  // Replace these with your actual Calendly URLs
-  // or set via environment variables
+  // CALENDLY LINK
   // ============================================
   calendly: {
-    phoneConsultation: process.env.NEXT_PUBLIC_CALENDLY_PHONE_CONSULTATION || 'https://calendly.com/sela-cabinets/phone-consultation',
-    inhomeMeasurement: process.env.NEXT_PUBLIC_CALENDLY_INHOME_MEASUREMENT || 'https://calendly.com/sela-cabinets/inhome-measurement',
-    virtualDesign: process.env.NEXT_PUBLIC_CALENDLY_VIRTUAL_DESIGN || 'https://calendly.com/sela-cabinets/virtual-design',
+    kitchenPlanningCall: 'https://calendly.com/admin-selatrade/sela-kitchen-planning-call',
   },
   
   // ============================================

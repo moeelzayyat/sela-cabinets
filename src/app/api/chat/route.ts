@@ -48,7 +48,7 @@ SERVICES:
 ESTIMATES:
 - SELA does not publish generic project prices in chat
 - Estimates are based on measurements, cabinet style, finish, storage needs, supplier ordering lead time, delivery timing, and installation scope
-- Encourage customers to book a consultation or in-home measurement for a tailored estimate
+- Encourage customers to use Plan My Kitchen or request a measured estimate
 
 SERVICE AREAS:
 Detroit, Dearborn, Troy, Sterling Heights, Ann Arbor, Royal Oak, Farmington Hills, Livonia, Canton, Southfield, West Bloomfield, and more
@@ -58,7 +58,7 @@ RULES:
 - Be concise and helpful
 - If asked about the owner, say "Way founded SELA Cabinets"
 - If asked your name, say "I'm the SELA Cabinets assistant."
-- Always offer to help book a consultation
+- Always offer the Plan My Kitchen scheduling path
 - For urgent matters, suggest calling (313) 468-3225`
 }
 
@@ -187,7 +187,7 @@ function getSimpleResponse(message: string): string {
   }
 
   if (lowerMessage.includes('cost') || lowerMessage.includes('price') || lowerMessage.includes('much')) {
-    return "Every kitchen is different, so SELA prepares estimates after understanding the layout, cabinet style, finish, storage needs, and installation scope. I can help you book a consultation or start an estimate so the team can review your project properly."
+    return "Every kitchen is different, so SELA prepares estimates after understanding the layout, cabinet style, finish, storage needs, and installation scope. I can help you plan your kitchen or start an estimate so the team can review your project properly."
   }
 
   if (lowerMessage.includes('time') || lowerMessage.includes('long') || lowerMessage.includes('install')) {
@@ -195,7 +195,7 @@ function getSimpleResponse(message: string): string {
   }
 
   if (lowerMessage.includes('quote') || lowerMessage.includes('estimate')) {
-    return "I'd be happy to help you start an estimate. You can share project details online or book a consultation so the SELA team can review your layout, style preferences, and installation needs. Which would you prefer?"
+    return "I'd be happy to help you start an estimate. You can share project details online or use Plan My Kitchen so the SELA team can review your layout, style preferences, and installation needs. Which would you prefer?"
   }
 
   return "Thanks for your message! I'm here to help with estimates, service areas, installation timelines, cabinet styles, and general questions. What would you like to know? Or call us at (313) 468-3225 for immediate assistance."

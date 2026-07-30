@@ -1,80 +1,26 @@
 import { MetadataRoute } from 'next'
+
 import { siteConfig } from '@/config/site'
 
+const launchRoutes = [
+  '/',
+  '/services',
+  '/pricing',
+  '/gallery',
+  '/about',
+  '/faqs',
+  '/contact',
+  '/book',
+  '/estimate',
+  '/blog',
+  '/blog/kitchen-cabinet-costs-detroit',
+] as const
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = siteConfig.seo.url
-  
-  // Static pages
-  const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/faqs`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/book`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/estimate`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    },
-  ]
-
-  // Service area pages (create these later)
-  const serviceAreaPages = siteConfig.serviceAreas.map(city => ({
-    url: `${baseUrl}/service-areas/${city.toLowerCase().replace(/ /g, '-')}`,
+  return launchRoutes.map((route, index) => ({
+    url: route === '/' ? siteConfig.seo.url : `${siteConfig.seo.url}${route}`,
     lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
+    changeFrequency: index === 0 ? 'weekly' : 'monthly',
+    priority: index === 0 ? 1 : 0.8,
   }))
-
-  return [...staticPages, ...serviceAreaPages]
 }

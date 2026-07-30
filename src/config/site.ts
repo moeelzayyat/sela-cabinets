@@ -10,8 +10,8 @@ export const siteConfig = {
   // BUSINESS INFORMATION
   // ============================================
   name: 'SELA Cabinets',
-  tagline: 'Premium Kitchen Cabinets for Detroit Homes',
-  description: 'Professional kitchen cabinet supply and installation in Detroit, Michigan. Expert in-home measurement, custom design help, and quality installation services.',
+  tagline: 'A Measured Cabinet Plan for Metro Detroit Kitchens',
+  description: 'SELA guides Metro Detroit homeowners from renovation confusion to a measured, coordinated cabinet plan, including layout guidance, cabinet selection, ordering, delivery, and installation planning.',
   
   phone: '313-468-3225',
   phoneFormatted: '(313) 468-3225',
@@ -70,8 +70,8 @@ export const siteConfig = {
   // ============================================
   seo: {
     titleTemplate: '%s | SELA Cabinets - Detroit Kitchen Cabinets',
-    defaultTitle: 'SELA Cabinets | Premium Kitchen Cabinets in Detroit, MI',
-    defaultDescription: 'Transform your Detroit kitchen with SELA Cabinets. Premium semi-custom cabinets, professional installation, design guidance, and in-home measurement for Detroit, Dearborn, Troy, Sterling Heights, Ann Arbor, and nearby metro communities.',
+    defaultTitle: 'SELA Cabinets | Kitchen Cabinet Planning in Metro Detroit',
+    defaultDescription: 'Move from renovation confusion to a measured, coordinated cabinet plan with SELA Cabinets. Serving homeowners across Metro Detroit.',
     keywords: [
       // Primary keywords
       'kitchen cabinets Detroit',
@@ -125,15 +125,14 @@ export const siteConfig = {
     main: [
       { label: 'Home', href: '/' },
       { label: 'Services', href: '/services' },
-      { label: 'Products', href: '/products' },
-      { label: 'Gallery', href: '/gallery' },
+      { label: 'Style Inspiration', href: '/gallery' },
       { label: 'About', href: '/about' },
       { label: 'FAQs', href: '/faqs' },
       { label: 'Contact', href: '/contact' },
     ],
     cta: [
-      { label: 'Get an Estimate', href: '/estimate', variant: 'outline' as const },
-      { label: 'Book a Consultation', href: '/book', variant: 'default' as const },
+      { label: 'Plan My Kitchen', href: '/book', variant: 'default' as const },
+      { label: 'Request an Estimate', href: '/estimate', variant: 'outline' as const },
     ],
   },
   
@@ -144,7 +143,7 @@ export const siteConfig = {
     {
       step: 1,
       title: 'Tell Us About Your Kitchen',
-      description: 'Share photos, dimensions, or schedule a call. We\'ll tell you what\'s possible.',
+      description: 'Share your goals and any dimensions you have, or schedule a call. We\'ll help you identify the next planning step.',
       icon: 'Calendar',
     },
     {

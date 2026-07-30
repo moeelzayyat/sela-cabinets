@@ -1,4 +1,32 @@
-const path = require('path')
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self' https://calendly.com",
+  "script-src 'self' 'unsafe-inline' https://assets.calendly.com https://www.googletagmanager.com",
+  "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
+  "img-src 'self' data: blob: https://images.unsplash.com https://www.google-analytics.com",
+  "font-src 'self' data:",
+  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+  "frame-src https://calendly.com https://*.calendly.com",
+  'upgrade-insecure-requests',
+].join('; ')
+
+const securityHeaders = [
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=31536000',
+  },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), geolocation=(), microphone=()',
+  },
+  { key: 'Content-Security-Policy', value: contentSecurityPolicy },
+]
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,16 +43,9 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'shop.alinecabinets.com',
-      },
     ],
   },
-  // Disable experimental features that might cause issues
   experimental: {
-    // Validate required server environment before accepting requests.
-    instrumentationHook: true,
     // Disable features that might cause memory issues
     optimizeCss: false,
   },
@@ -34,9 +55,13 @@ const nextConfig = {
   trailingSlash: false,
   // Disable powered by header
   poweredByHeader: false,
-  webpack: (config) => {
-    config.resolve.alias['@'] = path.resolve(__dirname, 'src')
-    return config
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: securityHeaders,
+      },
+    ]
   },
 }
 

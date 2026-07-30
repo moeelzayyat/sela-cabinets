@@ -7,7 +7,8 @@ import { siteConfig } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: `Contact ${siteConfig.name} for kitchen cabinets in Detroit. Call ${siteConfig.phone} or book a consultation online. Serving Detroit and surrounding areas.`,
+  description: `Contact ${siteConfig.name} for kitchen cabinet planning in Metro Detroit. Call ${siteConfig.phone} or plan your kitchen online.`,
+  alternates: { canonical: '/contact' },
 }
 
 export default function ContactPage() {
@@ -38,7 +39,7 @@ export default function ContactPage() {
                 Get In Touch
               </h2>
               <p className="mt-4 text-charcoal-600">
-                The best way to start is to book a consultation or request an estimate online. 
+                The best way to start is to plan your kitchen or request an estimate online.
                 You can also call us directly for immediate assistance.
               </p>
 
@@ -55,7 +56,7 @@ export default function ContactPage() {
                     <p className="mt-1 text-lg font-semibold text-primary">
                       {siteConfig.phoneFormatted}
                     </p>
-                    <p className="text-sm text-charcoal-500">Click to call</p>
+                    <p className="text-sm text-charcoal-600">Click to call</p>
                   </div>
                 </a>
 
@@ -71,7 +72,7 @@ export default function ContactPage() {
                     <p className="mt-1 text-lg font-semibold text-primary">
                       {siteConfig.email}
                     </p>
-                    <p className="text-sm text-charcoal-500">We&apos;ll respond within 24 hours</p>
+                    <p className="text-sm text-charcoal-600">Email us about your project</p>
                   </div>
                 </a>
 
@@ -84,7 +85,7 @@ export default function ContactPage() {
                     <p className="mt-1 text-lg font-semibold text-charcoal-700">
                       {siteConfig.location.full}
                     </p>
-                    <p className="text-sm text-charcoal-500">Serving the Detroit metro area</p>
+                    <p className="text-sm text-charcoal-600">Serving the Detroit metro area</p>
                   </div>
                 </div>
 
@@ -93,11 +94,10 @@ export default function ContactPage() {
                     <Clock className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-charcoal-900">Hours</h3>
+                    <h3 className="font-semibold text-charcoal-900">Scheduling</h3>
                     <div className="mt-1 space-y-1 text-charcoal-600">
-                      <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
-                      <p>Saturday: 9:00 AM - 3:00 PM</p>
-                      <p>Sunday: Closed</p>
+                      <p>Available planning-call times are shown on the booking page.</p>
+                      <p>Call to confirm other scheduling needs.</p>
                     </div>
                   </div>
                 </div>
@@ -106,12 +106,12 @@ export default function ContactPage() {
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
                   <Button size="lg" className="w-full sm:w-auto">
-                    Book a Consultation
+                    Plan My Kitchen
                   </Button>
                 </Link>
                 <Link href="/estimate">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                    Get an Estimate
+                    Request an Estimate
                   </Button>
                 </Link>
               </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                   <p className="mt-4 text-lg leading-relaxed text-charcoal-600">
                     SELA Cabinets works with homeowners across Detroit, Dearborn, Livonia,
                     Troy, Sterling Heights, Ann Arbor, Royal Oak, Novi, Canton, and nearby
-                    communities. Book a consultation and we will confirm service availability
+                    communities. Start a kitchen-planning call and we will confirm service availability
                     for your address.
                   </p>
                 </div>

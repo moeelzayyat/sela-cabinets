@@ -5,6 +5,7 @@ import { CTASection } from '@/components/sections/cta-section'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Tips & Guides | SELA Cabinets Blog Detroit',
   description: 'Expert advice on kitchen cabinets, remodeling planning, and design inspiration for Detroit homeowners.',
+  alternates: { canonical: '/blog' },
 }
 
 const blogPosts = [
@@ -16,22 +17,7 @@ const blogPosts = [
     category: 'Planning',
     slug: 'kitchen-cabinet-costs-detroit',
   },
-  {
-    id: 'framed-vs-frameless',
-    title: 'Framed vs Frameless Cabinets: Which is Right for Your Detroit Home?',
-    excerpt: 'Understanding the difference between framed and frameless cabinet construction, and which works best for your kitchen style.',
-    date: 'February 3, 2025',
-    category: 'Education',
-    slug: 'framed-vs-frameless-cabinets-detroit',
-  },
-  {
-    id: 'cabinet-color-trends-2025',
-    title: '5 Kitchen Cabinet Color Trends Michigan Homeowners Love in 2025',
-    excerpt: 'From timeless whites to bold navy blues, these are the cabinet colors dominating Detroit kitchens this year.',
-    date: 'February 3, 2025',
-    category: 'Design',
-    slug: 'kitchen-cabinet-color-trends-2025',
-  },
+
 ]
 
 export default function BlogPage() {
@@ -59,7 +45,7 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group block rounded-2xl border border-charcoal-200 p-8 transition-all hover:border-wood-300 hover:shadow-lg"
               >
-                <div className="flex flex-wrap items-center gap-3 text-sm text-charcoal-500">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-charcoal-600">
                   <span className="rounded-full bg-wood-100 px-3 py-1 text-wood-700">
                     {post.category}
                   </span>

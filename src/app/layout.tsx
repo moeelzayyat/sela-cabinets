@@ -3,7 +3,7 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
-import { LocalBusinessSchema } from '@/components/seo/SchemaMarkup'
+import { LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import { SiteShell } from '@/components/layout/site-shell'
 
 const inter = Inter({
@@ -52,12 +52,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <GoogleAnalytics />
-        <LocalBusinessSchema />
-        <link rel="canonical" href={siteConfig.seo.url} />
+        <LocalBusinessJsonLd />
         <meta name="geo.region" content="US-MI" />
         <meta name="geo.placename" content="Detroit" />
-        <meta name="geo.position" content="42.3314;-83.0458" />
-        <meta name="ICBM" content="42.3314, -83.0458" />
       </head>
       <body className="min-h-screen bg-white font-sans">
         <SiteShell>{children}</SiteShell>

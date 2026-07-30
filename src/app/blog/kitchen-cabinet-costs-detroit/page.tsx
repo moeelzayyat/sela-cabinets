@@ -6,6 +6,7 @@ import { CTASection } from '@/components/sections/cta-section'
 export const metadata: Metadata = {
   title: 'How to Plan a Premium Cabinet Project in Detroit',
   description: 'Plan a premium kitchen cabinet project in Detroit with guidance on measurement, cabinet construction, finishes, storage, installation, and consultation.',
+  alternates: { canonical: '/blog/kitchen-cabinet-costs-detroit' },
   keywords: ['premium kitchen cabinets Detroit', 'cabinet design consultation Michigan', 'kitchen cabinet planning Detroit', 'cabinet installation planning'],
 }
 
@@ -16,7 +17,7 @@ export default function CabinetPlanningPost() {
         <div className="container-wide">
           <div className="mx-auto max-w-3xl">
             <header className="text-center">
-              <span className="text-sm text-charcoal-500">February 3, 2025 | Planning Guide</span>
+              <span className="text-sm text-charcoal-600">February 3, 2025 | Planning Guide</span>
               <h1 className="mt-4 font-display text-4xl font-bold text-charcoal-900 md:text-5xl">
                 How to Plan a Premium Cabinet Project in Detroit
               </h1>
@@ -76,7 +77,7 @@ export default function CabinetPlanningPost() {
                 <div className="mt-6 flex flex-col gap-4 sm:flex-row">
                   <Link href="/book">
                     <Button size="lg" className="bg-primary hover:bg-[#184A47]">
-                      Book a Consultation
+                      Plan My Kitchen
                     </Button>
                   </Link>
                   <Link href="/estimate">
@@ -106,7 +107,7 @@ export default function CabinetPlanningPost() {
 
               <hr className="my-12" />
 
-              <p className="text-sm text-charcoal-500">
+              <p className="text-sm text-charcoal-600">
                 Last updated: February 3, 2025. Project recommendations depend on actual measurements, cabinet selections, and installation scope.
               </p>
             </div>

@@ -3,12 +3,12 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package*.json ./
+# Copy the audited dependency manifest and lockfile first for better caching.
+COPY package.json yarn.lock ./
 
 # Install dependencies with memory optimization
 ENV NODE_OPTIONS="--max-old-space-size=2048"
-RUN if [ -f package-lock.json ]; then npm ci --include=dev; else npm install --include=dev; fi
+RUN corepack enable && yarn install --frozen-lockfile --production=false
 
 # Copy source code
 COPY . .
@@ -16,7 +16,7 @@ COPY . .
 # Build the application
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN npm run build
+RUN yarn build
 
 # Next standalone output does not include browser assets automatically.
 RUN cp -r /app/.next/static /app/.next/standalone/.next/static && \

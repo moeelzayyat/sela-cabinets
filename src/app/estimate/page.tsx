@@ -1,12 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { CheckCircle, Upload, X, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { Textarea } from '../../components/ui/textarea'
@@ -22,6 +21,7 @@ import { siteConfig } from '../../config/site'
 import { submitEstimateRequest } from '../actions/estimate'
 import { trackEstimateSubmit, trackFormStart } from '../../lib/analytics'
 import { estimateImages } from '../../config/images'
+import { EstimateSuccess } from '../../components/estimate/estimate-success'
 
 const estimateSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -40,7 +40,7 @@ type EstimateFormData = z.infer<typeof estimateSchema>
 export default function EstimatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [files, setFiles] = useState<File[]>([])
+  const [warning, setWarning] = useState<string | undefined>()
   const [error, setError] = useState<string | null>(null)
   const [hasStarted, setHasStarted] = useState(false)
 
@@ -60,16 +60,6 @@ export default function EstimatePage() {
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || [])
-    if (files.length + selectedFiles.length <= 10) {
-      setFiles([...files, ...selectedFiles])
-    }
-  }
-
-  const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index))
-  }
 
   const onSubmit = async (data: EstimateFormData) => {
     setIsSubmitting(true)
@@ -80,14 +70,11 @@ export default function EstimatePage() {
       Object.entries(data).forEach(([key, value]) => {
         if (value) formData.append(key, value)
       })
-      files.forEach((file) => {
-        formData.append('photos', file)
-      })
-
       const result = await submitEstimateRequest(formData)
 
       if (result.success) {
         trackEstimateSubmit()
+        setWarning(result.warning)
         setIsSuccess(true)
       } else {
         setError(result.error || 'Something went wrong. Please try again.')
@@ -100,60 +87,7 @@ export default function EstimatePage() {
   }
 
   if (isSuccess) {
-    return (
-      <section className="section-padding bg-white">
-        <div className="container-wide">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-              <CheckCircle className="h-10 w-10 text-green-600" />
-            </div>
-            <h1 className="mt-6 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-              Request Received!
-            </h1>
-            <p className="mt-4 text-lg text-charcoal-600">
-              Thank you for your estimate request. We&apos;ve received your information 
-              and will get back to you within 24 hours with a preliminary estimate.
-            </p>
-
-            <div className="mt-8 rounded-xl border border-charcoal-200 bg-charcoal-50 p-6">
-              <h2 className="font-semibold text-charcoal-900">What happens next?</h2>
-              <ul className="mt-4 space-y-2 text-left text-charcoal-600">
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-wood-500" />
-                  We&apos;ll review your project details and photos
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-wood-500" />
-                  You&apos;ll receive a preliminary estimate by phone or email
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-wood-500" />
-                  We&apos;ll schedule an in-home measurement for a detailed project scope
-                </li>
-              </ul>
-            </div>
-
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href="/book">
-                <Button size="lg">Book a Consultation</Button>
-              </Link>
-              <Link href="/">
-                <Button size="lg" variant="outline">
-                  Return to Home
-                </Button>
-              </Link>
-            </div>
-
-            <p className="mt-6 text-charcoal-500">
-              Questions? Call us at{' '}
-              <a href={siteConfig.phoneLink} className="font-semibold text-charcoal-900 hover:underline">
-                {siteConfig.phoneFormatted}
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-    )
+    return <EstimateSuccess warning={warning} />
   }
 
   return (
@@ -165,7 +99,7 @@ export default function EstimatePage() {
           <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
             <div className="text-center lg:text-left">
               <h1 className="font-display text-4xl font-bold text-charcoal-900 md:text-5xl">
-                Get an Estimate
+                Request a Cabinet Estimate
               </h1>
               <p className="mt-4 text-lg text-charcoal-600">
                 Tell us about your kitchen cabinet project and we&apos;ll provide a 
@@ -292,9 +226,13 @@ export default function EstimatePage() {
                 </h2>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label>Timeline *</Label>
+                    <Label htmlFor="timeline">Timeline *</Label>
                     <Select onValueChange={(value) => setValue('timeline', value)}>
-                      <SelectTrigger className={errors.timeline ? 'border-red-500' : ''}>
+                      <SelectTrigger
+                        id="timeline"
+                        aria-label="Timeline"
+                        className={errors.timeline ? 'border-red-500' : ''}
+                      >
                         <SelectValue placeholder="Select timeline" />
                       </SelectTrigger>
                       <SelectContent>
@@ -310,9 +248,13 @@ export default function EstimatePage() {
                     )}
                   </div>
                   <div>
-                    <Label>Style Preference *</Label>
+                    <Label htmlFor="style">Style Preference *</Label>
                     <Select onValueChange={(value) => setValue('style', value)}>
-                      <SelectTrigger className={errors.style ? 'border-red-500' : ''}>
+                      <SelectTrigger
+                        id="style"
+                        aria-label="Style preference"
+                        className={errors.style ? 'border-red-500' : ''}
+                      >
                         <SelectValue placeholder="Select style" />
                       </SelectTrigger>
                       <SelectContent>
@@ -341,60 +283,6 @@ export default function EstimatePage() {
                 />
               </div>
 
-              {/* Photo Upload */}
-              <div>
-                <h2 className="font-display text-xl font-semibold text-charcoal-900">
-                  Photos (Optional but Helpful)
-                </h2>
-                <p className="mt-1 text-sm text-charcoal-600">
-                  Upload photos of your current kitchen or inspiration images. Up to 10 files.
-                </p>
-
-                <div className="mt-4">
-                  <label
-                    htmlFor="photos"
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-charcoal-300 bg-charcoal-50 p-8 transition-colors hover:border-charcoal-400"
-                  >
-                    <Upload className="h-10 w-10 text-charcoal-400" />
-                    <span className="mt-2 text-sm font-medium text-charcoal-700">
-                      Click to upload photos
-                    </span>
-                    <span className="text-xs text-charcoal-500">
-                      PNG, JPG, HEIC up to 10MB each
-                    </span>
-                    <input
-                      id="photos"
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </label>
-
-                  {files.length > 0 && (
-                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                      {files.map((file, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between rounded-lg border border-charcoal-200 bg-white p-3"
-                        >
-                          <span className="truncate text-sm text-charcoal-700">
-                            {file.name}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(index)}
-                            className="ml-2 text-charcoal-400 hover:text-charcoal-600"
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
 
               {/* Error message */}
               {error && (
@@ -415,8 +303,8 @@ export default function EstimatePage() {
                 )}
               </Button>
 
-              <p className="text-center text-sm text-charcoal-500">
-                We&apos;ll respond within 24 hours. For immediate assistance, call{' '}
+              <p className="text-center text-sm text-charcoal-600">
+                Your saved request will be reviewed. For immediate assistance, call{' '}
                 <a href={siteConfig.phoneLink} className="font-semibold text-charcoal-900 hover:underline">
                   {siteConfig.phoneFormatted}
                 </a>

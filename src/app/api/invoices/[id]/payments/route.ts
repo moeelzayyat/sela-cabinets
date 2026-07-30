@@ -5,9 +5,9 @@ import { withAdminSession } from '@/lib/api-authorization'
 
 export const dynamic = 'force-dynamic'
 
-async function POSTHandler(request: NextRequest, { params }: { params: { id: string } }) {
+async function POSTHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await ensureInvoicesTables()
-  const id = parseInt(params.id, 10)
+  const id = parseInt((await params).id, 10)
   const body = await request.json()
 
   if (!body.amount) return NextResponse.json({ error: 'Amount is required' }, { status: 400 })

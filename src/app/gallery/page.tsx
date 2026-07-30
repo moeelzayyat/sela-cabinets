@@ -6,8 +6,9 @@ import { CTASection } from '@/components/sections/cta-section'
 import { galleryImages } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: 'Project Gallery',
-  description: 'Browse cabinet styles and kitchen project inspiration for Detroit-area homes. See examples of cabinet finishes, layouts, and design directions.',
+  title: 'Style Inspiration',
+  description: 'Explore cabinet styles, finishes, layouts, and design directions. Reference images are shown for inspiration and are not represented as completed SELA projects.',
+  alternates: { canonical: '/gallery' },
 }
 
 export default function GalleryPage() {
@@ -17,10 +18,11 @@ export default function GalleryPage() {
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="font-display text-4xl font-bold text-charcoal-900 md:text-5xl lg:text-6xl">
-              Project Gallery
+              Style Inspiration
             </h1>
             <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-              Explore cabinet styles, finishes, and kitchen design inspiration for Detroit-area homes.
+              Explore cabinet styles, finishes, and layout ideas. These are reference
+              images for planning inspiration—not completed SELA projects.
             </p>
           </div>
         </div>
@@ -46,10 +48,10 @@ export default function GalleryPage() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="font-display text-lg font-semibold text-charcoal-900 group-hover:text-primary">
+                  <h2 className="font-display text-lg font-semibold text-charcoal-900 group-hover:text-primary">
                     {item.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-charcoal-500">{item.location}</p>
+                  </h2>
+                  <p className="mt-1 text-sm text-charcoal-600">Inspiration reference</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="rounded-full bg-charcoal-100 px-3 py-1 text-xs font-medium text-charcoal-700">
                       {item.style}
@@ -68,19 +70,19 @@ export default function GalleryPage() {
       <section className="section-padding wood-grain-bg">
         <div className="container-wide text-center">
           <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-            Want Your Kitchen Featured Here?
+            Ready to Plan Your Kitchen?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-            Let&apos;s create a beautiful kitchen you&apos;ll love. Start with a personal consultation
-            to discuss your vision.
+            Start with a short planning call to discuss your layout, priorities, and
+            the next measured step.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link href="/book">
-              <Button size="lg">Book a Consultation</Button>
+              <Button size="lg">Plan My Kitchen</Button>
             </Link>
             <Link href="/estimate">
               <Button size="lg" variant="outline">
-                Get an Estimate
+                Request an Estimate
               </Button>
             </Link>
           </div>

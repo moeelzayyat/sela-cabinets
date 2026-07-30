@@ -1,6 +1,3 @@
-// TypeScript's legacy `node` resolver cannot read this ESM package's exports,
-// while Vite resolves the same import at runtime.
-// @ts-expect-error -- resolved by Vite when the config is loaded
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import { defineConfig } from 'vitest/config'

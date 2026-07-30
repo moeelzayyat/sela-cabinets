@@ -1,11 +1,16 @@
+// @vitest-environment node
+
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 describe('Docker production build dependencies', () => {
-  it('installs development dependencies required by Next.js compilation even when NODE_ENV is production', () => {
+  it('installs the audited Yarn lockfile including development build dependencies', () => {
     const dockerfile = readFileSync('Dockerfile', 'utf8')
 
-    expect(dockerfile).toContain('npm ci --include=dev')
-    expect(dockerfile).toContain('npm install --include=dev')
+    expect(dockerfile).toMatch(/COPY\s+package\.json\s+yarn\.lock\s+\.\//)
+    expect(dockerfile).toContain('corepack enable')
+    expect(dockerfile).toContain('yarn install --frozen-lockfile --production=false')
+    expect(dockerfile).toContain('yarn build')
+    expect(dockerfile).not.toMatch(/npm (?:ci|install)/)
   })
 })

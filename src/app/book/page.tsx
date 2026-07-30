@@ -1,9 +1,16 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { Calendar, ExternalLink } from 'lucide-react'
 
 import { CalendlyEmbed } from '@/components/calendly/calendly-embed'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
+
+export const metadata: Metadata = {
+  title: 'Plan My Kitchen',
+  description: 'Schedule a 15-minute SELA kitchen planning call for your Metro Detroit cabinet project.',
+  alternates: { canonical: '/book' },
+}
 
 export default function BookPage() {
   const schedulingUrl = siteConfig.calendly.kitchenPlanningCall
@@ -51,7 +58,7 @@ export default function BookPage() {
             </div>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-charcoal-500">
+              <p className="text-sm text-charcoal-600">
                 Having trouble with the scheduler?{' '}
                 <a
                   href={schedulingUrl}

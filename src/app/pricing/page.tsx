@@ -7,6 +7,7 @@ import { Check, ClipboardCheck, Home, Palette } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Estimates Detroit | SELA Cabinets',
   description: 'Learn how SELA Cabinets prepares detailed kitchen cabinet estimates for Detroit-area homeowners. Premium cabinet guidance, in-home measurement, and professional installation.',
+  alternates: { canonical: '/pricing' },
   keywords: ['kitchen cabinet estimates Detroit', 'cabinet design consultation Detroit', 'premium kitchen cabinets Michigan', 'cabinet installation consultation'],
 }
 
@@ -61,7 +62,7 @@ export default function PricingPage() {
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
-                  <Button size="lg">Book a Consultation</Button>
+                  <Button size="lg">Plan My Kitchen</Button>
                 </Link>
                 <Link href="/estimate">
                   <Button size="lg" variant="outline">Start an Estimate</Button>

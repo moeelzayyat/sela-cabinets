@@ -1,16 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { use, useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 
-export default function InvoiceDetailPage({ params }: { params: { id: string } }) {
+export default function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const [data, setData] = useState<any>(null)
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/invoices/${params.id}`)
+    const res = await fetch(`/api/invoices/${id}`)
     const json = await res.json()
     setData(json)
-  }, [params.id])
+  }, [id])
 
   useEffect(() => { load() }, [load])
 

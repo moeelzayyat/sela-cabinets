@@ -5,10 +5,10 @@ import { pool } from '@/lib/db'
 // GET /api/appointments/[id]
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     const result = await pool.query(`
       SELECT 
@@ -36,10 +36,10 @@ async function GETHandler(
 // PUT /api/appointments/[id]
 async function PUTHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const data = await request.json()
     
     const {
@@ -89,10 +89,10 @@ async function PUTHandler(
 // DELETE /api/appointments/[id]
 async function DELETEHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     // Instead of deleting, mark as cancelled
     const result = await pool.query(`

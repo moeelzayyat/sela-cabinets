@@ -1,14 +1,16 @@
 import { MetadataRoute } from 'next'
 
+import { siteConfig } from '@/config/site'
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/_next/'],
+        disallow: ['/api/', '/admin/', '/account/', '/products', '/locations/'],
       },
     ],
-    sitemap: 'https://selacabinets.com/sitemap.xml',
+    sitemap: `${siteConfig.seo.url}/sitemap.xml`,
   }
 }

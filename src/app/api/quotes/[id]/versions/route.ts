@@ -5,7 +5,7 @@ import { pool } from '@/lib/db'
 // GET - Get quote versions
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const client = await pool.connect()
@@ -15,7 +15,7 @@ async function GETHandler(
          FROM quote_versions 
          WHERE quote_id = $1 
          ORDER BY version_number DESC`,
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       return NextResponse.json({ versions: result.rows })

@@ -10,9 +10,10 @@ describe('production environment startup validation', () => {
     vi.resetModules()
   })
 
-  it('enables the Next.js instrumentation startup hook', () => {
+  it('uses Next.js 16 automatic instrumentation discovery', () => {
     const config = fs.readFileSync('next.config.js', 'utf8')
-    expect(config).toMatch(/instrumentationHook:\s*true/)
+    expect(config).not.toMatch(/instrumentationHook/)
+    expect(fs.existsSync('src/instrumentation.ts')).toBe(true)
   })
 
   it('aborts startup registration when production configuration is invalid', async () => {

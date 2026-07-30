@@ -4,13 +4,13 @@ import { pool } from '@/lib/db'
 
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const client = await pool.connect()
     try {
       // Get quote
-      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt(params.id)])
+      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt((await params).id)])
       
       if (quoteResult.rows.length === 0) {
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -19,7 +19,7 @@ async function GETHandler(
       // Get items
       const itemsResult = await client.query(
         'SELECT * FROM quote_items WHERE quote_id = $1 ORDER BY section, sort_order',
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       const quote = quoteResult.rows[0]

@@ -177,7 +177,7 @@ async function generatePDF(quote: any, items: any[]): Promise<Buffer> {
 
 async function POSTHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     if (!process.env.RESEND_API_KEY) {
@@ -195,7 +195,7 @@ async function POSTHandler(
 
     const client = await pool.connect()
     try {
-      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt(params.id)])
+      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt((await params).id)])
       
       if (quoteResult.rows.length === 0) {
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -203,7 +203,7 @@ async function POSTHandler(
 
       const itemsResult = await client.query(
         'SELECT * FROM quote_items WHERE quote_id = $1 ORDER BY section, sort_order',
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       const quote = quoteResult.rows[0]
@@ -269,10 +269,10 @@ selacabinets.com
       if (quote.status === 'draft') {
         await client.query(
           `UPDATE quotes SET status = 'sent', sent_at = NOW() WHERE id = $1`,
-          [parseInt(params.id)]
+          [parseInt((await params).id)]
         )
       } else {
-        await client.query(`UPDATE quotes SET sent_at = NOW() WHERE id = $1`, [parseInt(params.id)])
+        await client.query(`UPDATE quotes SET sent_at = NOW() WHERE id = $1`, [parseInt((await params).id)])
       }
 
       if (quote.lead_id) {

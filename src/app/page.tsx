@@ -12,6 +12,7 @@ import { homeGalleryPreview } from '@/config/images'
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,
   description: siteConfig.seo.defaultDescription,
+  alternates: { canonical: '/' },
 }
 
 export default function HomePage() {
@@ -25,15 +26,16 @@ export default function HomePage() {
       <ProcessSection />
       <TrustSection />
       
-      {/* Gallery Preview */}
+      {/* Style Inspiration Preview */}
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="text-center">
             <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl lg:text-5xl">
-              See Our Work
+              Style Inspiration
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-              Browse our gallery of completed kitchen cabinet projects throughout Detroit.
+              Explore cabinet styles, finishes, and layout ideas. These reference images
+              are inspiration—not representations of completed SELA projects.
             </p>
           </div>
 
@@ -55,7 +57,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity group-hover:opacity-100">
                   <p className="font-semibold">{item.title}</p>
-                  <p className="text-sm text-charcoal-200">{item.location}</p>
+                  <p className="text-sm text-charcoal-200">Inspiration reference</p>
                 </div>
               </div>
             ))}
@@ -66,7 +68,7 @@ export default function HomePage() {
               href="/gallery"
               className="inline-flex items-center gap-2 text-lg font-semibold text-charcoal-900 transition-colors hover:text-primary"
             >
-              View full gallery
+              Explore style inspiration
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

@@ -5,12 +5,12 @@ import { pool } from '@/lib/db'
 // GET - Get single quote with items
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const client = await pool.connect()
     try {
-      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt(params.id)])
+      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt((await params).id)])
       
       if (quoteResult.rows.length === 0) {
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -18,7 +18,7 @@ async function GETHandler(
 
       const itemsResult = await client.query(
         'SELECT * FROM quote_items WHERE quote_id = $1 ORDER BY section, sort_order',
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       return NextResponse.json({
@@ -37,7 +37,7 @@ async function GETHandler(
 // PUT - Update quote
 async function PUTHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json()
@@ -61,7 +61,7 @@ async function PUTHandler(
       await client.query('BEGIN')
 
       // Get existing quote
-      const existingQuote = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt(params.id)])
+      const existingQuote = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt((await params).id)])
       if (existingQuote.rows.length === 0) {
         await client.query('ROLLBACK')
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -72,13 +72,13 @@ async function PUTHandler(
       // Get existing items for version history
       const existingItems = await client.query(
         'SELECT * FROM quote_items WHERE quote_id = $1 ORDER BY section, sort_order',
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       // Get next version number
       const versionResult = await client.query(
         'SELECT COALESCE(MAX(version_number), 0) + 1 as next_version FROM quote_versions WHERE quote_id = $1',
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
       const nextVersion = versionResult.rows[0].next_version
 
@@ -88,7 +88,7 @@ async function PUTHandler(
           INSERT INTO quote_versions (quote_id, version_number, subtotal, tax_rate, tax_amount, discount_percent, discount_amount, total, items, created_by, notes)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Way', $10)
         `, [
-          parseInt(params.id),
+          parseInt((await params).id),
           nextVersion,
           oldQuote.subtotal,
           oldQuote.tax_rate,
@@ -155,12 +155,12 @@ async function PUTHandler(
         customer_name, customer_email, customer_phone, customer_address,
         subtotal, finalTaxRate, taxAmount, finalDiscountPercent,
         discountAmount, total, depositAmount, finalDepositPercent,
-        valid_until, terms, internal_notes, status, parseInt(params.id)
+        valid_until, terms, internal_notes, status, parseInt((await params).id)
       ])
 
       // Update items if provided
       if (items && items.length > 0) {
-        await client.query('DELETE FROM quote_items WHERE quote_id = $1', [parseInt(params.id)])
+        await client.query('DELETE FROM quote_items WHERE quote_id = $1', [parseInt((await params).id)])
         
         for (let i = 0; i < items.length; i++) {
           const item = items[i]
@@ -169,7 +169,7 @@ async function PUTHandler(
           await client.query(`
             INSERT INTO quote_items (quote_id, section, description, quantity, unit_price, discount_percent, line_total, sort_order)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-          `, [parseInt(params.id), item.section || 'cabinets', item.description, item.quantity || 1, item.unit_price || 0, item.discount_percent || 0, lineTotal, i])
+          `, [parseInt((await params).id), item.section || 'cabinets', item.description, item.quantity || 1, item.unit_price || 0, item.discount_percent || 0, lineTotal, i])
         }
       }
 
@@ -199,13 +199,13 @@ async function PUTHandler(
 // DELETE - Delete quote
 async function DELETEHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const client = await pool.connect()
     try {
       // Get quote info first for activity log
-      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt(params.id)])
+      const quoteResult = await client.query('SELECT * FROM quotes WHERE id = $1', [parseInt((await params).id)])
       
       if (quoteResult.rows.length === 0) {
         return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -214,7 +214,7 @@ async function DELETEHandler(
       const quote = quoteResult.rows[0]
 
       // Delete (cascade will handle items)
-      await client.query('DELETE FROM quotes WHERE id = $1', [parseInt(params.id)])
+      await client.query('DELETE FROM quotes WHERE id = $1', [parseInt((await params).id)])
 
       // Log activity
       if (quote.lead_id) {

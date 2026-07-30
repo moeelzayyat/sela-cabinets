@@ -58,10 +58,10 @@ export function Header() {
             </a>
 
             <Link href="/estimate">
-              <Button variant="outline" size="sm">Get an Estimate</Button>
+              <Button variant="outline" size="sm">Request an Estimate</Button>
             </Link>
             <Link href="/book" onClick={handleBookClick}>
-              <Button size="sm">Book a Consultation</Button>
+              <Button size="sm">Plan My Kitchen</Button>
             </Link>
           </div>
 
@@ -92,10 +92,10 @@ export function Header() {
               ))}
               <div className="mt-4 flex flex-col gap-2 px-4">
                 <Link href="/estimate" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Get an Estimate</Button>
+                  <Button variant="outline" className="w-full">Request an Estimate</Button>
                 </Link>
                 <Link href="/book" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="w-full">Book a Consultation</Button>
+                  <Button className="w-full">Plan My Kitchen</Button>
                 </Link>
               </div>
             </nav>

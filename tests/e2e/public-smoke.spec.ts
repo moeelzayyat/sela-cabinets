@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright'
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 test('the public home page is reachable', async ({ page }) => {
   const response = await page.goto('/')
@@ -8,12 +8,44 @@ test('the public home page is reachable', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
 })
 
-test('@a11y the public home page has no automatically detectable violations', async ({ page }) => {
-  const response = await page.goto('/')
+const launchRoutes = [
+  '/',
+  '/services',
+  '/pricing',
+  '/gallery',
+  '/about',
+  '/faqs',
+  '/contact',
+  '/book',
+  '/estimate',
+  '/blog',
+  '/blog/kitchen-cabinet-costs-detroit',
+] as const
 
+async function expectNoAxeViolations(page: Page, route: string) {
+  const response = await page.goto(route)
   expect(response?.ok()).toBe(true)
 
   const results = await new AxeBuilder({ page }).analyze()
-
   expect(results.violations).toEqual([])
+}
+
+for (const route of launchRoutes) {
+  test(`@a11y ${route} has no automatically detectable desktop violations`, async ({
+    page,
+  }) => {
+    await expectNoAxeViolations(page, route)
+  })
+}
+
+test.describe('mobile accessibility', () => {
+  test.use({ viewport: { width: 390, height: 844 } })
+
+  for (const route of launchRoutes) {
+    test(`@a11y ${route} has no automatically detectable mobile violations`, async ({
+      page,
+    }) => {
+      await expectNoAxeViolations(page, route)
+    })
+  }
 })

@@ -12,7 +12,7 @@ vi.mock('@/env/server-runtime', () => ({
   serverEnv: { ADMIN_SECRET },
 }))
 
-import { middleware } from '@/middleware'
+import { config, middleware } from '@/middleware'
 
 async function session(payload: Record<string, unknown>) {
   return new SignJWT(payload)
@@ -25,6 +25,10 @@ function adminRequest(token: string) {
   return new NextRequest('http://127.0.0.1:3013/admin', {
     headers: { cookie: `admin_session=${token}` },
   })
+}
+
+function publicRequest(pathname: string) {
+  return new NextRequest(`http://127.0.0.1:3013${pathname}`)
 }
 
 describe('admin page middleware', () => {
@@ -46,5 +50,30 @@ describe('admin page middleware', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('x-middleware-next')).toBe('1')
+  })
+
+  it.each([
+    '/admin/register',
+    '/account',
+    '/account/login',
+    '/account/register',
+    '/products',
+    '/products/shaker-white',
+    '/api/chat',
+  ])('returns an exact 404 for disabled public surface %s', async (pathname) => {
+    const response = await middleware(publicRequest(pathname))
+
+    expect(response.status).toBe(404)
+    expect(response.headers.get('x-middleware-next')).toBeNull()
+    expect(response.headers.get('x-robots-tag')).toBe('noindex, nofollow')
+  })
+
+  it('matches all protected and disabled route families', () => {
+    expect(config.matcher).toEqual([
+      '/admin/:path*',
+      '/account/:path*',
+      '/products/:path*',
+      '/api/chat',
+    ])
   })
 })

@@ -8,6 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet FAQs Detroit | Timeline, Measurement & More | SELA',
   description: 'Answers about kitchen cabinet installation, in-home measurement, design guidance, removal, and project planning in Detroit.',
+  alternates: { canonical: '/faqs' },
   keywords: ['kitchen cabinet questions Detroit', 'cabinet installation timeline', 'cabinet measurement Detroit', 'cabinet removal Detroit', 'kitchen remodel FAQ'],
   openGraph: {
     title: 'Kitchen Cabinet FAQs | SELA Cabinets Detroit',
@@ -64,12 +65,12 @@ export default function FAQsPage() {
               Still Have Questions?
             </h2>
             <p className="mt-4 text-lg text-charcoal-600">
-              We&apos;re here to help. Book a consultation to discuss your project in
+              We&apos;re here to help. Start a kitchen-planning call to discuss your project in
               detail, or give us a call.
             </p>
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link href="/book">
-                <Button size="lg">Book a Consultation</Button>
+                <Button size="lg">Plan My Kitchen</Button>
               </Link>
               <a href={siteConfig.phoneLink}>
                 <Button size="lg" variant="outline">

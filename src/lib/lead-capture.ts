@@ -3,6 +3,7 @@
  */
 
 import { pool } from '@/lib/db'
+import type { PoolClient } from 'pg'
 
 export interface LeadData {
   name: string
@@ -24,9 +25,10 @@ export interface LeadData {
  * Add a new lead to the database
  */
 export async function addLead(data: LeadData): Promise<{ success: boolean; id?: number; error?: string }> {
-  const client = await pool.connect()
-  
+  let client: PoolClient | undefined
+
   try {
+    client = await pool.connect()
     const result = await client.query(
       `INSERT INTO leads (
         name, phone, email, address, city, zip, source, timeline, 
@@ -51,11 +53,11 @@ export async function addLead(data: LeadData): Promise<{ success: boolean; id?: 
     )
 
     return { success: true, id: result.rows[0].id }
-  } catch (error) {
-    console.error('Error adding lead:', error)
+  } catch {
+    console.error('Lead storage failed')
     return { success: false, error: 'Failed to save lead' }
   } finally {
-    client.release()
+    client?.release()
   }
 }
 

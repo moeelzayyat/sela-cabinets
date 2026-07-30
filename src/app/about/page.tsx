@@ -9,12 +9,13 @@ import { siteConfig } from '@/config/site'
 import { aboutImages } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: 'About SELA Cabinets Detroit | Kitchen Cabinet Experts',
-  description: 'Meet Hamada - owner of SELA Cabinets. Detroit-born cabinet installer serving metro Detroit with premium cabinets, in-home measurement, and professional installation.',
-  keywords: ['SELA Cabinets Detroit', 'Hamada cabinets', 'kitchen cabinet installer Detroit', 'Detroit cabinet company', 'local cabinet installer'],
+  title: 'About SELA Cabinets | Cabinet Planning in Metro Detroit',
+  description: 'Learn how SELA Cabinets guides Metro Detroit homeowners through measurement, cabinet selection, ordering coordination, and installation planning.',
+  alternates: { canonical: '/about' },
+  keywords: ['SELA Cabinets Detroit', 'kitchen cabinet planning Detroit', 'Detroit cabinet company', 'local cabinet planning'],
   openGraph: {
-    title: 'About SELA Cabinets | Detroit Kitchen Experts',
-    description: 'Your Detroit cabinet installation experts. Local, reliable, quality service.',
+    title: 'About SELA Cabinets | Metro Detroit Cabinet Planning',
+    description: 'A measured, coordinated cabinet-planning process for Metro Detroit homeowners.',
   },
 }
 
@@ -22,22 +23,22 @@ const values = [
   {
     icon: Award,
     title: 'Quality First',
-    description: 'We partner with quality cabinet manufacturers and take pride in every installation we complete.',
+    description: 'We compare cabinet options carefully and keep the plan grounded in the measured space.',
   },
   {
     icon: Users,
     title: 'Customer Focus',
-    description: 'Your satisfaction is our priority. We listen to your needs and work to exceed your expectations.',
+    description: 'We start by listening to your priorities, questions, and concerns.',
   },
   {
     icon: Clock,
     title: 'Reliability',
-    description: 'We respect your time with clear communication, accurate timelines, and dependable service.',
+    description: 'We aim for clear communication and confirm timing from the actual project scope.',
   },
   {
     icon: MapPin,
     title: 'Local Expertise',
-    description: 'Based in Detroit, we understand local homes and are committed to serving our community well.',
+    description: 'We focus on the cabinet-planning needs of Metro Detroit homeowners.',
   },
 ]
 
@@ -53,17 +54,16 @@ export default function AboutPage() {
                 About {siteConfig.name}
               </h1>
               <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-                We&apos;re a Detroit-based kitchen cabinet company dedicated to helping 
-                homeowners create beautiful, functional kitchens. From cabinet selection 
-                to professional installation, we&apos;re with you every step of the way.
+                SELA helps Metro Detroit homeowners turn kitchen-renovation questions into
+                a measured, coordinated cabinet plan.
               </p>
               <p className="mt-4 text-lg text-charcoal-600">
-                Our team brings experience and craftsmanship to every project, whether 
-                you&apos;re updating a few cabinets or doing a complete kitchen renovation.
+                We guide the process from layout and cabinet selection through ordering,
+                delivery, and installation planning.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
-                  <Button size="lg">Meet With Us</Button>
+                  <Button size="lg">Plan My Kitchen</Button>
                 </Link>
                 <Link href="/services">
                   <Button size="lg" variant="outline">

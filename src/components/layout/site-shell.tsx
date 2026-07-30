@@ -5,11 +5,11 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { MobileCallButton } from '@/components/layout/mobile-call-button'
 import { Toaster } from '@/components/ui/toaster'
-import ChatBot from '@/components/ChatBot'
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isAdmin = pathname?.startsWith('/admin')
+  const hideFloatingControls = pathname === '/book' || pathname === '/estimate'
 
   if (isAdmin) {
     return (
@@ -25,8 +25,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="pt-[72px]">{children}</main>
       <Footer />
-      <MobileCallButton />
-      <ChatBot />
+      {!hideFloatingControls && <MobileCallButton />}
       <Toaster />
     </>
   )

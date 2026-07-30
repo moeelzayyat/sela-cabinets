@@ -13,10 +13,7 @@ for (const route of disabledRoutes) {
 
     expect(response?.status()).toBe(404)
     expect(response?.url()).toBe(new URL(route, baseURL!).href)
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-      'content',
-      /noindex/i
-    )
+    expect(response?.headers()['x-robots-tag']).toMatch(/noindex/i)
   })
 }
 

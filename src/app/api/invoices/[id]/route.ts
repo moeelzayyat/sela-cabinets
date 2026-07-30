@@ -5,9 +5,9 @@ import { withAdminSession } from '@/lib/api-authorization'
 
 export const dynamic = 'force-dynamic'
 
-async function GETHandler(_: NextRequest, { params }: { params: { id: string } }) {
+async function GETHandler(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await ensureInvoicesTables()
-  const id = parseInt(params.id, 10)
+  const id = parseInt((await params).id, 10)
   const invoiceRes = await pool.query('SELECT * FROM invoices WHERE id = $1', [id])
   if (!invoiceRes.rows[0]) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -17,9 +17,9 @@ async function GETHandler(_: NextRequest, { params }: { params: { id: string } }
   return NextResponse.json({ invoice: invoiceRes.rows[0], items: itemsRes.rows, payments: paymentsRes.rows })
 }
 
-async function PUTHandler(request: NextRequest, { params }: { params: { id: string } }) {
+async function PUTHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await ensureInvoicesTables()
-  const id = parseInt(params.id, 10)
+  const id = parseInt((await params).id, 10)
   const body = await request.json()
 
   await pool.query(

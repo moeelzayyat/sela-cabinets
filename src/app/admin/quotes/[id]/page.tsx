@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { use, useState, useEffect, useCallback } from 'react'
 import { 
   ArrowLeft, Download, Send, Edit, Trash2, Copy, Check, 
   FileText, User, MapPin, Mail, Phone, Calendar, Clock,
@@ -36,8 +36,8 @@ interface QuoteItem {
   line_total: number
 }
 
-export default function QuoteDetailPage({ params }: { params: { id: string } }) {
-  const quoteId = params.id
+export default function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: quoteId } = use(params)
   const [quote, setQuote] = useState<any>(null)
   const [items, setItems] = useState<QuoteItem[]>([])
   const [versions, setVersions] = useState<any[]>([])

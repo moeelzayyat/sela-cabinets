@@ -1,187 +1,134 @@
 /**
- * SELA Cabinets image configuration.
- *
- * When real SELA project photography is available, replace these URLs with
- * local assets in /public/images/ and keep the same aspect ratios.
+ * Generic launch imagery used only as style inspiration.
+ * Replace with rights-cleared SELA photography when available.
  */
 
-import { productsCatalog } from './products-catalog'
+const inspirationImages = {
+  bright:
+    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1920&h=1080&q=80',
+  warm:
+    'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?auto=format&fit=crop&w=1200&h=900&q=80',
+  neutral:
+    'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&h=900&q=80',
+  compact:
+    'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1200&h=900&q=80',
+} as const
 
 export const heroImages = {
   main: {
-    src: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1920&h=1080&q=80',
-    alt: 'Modern white kitchen cabinets with marble countertops in Detroit home',
+    src: inspirationImages.bright,
+    alt: 'Bright kitchen shown as cabinet-planning inspiration',
   },
 } as const
 
 export const serviceImages = {
   'cabinet-supply': {
-    src: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?auto=format&fit=crop&w=800&h=600&q=80',
-    alt: 'Premium kitchen cabinets with various finishes available in Detroit',
+    src: inspirationImages.warm,
+    alt: 'Kitchen inspiration for comparing cabinet finishes',
   },
   installation: {
-    src: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&h=600&q=80',
-    alt: 'Professional cabinet installation in progress in Metro Detroit kitchen',
+    src: inspirationImages.neutral,
+    alt: 'Kitchen inspiration for discussing installation planning',
   },
   measurement: {
-    src: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=800&h=600&q=80',
-    alt: 'Kitchen space ready for professional cabinet measurement in Detroit home',
+    src: inspirationImages.compact,
+    alt: 'Kitchen inspiration for discussing cabinet measurements',
   },
   'design-help': {
-    src: productsCatalog.framed[2].image,
-    alt: 'White shaker kitchen cabinet layout for design planning',
+    src: inspirationImages.bright,
+    alt: 'Kitchen inspiration for cabinet layout planning',
   },
 } as const
 
 export const styleImages = {
   shaker: {
-    src: productsCatalog.framed[2].image,
-    alt: 'White shaker style kitchen cabinets',
+    src: inspirationImages.bright,
+    alt: 'Kitchen inspiration with a shaker-style look',
   },
   'flat-panel': {
-    src: productsCatalog.frameless[1].image,
-    alt: 'Modern flat panel cabinet doors with a sleek white finish',
+    src: inspirationImages.neutral,
+    alt: 'Kitchen inspiration with a streamlined cabinet look',
   },
   'raised-panel': {
-    src: productsCatalog.framed[1].image,
-    alt: 'Traditional raised panel kitchen cabinets in a bright white finish',
+    src: inspirationImages.warm,
+    alt: 'Kitchen inspiration with a traditional cabinet look',
   },
   beadboard: {
-    src: productsCatalog.framed[5].image,
-    alt: 'Textured white cabinet style for a bright kitchen',
+    src: inspirationImages.compact,
+    alt: 'Kitchen inspiration with a textured cabinet look',
   },
   'glass-front': {
-    src: productsCatalog.frameless[2].image,
-    alt: 'Glass front cabinet doors for display storage',
+    src: inspirationImages.neutral,
+    alt: 'Kitchen inspiration with display-storage details',
   },
 } as const
 
 export const galleryImages = [
   {
     id: 1,
-    src: productsCatalog.framed[2].image,
-    alt: 'Shaker White cabinet style for bright Detroit kitchen projects',
-    title: 'Bright Shaker Kitchen',
-    location: 'Royal Oak, MI',
-    style: 'Shaker',
-    finish: 'Bright White',
+    src: inspirationImages.bright,
+    alt: 'Kitchen inspiration with a bright cabinet palette',
+    title: 'Bright Kitchen Direction',
+    style: 'Clean-lined',
+    finish: 'Light neutral',
   },
   {
     id: 2,
-    src: productsCatalog.framed[3].image,
-    alt: 'Shaker Gray cabinet style for a transitional kitchen',
-    title: 'Transitional Gray Kitchen',
-    location: 'Farmington Hills, MI',
-    style: 'Shaker',
-    finish: 'Dove Gray',
+    src: inspirationImages.warm,
+    alt: 'Kitchen inspiration with a warm cabinet palette',
+    title: 'Warm Kitchen Direction',
+    style: 'Transitional',
+    finish: 'Warm neutral',
   },
   {
     id: 3,
-    src: productsCatalog.framed[9].image,
-    alt: 'Slim White Oak cabinet style with natural wood finish',
-    title: 'Natural Oak Kitchen',
-    location: 'Livonia, MI',
-    style: 'Slim Shaker',
-    finish: 'White Oak',
+    src: inspirationImages.neutral,
+    alt: 'Kitchen inspiration with a modern cabinet palette',
+    title: 'Modern Kitchen Direction',
+    style: 'Streamlined',
+    finish: 'Neutral',
   },
   {
     id: 4,
-    src: productsCatalog.framed[7].image,
-    alt: 'Navy Blue shaker cabinet style for a statement kitchen',
-    title: 'Contemporary Navy Kitchen',
-    location: 'Ann Arbor, MI',
-    style: 'Shaker',
-    finish: 'Navy Blue',
+    src: inspirationImages.compact,
+    alt: 'Kitchen inspiration for a practical cabinet layout',
+    title: 'Practical Layout Direction',
+    style: 'Functional',
+    finish: 'Light',
   },
   {
     id: 5,
-    src: productsCatalog.framed[1].image,
-    alt: 'Charleston White raised panel cabinets for a classic kitchen',
-    title: 'Classic White Kitchen',
-    location: 'Canton, MI',
-    style: 'Raised Panel',
-    finish: 'Charleston White',
+    src: inspirationImages.bright,
+    alt: 'Kitchen inspiration for a light cabinet layout',
+    title: 'Light Layout Direction',
+    style: 'Open',
+    finish: 'Bright neutral',
   },
   {
     id: 6,
-    src: productsCatalog.framed[0].image,
-    alt: 'Shaker Espresso cabinets with a rich dark finish',
-    title: 'Elegant Espresso Kitchen',
-    location: 'Troy, MI',
-    style: 'Shaker',
-    finish: 'Espresso',
-  },
-  {
-    id: 7,
-    src: productsCatalog.framed[5].image,
-    alt: 'Aspen White cabinets with a subtle textured finish',
-    title: 'Textured White Kitchen',
-    location: 'Novi, MI',
-    style: 'Textured',
-    finish: 'Aspen White',
-  },
-  {
-    id: 8,
-    src: productsCatalog.framed[4].image,
-    alt: 'Aspen Charcoal Gray cabinets for a modern kitchen',
-    title: 'Modern Charcoal Kitchen',
-    location: 'Sterling Heights, MI',
-    style: 'Textured',
-    finish: 'Charcoal Gray',
-  },
-  {
-    id: 9,
-    src: productsCatalog.frameless[1].image,
-    alt: 'High Gloss White frameless cabinets for a modern kitchen',
-    title: 'Modern Gloss Kitchen',
-    location: 'Dearborn, MI',
-    style: 'Frameless',
-    finish: 'High Gloss White',
-  },
-  {
-    id: 10,
-    src: productsCatalog.frameless[3].image,
-    alt: 'Matt Black frameless cabinets for a luxury kitchen',
-    title: 'Luxury Dark Kitchen',
-    location: 'Bloomfield Hills, MI',
-    style: 'Frameless',
-    finish: 'Matt Black',
-  },
-  {
-    id: 11,
-    src: productsCatalog.frameless[5].image,
-    alt: 'Oak Blonde frameless cabinets with light natural wood tone',
-    title: 'Light Oak Kitchen',
-    location: 'Grosse Pointe, MI',
-    style: 'Frameless',
-    finish: 'Oak Blonde',
-  },
-  {
-    id: 12,
-    src: productsCatalog.frameless[7].image,
-    alt: 'Matt Ivory frameless cabinets with a warm neutral finish',
-    title: 'Warm Ivory Kitchen',
-    location: 'Plymouth, MI',
-    style: 'Frameless',
-    finish: 'Matt Ivory',
+    src: inspirationImages.warm,
+    alt: 'Kitchen inspiration for a welcoming cabinet layout',
+    title: 'Welcoming Layout Direction',
+    style: 'Layered',
+    finish: 'Warm',
   },
 ] as const
 
 export const aboutImages = {
   team: {
-    src: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=600&q=80',
-    alt: 'SELA Cabinets team - professional cabinet installers serving Detroit',
+    src: inspirationImages.bright,
+    alt: 'Generic kitchen inspiration; not represented as a SELA project or team photo',
   },
   workshop: {
-    src: productsCatalog.framed[1].image,
-    alt: 'Kitchen cabinet showroom and workspace in Detroit, Michigan',
+    src: inspirationImages.warm,
+    alt: 'Generic kitchen inspiration; not represented as a SELA showroom',
   },
 } as const
 
 export const estimateImages = {
   banner: {
-    src: productsCatalog.framed[2].image,
-    alt: 'Beautiful kitchen cabinets ready for your Detroit home renovation',
+    src: inspirationImages.bright,
+    alt: 'Generic kitchen inspiration for planning an estimate',
   },
 } as const
 

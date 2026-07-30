@@ -150,7 +150,7 @@ export function ServiceAreaPage({
                 </Link>
                 <Link href="/book" className="block">
                   <Button className="w-full" variant="outline" size="lg">
-                    Book a Consultation
+                    Plan My Kitchen
                   </Button>
                 </Link>
               </div>

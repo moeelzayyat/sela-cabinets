@@ -1,15 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function InvoiceEditPage({ params }: { params: { id: string } }) {
+export default function InvoiceEditPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState<any>(null)
 
   useEffect(() => {
-    fetch(`/api/invoices/${params.id}`).then(r=>r.json()).then((d)=>{
+    fetch(`/api/invoices/${id}`).then(r=>r.json()).then((d)=>{
       setForm({
         customerName: d.invoice.customer_name || '',
         customerEmail: d.invoice.customer_email || '',
@@ -38,18 +39,18 @@ export default function InvoiceEditPage({ params }: { params: { id: string } }) 
       })
       setLoading(false)
     })
-  }, [params.id])
+  }, [id])
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault()
-    await fetch(`/api/invoices/${params.id}`, {
+    await fetch(`/api/invoices/${id}`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...form,
         tags: String(form.tags || '').split(',').map((x:string)=>x.trim()).filter(Boolean),
       })
     })
-    router.push(`/admin/invoices/${params.id}`)
+    router.push(`/admin/invoices/${id}`)
   }
 
   if (loading || !form) return <div>Loading...</div>

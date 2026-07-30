@@ -32,7 +32,7 @@ export default function WarrenPage() {
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">
                   <Button size="lg" className="bg-primary hover:bg-[#184A47]">
-                    Book a Consultation
+                    Plan My Kitchen
                   </Button>
                 </Link>
                 <a href={siteConfig.phoneLink}>

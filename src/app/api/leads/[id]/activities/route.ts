@@ -5,14 +5,14 @@ import { pool } from '@/lib/db'
 // GET - Get activities for a lead
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const client = await pool.connect()
     try {
       const result = await client.query(
         `SELECT * FROM lead_activities WHERE lead_id = $1 ORDER BY created_at DESC LIMIT 50`,
-        [parseInt(params.id)]
+        [parseInt((await params).id)]
       )
 
       return NextResponse.json({ activities: result.rows })
@@ -28,7 +28,7 @@ async function GETHandler(
 // POST - Log new activity
 async function POSTHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json()
@@ -43,7 +43,7 @@ async function POSTHandler(
       const result = await client.query(
         `INSERT INTO lead_activities (lead_id, activity_type, description, old_value, new_value, created_by)
          VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-        [parseInt(params.id), activity_type, description, old_value, new_value, created_by || 'Way']
+        [parseInt((await params).id), activity_type, description, old_value, new_value, created_by || 'Way']
       )
 
       return NextResponse.json({ success: true, activity: result.rows[0] })

@@ -5,10 +5,10 @@ import { withAdminSession } from '@/lib/api-authorization'
 // GET /api/contacts/[id]
 async function GETHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     const result = await pool.query('SELECT * FROM contacts WHERE id = $1', [id])
     
@@ -26,10 +26,10 @@ async function GETHandler(
 // PUT /api/contacts/[id]
 async function PUTHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const data = await request.json()
     
     const {
@@ -72,10 +72,10 @@ async function PUTHandler(
 // DELETE /api/contacts/[id]
 async function DELETEHandler(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     const result = await pool.query('DELETE FROM contacts WHERE id = $1 RETURNING *', [id])
     

@@ -16,20 +16,21 @@ export function HeroSection() {
           </div>
 
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] text-charcoal-900 sm:text-5xl md:text-6xl">
-            Your Detroit Kitchen,
+            From Renovation Confusion
             <span className="mt-2 block text-primary">
-              Redesigned
+              to a Clear Cabinet Plan
             </span>
           </h1>
 
           <p className="mt-6 max-w-lg text-lg text-charcoal-600 sm:text-xl">
-            Premium semi-custom cabinets, precise in-home measurement, and professional installation for a kitchen that feels tailored to your home.
+            We guide Metro Detroit homeowners through measurement, layout decisions,
+            cabinet selection, and a coordinated path to ordering and installation.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Link href="/book">
               <Button size="xl" className="w-full bg-primary hover:bg-[#184A47] sm:w-auto">
-                See Your New Kitchen
+                Plan My Kitchen
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>

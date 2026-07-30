@@ -9,8 +9,8 @@ interface CTASectionProps {
 }
 
 export function CTASection({
-  title = 'See What Your Kitchen Could Look Like',
-  description = 'Book a consultation and get a cabinet plan tailored to your home.',
+  title = 'Turn Your Ideas Into a Clear Cabinet Plan',
+  description = 'Start with a short planning call so we can understand your kitchen and guide the measured, coordinated next steps.',
   variant = 'default',
 }: CTASectionProps) {
   const bgClass = {
@@ -38,7 +38,7 @@ export function CTASection({
               variant={variant === 'dark' ? 'default' : 'default'}
               className={`w-full sm:w-auto ${variant === 'dark' ? 'bg-primary hover:bg-[#184A47]' : ''}`}
             >
-              Book a Consult
+              Plan My Kitchen
             </Button>
           </Link>
           <Link href="/estimate">
@@ -47,7 +47,7 @@ export function CTASection({
               variant="outline"
               className={`w-full sm:w-auto ${variant === 'dark' ? 'border-white/50 text-white hover:bg-white hover:text-charcoal-900' : ''}`}
             >
-              Get an Estimate
+              Request an Estimate
             </Button>
           </Link>
         </div>

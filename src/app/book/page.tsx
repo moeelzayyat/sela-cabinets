@@ -5,11 +5,17 @@ import { Calendar, ExternalLink } from 'lucide-react'
 import { CalendlyEmbed } from '@/components/calendly/calendly-embed'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Plan My Kitchen',
-  description: 'Schedule a 15-minute SELA kitchen planning call for your Metro Detroit cabinet project.',
+  title: 'Plan Your Metro Detroit Kitchen Cabinets',
+  description: 'Schedule a SELA kitchen planning call for your Metro Detroit cabinet project.',
   alternates: { canonical: '/book' },
+  ...createPageSocialMetadata({
+    title: 'Plan Your Metro Detroit Kitchen Cabinets',
+    description: 'Schedule a SELA kitchen planning call for your Metro Detroit cabinet project.',
+    path: '/book',
+  }),
 }
 
 export default function BookPage() {
@@ -24,7 +30,7 @@ export default function BookPage() {
               Plan My Kitchen
             </h1>
             <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-              Start with a focused 15-minute call. We&apos;ll learn about your space,
+              Start with a focused planning call. We&apos;ll learn about your space,
               answer your first questions, and outline the next step toward a measured,
               coordinated cabinet plan.
             </p>
@@ -44,7 +50,7 @@ export default function BookPage() {
                   <h2 id="scheduler-title" className="font-display text-xl font-bold text-charcoal-900">
                     SELA Kitchen Planning Call
                   </h2>
-                  <p className="text-sm font-medium text-primary">15 minutes</p>
+                  <p className="text-sm font-medium text-primary">Kitchen planning conversation</p>
                 </div>
               </div>
               <p className="mt-4 text-charcoal-600">

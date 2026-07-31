@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import {
   cabinetConstruction,
   handleCatalog,
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/products',
   },
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Styles in Metro Detroit',
+    description: 'Explore 21 framed cabinet styles, 8 frameless cabinet styles, construction details, and available cabinet hardware from SELA Cabinets.',
+    path: '/products',
+  }),
 }
 
 function StyleCard({ product }: { product: CabinetProduct }) {

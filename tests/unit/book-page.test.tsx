@@ -13,7 +13,8 @@ describe('book page', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'Plan My Kitchen' })).toBeInTheDocument()
     expect(screen.getByText('SELA Kitchen Planning Call')).toBeInTheDocument()
-    expect(screen.getByText('15 minutes')).toBeInTheDocument()
+    expect(screen.getByText('Kitchen planning conversation')).toBeInTheDocument()
+    expect(container).not.toHaveTextContent(/\b15(?:-|\s)minute|\b15 minutes/i)
 
     const schedulerUrl = 'https://calendly.com/admin-selatrade/sela-kitchen-planning-call'
     expect(container.querySelector('.calendly-inline-widget')).toHaveAttribute('data-url', schedulerUrl)

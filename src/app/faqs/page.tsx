@@ -4,16 +4,18 @@ import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
 import { FAQJsonLd } from '@/components/seo/json-ld'
 import { siteConfig } from '@/config/site'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet FAQs Detroit | Timeline, Measurement & More | SELA',
+  title: 'Kitchen Cabinet Planning FAQs in Detroit',
   description: 'Answers about kitchen cabinet installation, in-home measurement, design guidance, removal, and project planning in Detroit.',
   alternates: { canonical: '/faqs' },
   keywords: ['kitchen cabinet questions Detroit', 'cabinet installation timeline', 'cabinet measurement Detroit', 'cabinet removal Detroit', 'kitchen remodel FAQ'],
-  openGraph: {
-    title: 'Kitchen Cabinet FAQs | SELA Cabinets Detroit',
-    description: 'Get answers about cabinet installation, measurement, design guidance, and services in Detroit.',
-  },
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Planning FAQs in Detroit',
+    description: 'Answers about kitchen cabinet installation, in-home measurement, design guidance, removal, and project planning in Detroit.',
+    path: '/faqs',
+  }),
 }
 
 export default function FAQsPage() {

@@ -3,27 +3,27 @@ import { MapPin, Ruler, Clock, Package } from 'lucide-react'
 const trustItems = [
   {
     icon: MapPin,
-    stat: 'Local',
-    title: 'Detroit-Area Expertise',
-    description: 'From Dearborn to Troy, Sterling Heights to Ann Arbor, we understand Michigan homes and kitchen layouts.',
+    stat: 'Area',
+    title: 'Metro Detroit Planning',
+    description: 'Contact SELA to confirm service availability for your Metro Detroit kitchen project.',
   },
   {
     icon: Ruler,
-    stat: 'Precise',
+    stat: 'Measured',
     title: 'In-Home Measuring',
-    description: 'Careful measurements, cabinet samples, and practical guidance before your project moves forward.',
+    description: 'Kitchen dimensions and existing conditions are recorded before final cabinet planning.',
   },
   {
     icon: Clock,
-    stat: 'Efficient',
-    title: 'Organized Installation',
-    description: 'A clean, professional process designed to keep your project moving with less disruption at home.',
+    stat: 'Scoped',
+    title: 'Installation Planning',
+    description: 'Site readiness, delivery, removal responsibilities, and installation scope are reviewed before work begins.',
   },
   {
     icon: Package,
-    stat: 'Curated',
-    title: 'Premium Cabinet Lines',
-    description: 'Quality cabinet styles, finishes, and hardware options selected for polished, lasting results.',
+    stat: 'Options',
+    title: 'Cabinet Selection',
+    description: 'Compare available construction styles, finishes, and hardware during the planning process.',
   },
 ]
 
@@ -36,7 +36,7 @@ export function TrustSection() {
             Why Work With SELA?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-400">
-            Detroit homeowners choose us for thoughtful guidance, premium cabinet options, and quality installation.
+            Our process focuses on measured planning, cabinet selection, ordering coordination, and installation scope.
           </p>
         </div>
 

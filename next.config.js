@@ -28,6 +28,17 @@ const securityHeaders = [
   { key: 'Content-Security-Policy', value: contentSecurityPolicy },
 ]
 
+function isCanonicalProductionOrigin() {
+  const configuredUrl = process.env.NEXT_PUBLIC_APP_URL
+  if (!configuredUrl) return false
+
+  try {
+    return new URL(configuredUrl).origin === 'https://selacabinets.com'
+  } catch {
+    return false
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: process.env.SELA_TEST_DIST_DIR || '.next',
@@ -55,11 +66,24 @@ const nextConfig = {
   trailingSlash: false,
   // Disable powered by header
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: '/blog/kitchen-cabinet-costs-detroit',
+        destination: '/blog/kitchen-cabinet-planning-detroit',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
+    const deploymentHeaders = isCanonicalProductionOrigin()
+      ? securityHeaders
+      : [...securityHeaders, { key: 'X-Robots-Tag', value: 'noindex, nofollow' }]
+
     return [
       {
         source: '/:path*',
-        headers: securityHeaders,
+        headers: deploymentHeaders,
       },
     ]
   },

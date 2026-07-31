@@ -7,16 +7,18 @@ import { ProcessSection } from '@/components/sections/process-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { siteConfig } from '@/config/site'
 import { aboutImages } from '@/config/images'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'About SELA Cabinets | Cabinet Planning in Metro Detroit',
+  title: 'About Our Kitchen Cabinet Planning Team',
   description: 'Learn how SELA Cabinets guides Metro Detroit homeowners through measurement, cabinet selection, ordering coordination, and installation planning.',
   alternates: { canonical: '/about' },
   keywords: ['SELA Cabinets Detroit', 'kitchen cabinet planning Detroit', 'Detroit cabinet company', 'local cabinet planning'],
-  openGraph: {
-    title: 'About SELA Cabinets | Metro Detroit Cabinet Planning',
-    description: 'A measured, coordinated cabinet-planning process for Metro Detroit homeowners.',
-  },
+  ...createPageSocialMetadata({
+    title: 'About Our Kitchen Cabinet Planning Team',
+    description: 'Learn how SELA Cabinets guides Metro Detroit homeowners through measurement, cabinet selection, ordering coordination, and installation planning.',
+    path: '/about',
+  }),
 }
 
 const values = [

@@ -1,4 +1,5 @@
 import { siteConfig } from '@/config/site'
+import { serializeJsonLd } from '@/components/seo/serialize-json-ld'
 
 export function FAQSchema({
   faqs,
@@ -21,7 +22,49 @@ export function FAQSchema({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
+    />
+  )
+}
+
+export function ArticleSchema({
+  headline,
+  description,
+  canonicalPath,
+  datePublished,
+  dateModified,
+}: {
+  headline: string
+  description: string
+  canonicalPath: string
+  datePublished: string
+  dateModified: string
+}) {
+  const canonicalUrl = `${siteConfig.seo.url}${canonicalPath}`
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${canonicalUrl}#article`,
+    headline,
+    description,
+    url: canonicalUrl,
+    mainEntityOfPage: canonicalUrl,
+    datePublished,
+    dateModified,
+    author: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+    },
+    publisher: {
+      '@id': `${siteConfig.seo.url}/#business`,
+    },
+    image: `${siteConfig.seo.url}/images/seo/sela-cabinets-og.png`,
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
     />
   )
 }
@@ -45,7 +88,7 @@ export function BreadcrumbSchema({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
     />
   )
 }

@@ -58,6 +58,8 @@ describe('admin page middleware', () => {
     '/account/login',
     '/account/register',
     '/api/chat',
+    '/locations/royal-oak',
+    '/service-areas/detroit',
   ])('returns an exact 404 for disabled public surface %s', async (pathname) => {
     const response = await middleware(publicRequest(pathname))
 
@@ -78,6 +80,8 @@ describe('admin page middleware', () => {
       '/admin/:path*',
       '/account/:path*',
       '/api/chat',
+      '/locations/:path*',
+      '/service-areas/:path*',
     ])
   })
 })

@@ -31,7 +31,7 @@ export function createIsolatedTestServerEnvironment(environment = process.env) {
     NODE_ENV: 'development',
     SELA_TEST_DIST_DIR: '.next-playwright',
     NEXT_TELEMETRY_DISABLED: '1',
-    DATABASE_URL: 'postgres://127.0.0.1:1/sela_auth_contract_no_database',
+    DATABASE_URL: 'postgresql://test:test@db.example.invalid:1/sela_auth_contract_no_database?sslmode=verify-full',
     DB_HOST: '127.0.0.1',
     DB_PORT: '1',
     DB_NAME: 'sela_auth_contract_no_database',

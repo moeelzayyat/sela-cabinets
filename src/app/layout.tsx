@@ -4,6 +4,7 @@ import './globals.css'
 import { siteConfig } from '@/config/site'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
 import { LocalBusinessJsonLd } from '@/components/seo/json-ld'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { SiteShell } from '@/components/layout/site-shell'
 
 const inter = Inter({
@@ -28,19 +29,12 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   metadataBase: new URL(siteConfig.seo.url),
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: siteConfig.seo.url,
+  ...createPageSocialMetadata({
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.defaultDescription,
-    siteName: siteConfig.name,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.seo.defaultTitle,
-    description: siteConfig.seo.defaultDescription,
-  },
+    path: '/',
+    absoluteTitle: true,
+  }),
 }
 
 export default function RootLayout({

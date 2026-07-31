@@ -5,20 +5,26 @@ import { ServicesPreview } from '@/components/sections/services-preview'
 import { ProcessSection } from '@/components/sections/process-section'
 import { TrustSection } from '@/components/sections/trust-section'
 import { CTASection } from '@/components/sections/cta-section'
-import { LocalBusinessJsonLd, ServiceJsonLd } from '@/components/seo/json-ld'
+import { ServiceJsonLd } from '@/components/seo/json-ld'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { siteConfig } from '@/config/site'
 import { homeGalleryPreview } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: siteConfig.seo.defaultTitle,
+  title: { absolute: siteConfig.seo.defaultTitle },
   description: siteConfig.seo.defaultDescription,
   alternates: { canonical: '/' },
+  ...createPageSocialMetadata({
+    title: siteConfig.seo.defaultTitle,
+    description: siteConfig.seo.defaultDescription,
+    path: '/',
+    absoluteTitle: true,
+  }),
 }
 
 export default function HomePage() {
   return (
     <>
-      <LocalBusinessJsonLd />
       <ServiceJsonLd />
       
       <HeroSection />

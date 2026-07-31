@@ -69,7 +69,7 @@ export const siteConfig = {
   // SEO DEFAULTS
   // ============================================
   seo: {
-    titleTemplate: '%s | SELA Cabinets - Detroit Kitchen Cabinets',
+    titleTemplate: '%s | SELA Cabinets',
     defaultTitle: 'SELA Cabinets | Kitchen Cabinet Planning in Metro Detroit',
     defaultDescription: 'Move from renovation confusion to a measured, coordinated cabinet plan with SELA Cabinets. Serving homeowners across Metro Detroit.',
     keywords: [
@@ -91,17 +91,17 @@ export const siteConfig = {
       'cabinet installation services',
       'in-home cabinet measurement',
       'kitchen design consultation Detroit',
-      'custom kitchen cabinets Michigan',
-      'semi-custom cabinets',
+      'kitchen cabinet styles Michigan',
+      'framed and frameless cabinets',
       // Comparison keywords
-      'premium kitchen cabinets Detroit',
-      'luxury kitchen cabinets Michigan',
+      'kitchen cabinet planning Detroit',
+      'cabinet construction options Michigan',
       'kitchen cabinet consultation Detroit',
-      'cabinet showroom consultation Detroit',
+      'cabinet selection consultation Detroit',
       // Long-tail keywords
       'kitchen cabinet design Detroit',
       'professional cabinet installation Michigan',
-      'best kitchen cabinet company Detroit',
+      'local kitchen cabinet planning Detroit',
       'kitchen renovation Detroit metro',
       'cabinet replacement Detroit',
       // Product keywords
@@ -174,12 +174,12 @@ export const siteConfig = {
     {
       id: 'cabinet-supply',
       title: 'Cabinet Supply',
-      shortDescription: 'Curated premium cabinet lines selected for Detroit homes.',
+      shortDescription: 'Curated cabinet styles and construction options for Detroit-area homes.',
       description: 'We offer a curated selection of high-quality kitchen cabinets. From classic shaker to modern flat-panel designs, find cabinets that match your home, lifestyle, and design goals.',
       features: [
         'Wide selection of styles and finishes',
         'Quality materials and construction',
-        'Premium cabinet lines',
+        'Framed and frameless options',
         'Coordinated ordering and delivery',
       ],
       icon: 'Package',
@@ -187,13 +187,13 @@ export const siteConfig = {
     {
       id: 'installation',
       title: 'Professional Installation',
-      shortDescription: 'Installed by pros after inspection, ordering, delivery, and site readiness are confirmed.',
-      description: 'Our skilled installation team brings years of experience to every project. We handle everything from removing old cabinets to the final adjustments, ensuring your new cabinets are installed perfectly.',
+      shortDescription: 'Installation coordinated after inspection, ordering, delivery, and site readiness are confirmed.',
+      description: 'Cabinet installation covers placement, leveling, alignment, and final adjustments according to the agreed project scope. Cabinet removal is handled only when it is included in that scope; removed cabinets remain at the property for customer disposal.',
       features: [
-        'Experienced installation team',
-        'Careful removal of old cabinets',
+        'Installation coordinated to project scope',
+        'Cabinet removal when included in scope',
         'Precise leveling and alignment',
-        'Clean, professional worksite',
+        'Final cabinet adjustments',
       ],
       icon: 'Wrench',
     },
@@ -201,7 +201,7 @@ export const siteConfig = {
       id: 'measurement',
       title: 'In-Home Measurement',
       shortDescription: 'We come to you. Precise measuring with your order.',
-      description: 'Accurate measurements are crucial for a successful cabinet project. Our experts visit your home to take detailed measurements, ensuring your new cabinets fit perfectly in your space.',
+      description: 'In-home measurement records kitchen dimensions and existing conditions so cabinet planning can be based on the actual space.',
       features: [
         'Included with cabinet order',
         'Detailed digital measurements',
@@ -214,7 +214,7 @@ export const siteConfig = {
       id: 'design-help',
       title: 'Design Help',
       shortDescription: 'Need ideas? We\'ll show you what\'s possible.',
-      description: 'Not sure where to start? Our design consultants help you plan your perfect kitchen. We can create 3D renderings so you can see exactly how your new cabinets will look before ordering.',
+      description: 'Design guidance helps compare cabinet styles, finishes, storage needs, and layout options before ordering. Available planning tools may include 3D renderings.',
       features: [
         'Virtual design consultations',
         '3D kitchen renderings',
@@ -333,7 +333,7 @@ export const siteConfig = {
     },
     {
       question: 'Do you remove old cabinets?',
-      answer: 'Yes, our installation service includes careful removal and disposal of your existing cabinets. We take care to protect your floors and walls during removal. If you\'d like to keep your old cabinets for donation or reuse, just let us know.',
+      answer: 'Cabinet removal can be included in the agreed project scope. Removed cabinets remain at the property, and the customer is responsible for disposal.',
     },
     {
       question: 'What areas do you serve?',
@@ -345,7 +345,7 @@ export const siteConfig = {
     },
     {
       question: 'What cabinet brands do you carry?',
-      answer: 'We work with several quality cabinet manufacturers to offer a range of premium options. During your consultation, we\'ll discuss the best cabinet line, finish, and construction details for your style preferences and project goals.',
+      answer: 'We work with cabinet manufacturers that offer different construction styles and finishes. During planning, we compare the available cabinet line, finish, and construction details with your project goals.',
     },
     {
       question: 'How do I get started?',

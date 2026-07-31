@@ -4,11 +4,17 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
 import { galleryImages } from '@/config/images'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Style Inspiration',
-  description: 'Explore cabinet styles, finishes, layouts, and design directions. Reference images are shown for inspiration and are not represented as completed SELA projects.',
+  title: 'Kitchen Cabinet Style Inspiration Gallery',
+  description: 'Explore cabinet styles, finishes, layouts, and design directions. Images are style inspiration and are not presented as completed SELA projects.',
   alternates: { canonical: '/gallery' },
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Style Inspiration Gallery',
+    description: 'Explore cabinet styles, finishes, layouts, and design directions. Images are style inspiration and are not presented as completed SELA projects.',
+    path: '/gallery',
+  }),
 }
 
 export default function GalleryPage() {

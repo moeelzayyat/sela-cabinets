@@ -5,17 +5,19 @@ import { Package, Wrench, Ruler, Palette, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
 import { siteConfig } from '@/config/site'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { serviceImages, type ServiceImageKey } from '@/config/images'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Services Detroit | Installation & Design | SELA Cabinets',
-  description: 'Professional kitchen cabinet installation in Detroit. Cabinet supply, in-home measurement, design help & more. Serving Dearborn, Livonia, Troy & metro Detroit.',
+  title: 'Kitchen Cabinet Services in Metro Detroit',
+  description: 'Plan Metro Detroit kitchen cabinets with installation, measurement, cabinet selection, and design guidance from SELA Cabinets.',
   alternates: { canonical: '/services' },
   keywords: ['kitchen cabinet installation Detroit', 'cabinet services Michigan', 'kitchen remodeling Detroit', 'cabinet installation Dearborn', 'kitchen design Troy'],
-  openGraph: {
-    title: 'Kitchen Cabinet Services Detroit | SELA Cabinets',
-    description: 'Professional cabinet installation, supply, design guidance, and in-home measurement in Detroit.',
-  },
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Services in Metro Detroit',
+    description: 'Plan Metro Detroit kitchen cabinets with installation, measurement, cabinet selection, and design guidance from SELA Cabinets.',
+    path: '/services',
+  }),
 }
 
 const iconMap = {

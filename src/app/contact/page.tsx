@@ -4,11 +4,17 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
 import { siteConfig } from '@/config/site'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
+  title: 'Contact Our Metro Detroit Cabinet Team',
   description: `Contact ${siteConfig.name} for kitchen cabinet planning in Metro Detroit. Call ${siteConfig.phone} or plan your kitchen online.`,
   alternates: { canonical: '/contact' },
+  ...createPageSocialMetadata({
+    title: 'Contact Our Metro Detroit Cabinet Team',
+    description: `Contact ${siteConfig.name} for kitchen cabinet planning in Metro Detroit. Call ${siteConfig.phone} or plan your kitchen online.`,
+    path: '/contact',
+  }),
 }
 
 export default function ContactPage() {

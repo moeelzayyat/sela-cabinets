@@ -1,21 +1,27 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { CTASection } from '@/components/sections/cta-section'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Tips & Guides | SELA Cabinets Blog Detroit',
-  description: 'Expert advice on kitchen cabinets, remodeling planning, and design inspiration for Detroit homeowners.',
+  title: 'Kitchen Cabinet Planning Guides for Detroit',
+  description: 'Practical guidance on cabinet planning, measurements, styles, storage, and installation coordination for Metro Detroit homeowners.',
   alternates: { canonical: '/blog' },
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Planning Guides for Detroit',
+    description: 'Practical guidance on cabinet planning, measurements, styles, storage, and installation coordination for Metro Detroit homeowners.',
+    path: '/blog',
+  }),
 }
 
 const blogPosts = [
   {
-    id: 'kitchen-cabinet-costs-detroit',
-    title: 'How to Plan a Premium Cabinet Project in Detroit',
+    id: 'kitchen-cabinet-planning-detroit',
+    title: 'How to Plan a Kitchen Cabinet Project in Detroit',
     excerpt: 'Learn what shapes a successful kitchen cabinet project, from measurements and construction to finishes, storage, and installation planning.',
-    date: 'February 3, 2025',
+    date: 'July 30, 2026',
     category: 'Planning',
-    slug: 'kitchen-cabinet-costs-detroit',
+    slug: 'kitchen-cabinet-planning-detroit',
   },
 
 ]

@@ -125,7 +125,7 @@ describe('Playwright target safety', () => {
     })
 
     expect(environment).toMatchObject({
-      DATABASE_URL: 'postgres://127.0.0.1:1/sela_auth_contract_no_database',
+      DATABASE_URL: 'postgresql://test:test@db.example.invalid:1/sela_auth_contract_no_database?sslmode=verify-full',
       DB_HOST: '127.0.0.1',
       DB_PORT: '1',
       OPENAI_API_KEY: '',

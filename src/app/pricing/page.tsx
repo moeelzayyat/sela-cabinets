@@ -3,12 +3,18 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
 import { Check, ClipboardCheck, Home, Palette } from 'lucide-react'
+import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Estimates Detroit | SELA Cabinets',
-  description: 'Learn how SELA Cabinets prepares detailed kitchen cabinet estimates for Detroit-area homeowners. Premium cabinet guidance, in-home measurement, and professional installation.',
+  title: 'Kitchen Cabinet Estimates in Metro Detroit',
+  description: 'Learn how SELA prepares kitchen cabinet estimates using project details, measurements, cabinet selections, and installation scope in Metro Detroit.',
   alternates: { canonical: '/pricing' },
-  keywords: ['kitchen cabinet estimates Detroit', 'cabinet design consultation Detroit', 'premium kitchen cabinets Michigan', 'cabinet installation consultation'],
+  keywords: ['kitchen cabinet estimates Detroit', 'cabinet design consultation Detroit', 'kitchen cabinet planning Michigan', 'cabinet installation consultation'],
+  ...createPageSocialMetadata({
+    title: 'Kitchen Cabinet Estimates in Metro Detroit',
+    description: 'Learn how SELA prepares kitchen cabinet estimates using project details, measurements, cabinet selections, and installation scope in Metro Detroit.',
+    path: '/pricing',
+  }),
 }
 
 const estimateFactors = [
@@ -29,8 +35,8 @@ const projectPaths = [
     description: 'A complete cabinet plan with measurement, design guidance, cabinet ordering, delivery, and professional installation.',
   },
   {
-    title: 'Premium Transformation',
-    description: 'A more detailed project with upgraded finishes, specialty storage, trim details, island cabinetry, or multi-room cabinetry.',
+    title: 'Detailed Cabinet Project',
+    description: 'A detailed project with selected finishes, specialty storage, trim details, island cabinetry, or multi-room cabinetry.',
   },
 ]
 

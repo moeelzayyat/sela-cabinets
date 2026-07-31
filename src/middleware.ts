@@ -11,13 +11,17 @@ const DISABLED_PUBLIC_PATHS = new Set([
   '/account/register',
   '/api/chat',
 ])
+const DISABLED_PUBLIC_PREFIXES = ['/locations/', '/service-areas/'] as const
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const normalizedPathname =
     pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
 
-  if (DISABLED_PUBLIC_PATHS.has(normalizedPathname)) {
+  if (
+    DISABLED_PUBLIC_PATHS.has(normalizedPathname) ||
+    DISABLED_PUBLIC_PREFIXES.some((prefix) => normalizedPathname.startsWith(prefix))
+  ) {
     return new NextResponse(null, {
       status: 404,
       headers: {
@@ -57,5 +61,11 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/account/:path*', '/api/chat'],
+  matcher: [
+    '/admin/:path*',
+    '/account/:path*',
+    '/api/chat',
+    '/locations/:path*',
+    '/service-areas/:path*',
+  ],
 }

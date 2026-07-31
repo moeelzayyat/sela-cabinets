@@ -1,20 +1,19 @@
 import { siteConfig } from '@/config/site'
+import { serializeJsonLd } from '@/components/seo/serialize-json-ld'
+
+const businessId = `${siteConfig.seo.url}/#business`
 
 export function LocalBusinessJsonLd() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
+    '@id': businessId,
     name: siteConfig.name,
     description: siteConfig.description,
     telephone: siteConfig.phone,
     email: siteConfig.email,
     url: siteConfig.seo.url,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: siteConfig.location.city,
-      addressRegion: siteConfig.location.stateAbbr,
-      addressCountry: 'US',
-    },
+
     areaServed: siteConfig.serviceAreas.map((area) => ({
       '@type': 'City',
       name: area,
@@ -24,7 +23,7 @@ export function LocalBusinessJsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
@@ -35,10 +34,7 @@ export function ServiceJsonLd() {
     '@type': 'Service',
     name: service.title,
     description: service.description,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: siteConfig.name,
-    },
+    provider: { '@id': businessId },
     areaServed: {
       '@type': 'City',
       name: siteConfig.location.city,
@@ -48,7 +44,7 @@ export function ServiceJsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(services) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(services) }}
     />
   )
 }
@@ -74,7 +70,7 @@ export function FAQJsonLd({ faqs }: FAQJsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }

@@ -18,7 +18,8 @@ describe('security dependency resolutions', () => {
   it('keeps Next transitive build dependencies above their patched minimums', () => {
     // Next 16.2.12 requests vulnerable versions. These narrow overrides are
     // intentional until Next declares patched postcss and sharp ranges.
-    expect(manifest.resolutions?.['next/postcss']).toBe('8.5.18')
+    expect(manifest.resolutions?.['next/postcss']).toBe('8.5.23')
+    expect(manifest.resolutions?.nanoid).toBe('3.3.18')
     expect(manifest.resolutions?.['next/sharp']).toBe('0.35.3')
     expect(manifest.resolutions?.['form-data']).toBe('4.0.6')
   })

@@ -1,6 +1,10 @@
 export const indexableRoutes = [
   '/',
   '/services',
+  '/services/kitchen-cabinet-installation-detroit',
+  '/services/kitchen-cabinet-supply-detroit',
+  '/services/in-home-cabinet-measurement',
+  '/service-areas/metro-detroit',
   '/products',
   '/pricing',
   '/gallery',

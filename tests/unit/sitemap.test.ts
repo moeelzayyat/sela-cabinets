@@ -5,6 +5,10 @@ import sitemap from '@/app/sitemap'
 const expectedUrls = [
   'https://selacabinets.com',
   'https://selacabinets.com/services',
+  'https://selacabinets.com/services/kitchen-cabinet-installation-detroit',
+  'https://selacabinets.com/services/kitchen-cabinet-supply-detroit',
+  'https://selacabinets.com/services/in-home-cabinet-measurement',
+  'https://selacabinets.com/service-areas/metro-detroit',
   'https://selacabinets.com/products',
   'https://selacabinets.com/pricing',
   'https://selacabinets.com/gallery',

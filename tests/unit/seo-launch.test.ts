@@ -13,6 +13,22 @@ const source = (...parts: string[]) =>
 const metadataFiles: Record<(typeof indexableRoutes)[number], string[]> = {
   '/': ['page.tsx'],
   '/services': ['services', 'page.tsx'],
+  '/services/kitchen-cabinet-installation-detroit': [
+    'services',
+    'kitchen-cabinet-installation-detroit',
+    'page.tsx',
+  ],
+  '/services/kitchen-cabinet-supply-detroit': [
+    'services',
+    'kitchen-cabinet-supply-detroit',
+    'page.tsx',
+  ],
+  '/services/in-home-cabinet-measurement': [
+    'services',
+    'in-home-cabinet-measurement',
+    'page.tsx',
+  ],
+  '/service-areas/metro-detroit': ['service-areas', 'metro-detroit', 'page.tsx'],
   '/products': ['products', 'page.tsx'],
   '/pricing': ['pricing', 'page.tsx'],
   '/gallery': ['gallery', 'page.tsx'],
@@ -37,7 +53,8 @@ describe('launch SEO surface', () => {
     )
 
     expect(urls).toEqual(expected)
-    expect(urls.join('\n')).not.toMatch(/service-areas|\/locations\//)
+    expect(urls).toContain(`${siteConfig.seo.url}/service-areas/metro-detroit`)
+    expect(urls.join('\n')).not.toMatch(/\/locations\//)
   })
 
   it('does not block Next assets and disallows disabled/private surfaces', () => {

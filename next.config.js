@@ -69,6 +69,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.selacabinets.com' }],
+        destination: 'https://selacabinets.com/:path*',
+        permanent: true,
+      },
+      {
         source: '/blog/kitchen-cabinet-costs-detroit',
         destination: '/blog/kitchen-cabinet-planning-detroit',
         permanent: true,

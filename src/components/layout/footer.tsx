@@ -61,6 +61,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-charcoal-400 transition-colors hover:text-white"
+                >
+                  Planning Guides
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -68,22 +76,38 @@ export function Footer() {
           <div>
             <h3 className="font-display text-lg font-semibold">Our Services</h3>
             <ul className="mt-4 space-y-3">
-              {siteConfig.services.map((service) => (
-                <li key={service.id}>
-                  <Link
-                    href={`/services#${service.id}`}
-                    className="text-charcoal-400 transition-colors hover:text-white"
-                  >
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/services/kitchen-cabinet-supply-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                  Cabinet Supply
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/kitchen-cabinet-installation-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                  Cabinet Installation
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/in-home-cabinet-measurement" className="text-charcoal-400 transition-colors hover:text-white">
+                  In-Home Measurement
+                </Link>
+              </li>
+              <li>
+                <Link href="/services#design-help" className="text-charcoal-400 transition-colors hover:text-white">
+                  Design Help
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Service Areas */}
           <div>
             <h3 className="font-display text-lg font-semibold">Service Areas</h3>
+            <Link
+              href="/service-areas/metro-detroit"
+              className="mt-4 inline-block text-charcoal-300 transition-colors hover:text-white"
+            >
+              Metro Detroit service area
+            </Link>
             <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
               {siteConfig.serviceAreas.slice(0, 10).map((area) => (
                 <li key={area} className="text-charcoal-400">

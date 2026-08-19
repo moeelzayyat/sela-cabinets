@@ -12,6 +12,7 @@ const DISABLED_PUBLIC_PATHS = new Set([
   '/api/chat',
 ])
 const DISABLED_PUBLIC_PREFIXES = ['/locations/', '/service-areas/'] as const
+const ENABLED_PUBLIC_PATHS = new Set(['/service-areas/metro-detroit'])
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -19,8 +20,9 @@ export async function middleware(request: NextRequest) {
     pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
 
   if (
-    DISABLED_PUBLIC_PATHS.has(normalizedPathname) ||
-    DISABLED_PUBLIC_PREFIXES.some((prefix) => normalizedPathname.startsWith(prefix))
+    !ENABLED_PUBLIC_PATHS.has(normalizedPathname) &&
+    (DISABLED_PUBLIC_PATHS.has(normalizedPathname) ||
+      DISABLED_PUBLIC_PREFIXES.some((prefix) => normalizedPathname.startsWith(prefix)))
   ) {
     return new NextResponse(null, {
       status: 404,

@@ -44,6 +44,17 @@ describe('public content truthfulness', () => {
     expect(removal?.answer).not.toMatch(/we dispose|includes .*disposal|haul away|additional fee/i)
   })
 
+  it('does not place unsupported warranty promises in new customer quotes', () => {
+    const quoteForm = readFileSync(
+      resolve(process.cwd(), 'src', 'app', 'admin', 'quotes', 'new', 'NewQuoteContent.tsx'),
+      'utf8'
+    )
+
+    expect(quoteForm).not.toMatch(/all cabinets come with|5-year warranty/i)
+    expect(quoteForm).toMatch(/manufacturer.*written terms/i)
+    expect(quoteForm).toMatch(/signed customer agreement.*warranty exhibit/i)
+  })
+
   it('does not publish an unverified street or storefront address in LocalBusiness schema', () => {
     const markup = renderToStaticMarkup(<LocalBusinessJsonLd />)
     const body = markup.match(/<script[^>]*>(.*)<\/script>/)?.[1]

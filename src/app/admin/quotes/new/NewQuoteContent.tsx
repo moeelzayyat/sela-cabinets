@@ -47,7 +47,9 @@ Payment methods: Cash, Check, Credit Card (3% processing fee), Zelle, Venmo.
 
 Quote valid for 30 days from date of issue.
 
-All cabinets come with a 5-year warranty on materials and workmanship.
+Product warranties, if any, are provided under the applicable manufacturer's written terms and are separate from SELA's installation services.
+
+Any SELA workmanship warranty applies only when included in the signed customer agreement and warranty exhibit for the project.
 
 Installation timing is confirmed after inspection, cabinet supplier ordering, delivery, and site readiness are reviewed.`
 

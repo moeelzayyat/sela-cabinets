@@ -40,8 +40,8 @@ export default function HomePage() {
               Style Inspiration
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-              Explore cabinet styles, finishes, and layout ideas. These reference images
-              are inspiration—not representations of completed SELA projects.
+              Preview current framed and frameless cabinet collections. These catalog
+              images show style direction—not completed SELA projects.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity group-hover:opacity-100">
                   <p className="font-semibold">{item.title}</p>
-                  <p className="text-sm text-charcoal-200">Inspiration reference</p>
+                  <p className="text-sm text-charcoal-200">Current cabinet collection</p>
                 </div>
               </div>
             ))}

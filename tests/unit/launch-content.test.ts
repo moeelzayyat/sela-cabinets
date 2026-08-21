@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 import { siteConfig } from '@/config/site'
 import { galleryImages } from '@/config/images'
+import { productsCatalog } from '@/config/products-catalog'
 
 const source = (...segments: string[]) =>
   readFileSync(resolve(process.cwd(), 'src', ...segments), 'utf8')
@@ -33,6 +34,27 @@ describe('launch messaging and inspiration claims', () => {
       label: 'Cabinet Styles',
       href: '/products',
     })
+  })
+
+  it('uses current SELA catalog assets for style inspiration', () => {
+    const catalogProducts = [
+      ...productsCatalog.framed,
+      ...productsCatalog.frameless,
+    ]
+    const catalogByName = new Map(
+      catalogProducts.map((product) => [product.name, product])
+    )
+
+    expect(galleryImages).toHaveLength(6)
+    for (const image of galleryImages) {
+      const product = catalogByName.get(image.title)
+
+      expect(product, image.title).toBeDefined()
+      expect(image.src).toBe(product?.image)
+      expect(image.src).toMatch(/^\/images\/products\/catalog\/[a-z0-9-]+\.webp$/)
+      expect(image.src).not.toMatch(/^https?:\/\//)
+      expect(image.alt).toContain(image.title)
+    }
   })
 
   it('does not represent inspiration images as completed local projects', () => {

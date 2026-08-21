@@ -7,12 +7,12 @@ import { galleryImages } from '@/config/images'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Style Inspiration Gallery',
-  description: 'Explore cabinet styles, finishes, layouts, and design directions. Images are style inspiration and are not presented as completed SELA projects.',
+  title: 'Current Kitchen Cabinet Style Inspiration',
+  description: 'Explore current framed and frameless cabinet styles and finishes available through SELA Cabinets for Metro Detroit kitchen planning.',
   alternates: { canonical: '/gallery' },
   ...createPageSocialMetadata({
-    title: 'Kitchen Cabinet Style Inspiration Gallery',
-    description: 'Explore cabinet styles, finishes, layouts, and design directions. Images are style inspiration and are not presented as completed SELA projects.',
+    title: 'Current Kitchen Cabinet Style Inspiration',
+    description: 'Explore current framed and frameless cabinet styles and finishes available through SELA Cabinets for Metro Detroit kitchen planning.',
     path: '/gallery',
   }),
 }
@@ -27,8 +27,8 @@ export default function GalleryPage() {
               Style Inspiration
             </h1>
             <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-              Explore cabinet styles, finishes, and layout ideas. These are reference
-              images for planning inspiration—not completed SELA projects.
+              Explore a representative selection from our current cabinet catalog.
+              These images show style and finish direction—not completed SELA projects.
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function GalleryPage() {
                   <h2 className="font-display text-lg font-semibold text-charcoal-900 group-hover:text-primary">
                     {item.title}
                   </h2>
-                  <p className="mt-1 text-sm text-charcoal-600">Inspiration reference</p>
+                  <p className="mt-1 text-sm text-charcoal-600">Current cabinet collection</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="rounded-full bg-charcoal-100 px-3 py-1 text-xs font-medium text-charcoal-700">
                       {item.style}
@@ -69,6 +69,11 @@ export default function GalleryPage() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Button asChild size="lg" variant="outline">
+              <Link href="/products">View All Cabinet Styles</Link>
+            </Button>
           </div>
         </div>
       </section>

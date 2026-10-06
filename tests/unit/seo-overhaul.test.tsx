@@ -114,6 +114,7 @@ describe('SELA search-intent and truthfulness overhaul', () => {
     expect(about).toContain('SELA Cabinets')
     expect(about).toMatch(/cabinet installation specialist/i)
     expect(about).not.toMatch(/carpenter|lead installer|siteConfig\.owner|siteConfig\.installer/i)
+    expect(about).not.toMatch(/installer name|portrait is published|published on the website/i)
     expect(home).not.toContain('siteConfig.pricing.installedRange')
     expect(estimate).not.toContain('siteConfig.pricing.installedRange')
     expect(layout).not.toContain('google-site-verification')

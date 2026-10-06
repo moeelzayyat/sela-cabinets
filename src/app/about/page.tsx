@@ -87,8 +87,8 @@ export default function AboutPage() {
               <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-wood-300">Craftsmanship in the home</p>
               <h3 className="mt-2 font-display text-2xl font-semibold">Professional cabinet installation</h3>
               <p className="mt-4 leading-7 text-charcoal-300">
-                Your cabinets are installed by a cabinet installation specialist. No installer name or
-                portrait is published on the website.
+                Careful installation helps quality cabinets look right, operate smoothly, and fit the
+                measured space as intended.
               </p>
               <p className="mt-4 leading-7 text-charcoal-300">
                 The installation work emphasizes cabinet leveling, alignment, secure attachment,

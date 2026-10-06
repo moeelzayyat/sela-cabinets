@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Grosse Pointe MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Grosse Pointe, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Grosse Pointe & Detroit area.',
-  keywords: ['kitchen cabinets Grosse Pointe MI', 'cabinet installation Grosse Pointe', 'kitchen remodel Grosse Pointe', 'Grosse Pointe kitchen design', 'Detroit area cabinets'],
+
 }
 
 export default function GrossePointePage() {

@@ -7,13 +7,13 @@ import { siteConfig } from '@/config/site'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Planning FAQs in Detroit',
-  description: 'Answers about kitchen cabinet installation, in-home measurement, design guidance, removal, and project planning in Detroit.',
+  title: 'Detroit Kitchen Cabinet & Installation FAQs',
+  description: 'Answers about kitchen cabinets, professional installation, in-home measurement, timing, cabinet removal, and estimates in Metro Detroit.',
   alternates: { canonical: '/faqs' },
-  keywords: ['kitchen cabinet questions Detroit', 'cabinet installation timeline', 'cabinet measurement Detroit', 'cabinet removal Detroit', 'kitchen remodel FAQ'],
+
   ...createPageSocialMetadata({
-    title: 'Kitchen Cabinet Planning FAQs in Detroit',
-    description: 'Answers about kitchen cabinet installation, in-home measurement, design guidance, removal, and project planning in Detroit.',
+    title: 'Detroit Kitchen Cabinet & Installation FAQs',
+    description: 'Answers about kitchen cabinets, professional installation, in-home measurement, timing, cabinet removal, and estimates in Metro Detroit.',
     path: '/faqs',
   }),
 }

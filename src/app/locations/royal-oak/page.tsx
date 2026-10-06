@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Royal Oak MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Royal Oak, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Royal Oak & surrounding areas.',
-  keywords: ['kitchen cabinets Royal Oak MI', 'cabinet installation Royal Oak', 'kitchen remodel Royal Oak', 'Royal Oak kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function RoyalOakPage() {

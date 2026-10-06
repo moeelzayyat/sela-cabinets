@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { siteConfig } from '@/config/site'
+import { serviceAreaPages } from '@/config/service-area-pages'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -22,8 +23,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-charcoal-400">
-              Premium kitchen cabinets and professional installation for Detroit
-              homeowners.
+              Quality kitchen cabinets at a fair price, professionally installed
+              across Metro Detroit.
             </p>
             <div className="mt-6 space-y-3">
               <a
@@ -109,12 +110,13 @@ export function Footer() {
               Metro Detroit service area
             </Link>
             <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
-              {siteConfig.serviceAreas.slice(0, 10).map((area) => (
-                <li key={area} className="text-charcoal-400">
-                  {area}
+              {serviceAreaPages.map((area) => (
+                <li key={area.slug}>
+                  <Link href={`/service-areas/${area.slug}`} className="text-charcoal-400 transition-colors hover:text-white">
+                    {area.name}
+                  </Link>
                 </li>
               ))}
-              <li className="text-charcoal-400">& more...</li>
             </ul>
           </div>
         </div>

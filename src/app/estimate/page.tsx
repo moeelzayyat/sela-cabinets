@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,6 +22,7 @@ import { submitEstimateRequest } from '../actions/estimate'
 import { trackEstimateSubmit, trackFormStart } from '../../lib/analytics'
 import { estimateImages } from '../../config/images'
 import { EstimateSuccess } from '../../components/estimate/estimate-success'
+import { allCabinetProducts } from '../../config/products-catalog'
 
 const estimateSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -43,6 +44,7 @@ export default function EstimatePage() {
   const [warning, setWarning] = useState<string | undefined>()
   const [error, setError] = useState<string | null>(null)
   const [hasStarted, setHasStarted] = useState(false)
+  const [selectedStyle, setSelectedStyle] = useState('')
 
   const {
     register,
@@ -52,6 +54,21 @@ export default function EstimatePage() {
   } = useForm<EstimateFormData>({
     resolver: zodResolver(estimateSchema),
   })
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const requestedStyle = searchParams.get('style')
+    const requestedCity = searchParams.get('city')
+    const product = allCabinetProducts.find((item) => item.id === requestedStyle)
+
+    if (product) {
+      setSelectedStyle(product.name)
+      setValue('style', product.name, { shouldValidate: true })
+    }
+    if (requestedCity) {
+      setValue('city', requestedCity, { shouldValidate: true })
+    }
+  }, [setValue])
 
   const handleFormStart = () => {
     if (!hasStarted) {
@@ -119,6 +136,20 @@ export default function EstimatePage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-y border-wood-200 bg-wood-50 py-10">
+        <div className="container-wide text-center">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">Price expectations</p>
+          <p className="mx-auto mt-3 max-w-3xl text-xl font-semibold leading-8 text-charcoal-900">
+            Most kitchen projects range from {siteConfig.pricing.installedRange} installed,
+            depending on size, style, and layout.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl leading-7 text-charcoal-700">
+            The exact price comes after in-home measurement and a review of cabinet selection,
+            delivery, site conditions, and installation scope.
+          </p>
         </div>
       </section>
 
@@ -249,7 +280,13 @@ export default function EstimatePage() {
                   </div>
                   <div>
                     <Label htmlFor="style">Style Preference *</Label>
-                    <Select onValueChange={(value) => setValue('style', value)}>
+                    <Select
+                      value={selectedStyle}
+                      onValueChange={(value) => {
+                        setSelectedStyle(value)
+                        setValue('style', value, { shouldValidate: true })
+                      }}
+                    >
                       <SelectTrigger
                         id="style"
                         aria-label="Style preference"
@@ -261,6 +298,11 @@ export default function EstimatePage() {
                         {siteConfig.formOptions.styles.map((option) => (
                           <SelectItem key={option} value={option}>
                             {option}
+                          </SelectItem>
+                        ))}
+                        {allCabinetProducts.map((product) => (
+                          <SelectItem key={product.id} value={product.name}>
+                            {product.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

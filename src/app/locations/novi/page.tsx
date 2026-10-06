@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Novi MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Novi, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Novi & Oakland County.',
-  keywords: ['kitchen cabinets Novi MI', 'cabinet installation Novi', 'kitchen remodel Novi', 'Novi kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function NoviPage() {

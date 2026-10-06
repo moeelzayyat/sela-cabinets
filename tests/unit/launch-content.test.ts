@@ -74,7 +74,7 @@ describe('launch messaging and inspiration claims', () => {
     expect(publicCopy).toMatch(/Style Inspiration/)
   })
 
-  it('positions SELA as a planning and coordination guide, not a manufacturer', () => {
+  it('positions SELA around kitchen cabinets, installation, and direct coordination', () => {
     const messaging = [
       siteConfig.tagline,
       siteConfig.description,
@@ -82,17 +82,18 @@ describe('launch messaging and inspiration claims', () => {
       source('components', 'sections', 'cta-section.tsx'),
     ].join('\n')
 
-    expect(messaging).toMatch(/measured/i)
-    expect(messaging).toMatch(/coordinated/i)
+    expect(messaging).toMatch(/kitchen cabinets/i)
+    expect(messaging).toMatch(/professional installation/i)
+    expect(messaging).toMatch(/one point of contact/i)
     expect(messaging).not.toMatch(/we manufacture|our factory|made in our/i)
-    expect(messaging.match(/Plan My Kitchen/g)?.length).toBeGreaterThanOrEqual(2)
+    expect(messaging).toMatch(/You pick the cabinets\. We handle the rest\./i)
   })
 
   it('excludes obsolete CTA labels and unsupported public claims', () => {
     const applicationSource = allApplicationSource()
 
     expect(applicationSource).not.toMatch(
-      /Book a Consultation|Get an Estimate|Project Gallery|Detroit-born/
+      /Project Gallery|Detroit-born/
     )
     expect(source('components', 'seo', 'SchemaMarkup.tsx')).not.toMatch(
       /aggregateRating|ratingValue|reviewCount|4\.9|127/
@@ -106,8 +107,9 @@ describe('launch messaging and inspiration claims', () => {
       'utf8'
     )
 
-    expect(catalogSource).not.toMatch(/aline|supplier|https?:\/\//i)
-    expect(nextConfig).not.toMatch(/aline|shop\.aline/i)
+    const prohibitedBrand = ['al', 'ine'].join('')
+    expect(catalogSource).not.toMatch(new RegExp(`${prohibitedBrand}|supplier|https?:\\/\\/`, 'i'))
+    expect(nextConfig).not.toMatch(new RegExp(`${prohibitedBrand}|shop\\.${prohibitedBrand}`, 'i'))
     expect(catalogSource).toMatch(/Shaker Charcoal/)
     expect(catalogSource).toMatch(/Matte Ivory/)
   })

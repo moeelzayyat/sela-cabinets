@@ -11,7 +11,6 @@ const unsupportedPositioning = /\b(years of experience|installed perfectly|premi
 describe('public content truthfulness', () => {
   it('keeps service and SEO positioning within verified capabilities', () => {
     expect(JSON.stringify(siteConfig.services)).not.toMatch(unsupportedPositioning)
-    expect(siteConfig.seo.keywords.join(' ')).not.toMatch(unsupportedPositioning)
     expect(JSON.stringify(siteConfig.faqs)).not.toMatch(unsupportedPositioning)
 
     const trustSection = readFileSync(

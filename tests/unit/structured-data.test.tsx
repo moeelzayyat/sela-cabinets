@@ -18,7 +18,10 @@ describe('public structured data', () => {
 
     expect(schema.name).toBe(siteConfig.name)
     expect(schema.email).toBe(siteConfig.email)
-    expect(schema.telephone).toBe(siteConfig.phone)
+    expect(schema['@type']).toBe('HomeAndConstructionBusiness')
+    expect(schema.telephone).toBe(siteConfig.phoneInternational)
+    expect(schema.logo).toBe(`${siteConfig.seo.url}${siteConfig.seo.logo}`)
+    expect(schema.image).toBe(`${siteConfig.seo.url}${siteConfig.seo.image}`)
     expect(schema).not.toHaveProperty('openingHoursSpecification')
     expect(schema).not.toHaveProperty('aggregateRating')
     expect(schema).not.toHaveProperty('paymentAccepted')

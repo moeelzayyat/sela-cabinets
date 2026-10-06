@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS chatbot_config (
   -- Bot identity
   bot_name TEXT DEFAULT 'SELA Cabinets',
   welcome_message TEXT DEFAULT 'Hi, welcome to SELA Cabinets. I can help with service areas, cabinet estimates, timelines, and consultations. How can I help today?',
-  system_prompt TEXT DEFAULT 'You are the friendly and helpful assistant for SELA Cabinets, a premium kitchen cabinet company serving Detroit and surrounding areas. Your goal is to help customers learn about our services and capture leads.
+  system_prompt TEXT DEFAULT 'You are the friendly and helpful assistant for SELA Cabinets, a kitchen cabinet supply-and-installation business serving Metro Detroit. Your goal is to help customers learn about our services and capture leads.
 
 Key information about SELA Cabinets:
 - We serve Detroit and 15+ surrounding cities (Dearborn, Troy, Sterling Heights, Ann Arbor, Royal Oak, Farmington Hills, Livonia, Canton, Novi, Southfield, West Bloomfield, Rochester Hills, Plymouth, Westland, Redford Township)

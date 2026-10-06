@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Kitchen Cabinet Estimates in Metro Detroit',
   description: 'Learn how SELA prepares kitchen cabinet estimates using project details, measurements, cabinet selections, and installation scope in Metro Detroit.',
   alternates: { canonical: '/pricing' },
-  keywords: ['kitchen cabinet estimates Detroit', 'cabinet design consultation Detroit', 'kitchen cabinet planning Michigan', 'cabinet installation consultation'],
+
   ...createPageSocialMetadata({
     title: 'Kitchen Cabinet Estimates in Metro Detroit',
     description: 'Learn how SELA prepares kitchen cabinet estimates using project details, measurements, cabinet selections, and installation scope in Metro Detroit.',

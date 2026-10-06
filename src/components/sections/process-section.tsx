@@ -14,10 +14,10 @@ export function ProcessSection() {
       <div className="container-wide">
         <div className="text-center">
           <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl lg:text-5xl">
-            Our Simple Process
+            From Cabinet Selection to Final Walkthrough
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-            From consultation to installation, we make getting new kitchen cabinets easy and stress-free.
+            One point of contact keeps cabinet selection, measurement, ordering, delivery readiness, and installation connected.
           </p>
         </div>
 

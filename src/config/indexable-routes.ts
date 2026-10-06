@@ -1,20 +1,27 @@
-export const indexableRoutes = [
+import { allCabinetProducts } from '@/config/products-catalog'
+import { serviceAreaPages } from '@/config/service-area-pages'
+
+const coreRoutes = [
   '/',
+  '/about',
   '/services',
   '/services/kitchen-cabinet-installation-detroit',
   '/services/kitchen-cabinet-supply-detroit',
   '/services/in-home-cabinet-measurement',
-  '/service-areas/metro-detroit',
   '/products',
-  '/pricing',
   '/gallery',
-  '/about',
+  '/pricing',
+  '/estimate',
+  '/book',
   '/faqs',
   '/contact',
-  '/book',
-  '/estimate',
+  '/service-areas/metro-detroit',
   '/blog',
   '/blog/kitchen-cabinet-planning-detroit',
 ] as const
 
-export type IndexableRoute = (typeof indexableRoutes)[number]
+export const indexableRoutes = [
+  ...coreRoutes,
+  ...serviceAreaPages.map((area) => `/service-areas/${area.slug}`),
+  ...allCabinetProducts.map((product) => `/products/${product.id}`),
+]

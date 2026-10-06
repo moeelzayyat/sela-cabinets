@@ -10,10 +10,11 @@ export const siteConfig = {
   // BUSINESS INFORMATION
   // ============================================
   name: 'SELA Cabinets',
-  tagline: 'A Measured Cabinet Plan for Metro Detroit Kitchens',
-  description: 'SELA guides Metro Detroit homeowners from renovation confusion to a measured, coordinated cabinet plan, including layout guidance, cabinet selection, ordering, delivery, and installation planning.',
+  tagline: 'Kitchen Cabinets & Professional Installation in Metro Detroit',
+  description: 'SELA supplies quality kitchen cabinets and coordinates professional installation for Metro Detroit homeowners, with one point of contact from measurement to final walkthrough.',
   
   phone: '313-468-3225',
+  phoneInternational: '+1-313-468-3225',
   phoneFormatted: '(313) 468-3225',
   phoneLink: 'tel:+13134683225',
   
@@ -24,6 +25,28 @@ export const siteConfig = {
     state: 'Michigan',
     stateAbbr: 'MI',
     full: 'Detroit, Michigan',
+  },
+
+  // Owner-supplied facts that must be completed before the related claims go live.
+  owner: {
+    name: '[OWNER NAME]',
+    photo: '[OWNER PHOTO — optional]',
+    shortBio: '[SHORT OWNER BIO]',
+  },
+  installer: {
+    yearsOfExperience: '[YEARS OF EXPERIENCE]',
+    handsOrToolsPhoto: '[HANDS/TOOLS PHOTO]',
+  },
+  pricing: {
+    installedRange: '[PRICE RANGE]',
+  },
+  businessFacts: {
+    address: '[BUSINESS ADDRESS OR "service-area business, no public address"]',
+    hours: '[HOURS]',
+    license: '[LICENSE TYPE AND NUMBER]',
+    insured: '[INSURED: YES/NO]',
+    warranty: '[WARRANTY TERMS]',
+    gscVerification: '[GSC VERIFICATION CODE]',
   },
   
   // ============================================
@@ -70,52 +93,11 @@ export const siteConfig = {
   // ============================================
   seo: {
     titleTemplate: '%s | SELA Cabinets',
-    defaultTitle: 'SELA Cabinets | Kitchen Cabinet Planning in Metro Detroit',
-    defaultDescription: 'Move from renovation confusion to a measured, coordinated cabinet plan with SELA Cabinets. Serving homeowners across Metro Detroit.',
-    keywords: [
-      // Primary keywords
-      'kitchen cabinets Detroit',
-      'cabinet installation Detroit MI',
-      'kitchen remodel Detroit',
-      'cabinet supply Detroit',
-      // Location-specific
-      'kitchen cabinets Dearborn',
-      'kitchen cabinets Troy Michigan',
-      'kitchen cabinets Sterling Heights',
-      'kitchen cabinets Ann Arbor',
-      'kitchen cabinets Royal Oak',
-      'kitchen cabinets Farmington Hills',
-      'kitchen cabinets Livonia',
-      'kitchen cabinets Canton MI',
-      // Service keywords
-      'cabinet installation services',
-      'in-home cabinet measurement',
-      'kitchen design consultation Detroit',
-      'kitchen cabinet styles Michigan',
-      'framed and frameless cabinets',
-      // Comparison keywords
-      'kitchen cabinet planning Detroit',
-      'cabinet construction options Michigan',
-      'kitchen cabinet consultation Detroit',
-      'cabinet selection consultation Detroit',
-      // Long-tail keywords
-      'kitchen cabinet design Detroit',
-      'professional cabinet installation Michigan',
-      'local kitchen cabinet planning Detroit',
-      'kitchen renovation Detroit metro',
-      'cabinet replacement Detroit',
-      // Product keywords
-      'shaker cabinets Detroit',
-      'white kitchen cabinets',
-      'modern kitchen cabinets Michigan',
-      'wood kitchen cabinets Detroit',
-      // Action keywords
-      'buy kitchen cabinets Detroit',
-      'order cabinets online Michigan',
-      'cabinet consultation Detroit',
-      'cabinet estimate Detroit',
-    ],
+    defaultTitle: 'Kitchen Cabinets & Installation in Metro Detroit | SELA',
+    defaultDescription: 'Quality kitchen cabinets at a fair price, professionally installed across Metro Detroit with one point of contact from measurement to walkthrough.',
     url: 'https://selacabinets.com',
+    logo: '/images/seo/sela-cabinets-logo.svg',
+    image: '/images/seo/home-og.jpg',
   },
   
   // ============================================
@@ -144,7 +126,7 @@ export const siteConfig = {
     {
       step: 1,
       title: 'Tell Us About Your Kitchen',
-      description: 'Share your goals and any dimensions you have, or schedule a call. We\'ll help you identify the next planning step.',
+      description: 'Share your goals, kitchen photos, preferred cabinet styles, and any dimensions you already have.',
       icon: 'Calendar',
     },
     {
@@ -155,14 +137,14 @@ export const siteConfig = {
     },
     {
       step: 3,
-      title: 'Review the Plan',
-      description: 'Review your layout, finish selections, timeline, and project scope before you commit.',
+      title: 'Review Cabinets & Scope',
+      description: 'Review the measured layout, cabinet selections, written scope, and exact estimate before you commit.',
       icon: 'PenTool',
     },
     {
       step: 4,
-      title: 'Your New Kitchen, Done',
-      description: 'Professional installation after inspection, ordering, delivery, and site readiness are confirmed.',
+      title: 'Install & Walk Through',
+      description: 'The lead installer fits and adjusts the cabinets, followed by a final cabinet walkthrough.',
       icon: 'Truck',
     },
   ],
@@ -187,11 +169,11 @@ export const siteConfig = {
     {
       id: 'installation',
       title: 'Professional Installation',
-      shortDescription: 'Installation coordinated after inspection, ordering, delivery, and site readiness are confirmed.',
-      description: 'Cabinet installation covers placement, leveling, alignment, and final adjustments according to the agreed project scope. Cabinet removal is handled only when it is included in that scope; removed cabinets remain at the property for customer disposal.',
+      shortDescription: 'Skilled cabinet fitting, leveling, alignment, secure attachment, and final adjustment.',
+      description: 'Professional cabinet installation connects the measured layout with careful placement, leveling, alignment, secure attachment, trim work in the approved scope, and final adjustments.',
       features: [
-        'Installation coordinated to project scope',
-        'Cabinet removal when included in scope',
+        'Experienced lead installer',
+        'Careful scribing and cabinet fit',
         'Precise leveling and alignment',
         'Final cabinet adjustments',
       ],
@@ -201,12 +183,12 @@ export const siteConfig = {
       id: 'measurement',
       title: 'In-Home Measurement',
       shortDescription: 'We come to you. Precise measuring with your order.',
-      description: 'In-home measurement records kitchen dimensions and existing conditions so cabinet planning can be based on the actual space.',
+      description: 'In-home measurement records kitchen dimensions and visible conditions so cabinet selection and installation can be based on the actual space.',
       features: [
         'Included with cabinet order',
         'Detailed digital measurements',
         'Assessment of existing conditions',
-        'Inspection-based project planning',
+        'Measured cabinet layout decisions',
       ],
       icon: 'Ruler',
     },
@@ -214,10 +196,10 @@ export const siteConfig = {
       id: 'design-help',
       title: 'Design Help',
       shortDescription: 'Need ideas? We\'ll show you what\'s possible.',
-      description: 'Design guidance helps compare cabinet styles, finishes, storage needs, and layout options before ordering. Available planning tools may include 3D renderings.',
+      description: 'Layout guidance helps compare cabinet styles, finishes, storage needs, and placement options before ordering.',
       features: [
-        'Virtual design consultations',
-        '3D kitchen renderings',
+        'Cabinet selection consultations',
+        'Measured layout guidance',
         'Style and finish recommendations',
         'Layout optimization',
       ],
@@ -320,8 +302,8 @@ export const siteConfig = {
   // ============================================
   faqs: [
     {
-      question: 'How is cabinet project timing determined?',
-      answer: 'Cabinet project timing is confirmed after inspection. We first review the layout, site conditions, cabinet selections, supplier ordering lead time, delivery schedule, and installation scope, then provide a realistic project timeline.',
+      question: 'When can my cabinet installation date be confirmed?',
+      answer: 'We confirm the installation date after measurements and layout are approved, the cabinets are available and inspected, and the kitchen is ready for the agreed work. This avoids promising a date before the parts and site conditions are ready.',
     },
     {
       question: 'Do you offer in-home measurement?',
@@ -333,19 +315,23 @@ export const siteConfig = {
     },
     {
       question: 'Do you remove old cabinets?',
-      answer: 'Cabinet removal can be included in the agreed project scope. Removed cabinets remain at the property, and the customer is responsible for disposal.',
+      answer: 'Cabinet removal can be included in the written project scope. Removed cabinets remain at the property, and the customer is responsible for disposal unless a different qualified service is expressly arranged in writing.',
     },
     {
       question: 'What areas do you serve?',
       answer: 'We serve Detroit and the surrounding metro area including Dearborn, Livonia, Troy, Warren, Sterling Heights, Ann Arbor, Farmington Hills, Southfield, Royal Oak, Novi, Canton, Westland, Redford, and Taylor. Contact us if you\'re outside these areas; we may still be able to help.',
     },
     {
-      question: 'Can you help with kitchen design?',
-      answer: 'Absolutely! We offer design consultation services to help you plan your perfect kitchen. This includes style recommendations, layout optimization, and 3D renderings so you can visualize your new kitchen before making decisions. We can meet virtually or in-person.',
+      question: 'Can you help with cabinet layout and style choices?',
+      answer: 'Yes. SELA helps compare cabinet construction, door styles, finishes, storage needs, and measured layout options before an order is finalized.',
     },
     {
       question: 'What cabinet brands do you carry?',
-      answer: 'We work with cabinet manufacturers that offer different construction styles and finishes. During planning, we compare the available cabinet line, finish, and construction details with your project goals.',
+      answer: 'SELA presents its available framed and frameless cabinet collections by style, finish, and confirmed construction details. Current availability is verified before an order is finalized.',
+    },
+    {
+      question: 'What should be ready before cabinet installation?',
+      answer: 'The agreed work area must be accessible and ready for the cabinet scope. SELA reviews cabinet delivery, removal status, walls and floors, visible utility conflicts, appliance information, and coordination with other trades before confirming installation readiness.',
     },
     {
       question: 'How do I get started?',
@@ -368,7 +354,7 @@ export const siteConfig = {
       'Starter refresh',
       'Standard kitchen project',
       'Large kitchen project',
-      'Premium kitchen transformation',
+      'Kitchen transformation',
       'Multi-room cabinetry',
       'Not sure yet',
     ],

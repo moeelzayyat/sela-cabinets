@@ -6,7 +6,7 @@ const contentSecurityPolicy = [
   "form-action 'self' https://calendly.com",
   "script-src 'self' 'unsafe-inline' https://assets.calendly.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
-  "img-src 'self' data: blob: https://images.unsplash.com https://www.google-analytics.com",
+  "img-src 'self' data: blob: https://www.google-analytics.com",
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
   "frame-src https://calendly.com https://*.calendly.com",
@@ -50,10 +50,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.supabase.co',
       },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
+
     ],
   },
   experimental: {

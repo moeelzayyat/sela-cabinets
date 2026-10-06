@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: siteConfig.seo.titleTemplate,
   },
   description: siteConfig.seo.defaultDescription,
-  keywords: [...siteConfig.seo.keywords],
+
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   metadataBase: new URL(siteConfig.seo.url),
@@ -49,6 +49,7 @@ export default function RootLayout({
         <LocalBusinessJsonLd />
         <meta name="geo.region" content="US-MI" />
         <meta name="geo.placename" content="Detroit" />
+        <meta name="google-site-verification" content={siteConfig.businessFacts.gscVerification} />
       </head>
       <body className="min-h-screen bg-white font-sans">
         <SiteShell>{children}</SiteShell>

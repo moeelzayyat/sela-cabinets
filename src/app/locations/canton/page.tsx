@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Canton MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Canton, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Canton & Wayne County.',
-  keywords: ['kitchen cabinets Canton MI', 'cabinet installation Canton', 'kitchen remodel Canton', 'Canton kitchen design', 'Wayne County cabinets'],
+
 }
 
 export default function CantonPage() {

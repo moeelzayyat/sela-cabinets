@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Sterling Heights MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Sterling Heights, MI. cabinets, professional measuring & installation. In-home estimates. Serving Sterling Heights & Macomb County.',
-  keywords: ['kitchen cabinets Sterling Heights MI', 'cabinet installation Sterling Heights', 'kitchen remodel Sterling Heights', 'Macomb County cabinets'],
+
 }
 
 export default function SterlingHeightsPage() {
@@ -26,8 +26,8 @@ export default function SterlingHeightsPage() {
                 Kitchen Cabinets in Sterling Heights
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
-                Premium kitchen cabinets for Sterling Heights homes. Expert installation, 
-                quality products, and service you can trust.
+                Quality kitchen cabinets at a fair price for Sterling Heights homes, with
+                professional installation and one point of contact.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">

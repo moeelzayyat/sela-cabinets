@@ -59,7 +59,7 @@ describe('admin page middleware', () => {
     '/account/register',
     '/api/chat',
     '/locations/royal-oak',
-    '/service-areas/detroit',
+    '/service-areas/not-a-real-city',
   ])('returns an exact 404 for disabled public surface %s', async (pathname) => {
     const response = await middleware(publicRequest(pathname))
 
@@ -70,6 +70,13 @@ describe('admin page middleware', () => {
 
   it('allows the published cabinet catalog page', async () => {
     const response = await middleware(publicRequest('/products'))
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('x-middleware-next')).toBe('1')
+  })
+
+  it('allows published service-area pages', async () => {
+    const response = await middleware(publicRequest('/service-areas/detroit'))
 
     expect(response.status).toBe(200)
     expect(response.headers.get('x-middleware-next')).toBe('1')

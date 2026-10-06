@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Troy MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Troy, MI. cabinets, professional measuring & installation. In-home estimates. Serving Troy, Rochester Hills & Oakland County.',
-  keywords: ['kitchen cabinets Troy MI', 'cabinet installation Troy', 'kitchen remodel Troy', 'cabinets Troy', 'Troy kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function TroyPage() {
@@ -26,8 +26,8 @@ export default function TroyPage() {
                 Kitchen Cabinets in Troy
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
-                Premium kitchen cabinets for Troy and Oakland County homes. quality, 
-                professional installation, and service that exceeds expectations.
+                Quality kitchen cabinets at a fair price for Troy and Oakland County homes,
+                with professional installation and one point of contact.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">

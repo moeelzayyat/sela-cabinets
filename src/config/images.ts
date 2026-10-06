@@ -1,23 +1,19 @@
 /**
- * Generic launch imagery used only as style inspiration.
- * Replace with rights-cleared SELA photography when available.
+ * Rights-cleared generic launch imagery used only as style inspiration.
+ * Replace with customer-approved SELA photography as projects are completed.
  */
 
 const inspirationImages = {
-  bright:
-    'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1920&h=1080&q=80',
-  warm:
-    'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?auto=format&fit=crop&w=1200&h=900&q=80',
-  neutral:
-    'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&h=900&q=80',
-  compact:
-    'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1200&h=900&q=80',
+  bright: '/images/hero/kitchen-1600.webp',
+  warm: '/images/hero/kitchen-960.webp',
+  neutral: '/images/hero/kitchen-1600.webp',
+  compact: '/images/hero/kitchen-960.webp',
 } as const
 
 export const heroImages = {
   main: {
     src: inspirationImages.bright,
-    alt: 'Bright kitchen shown as cabinet-planning inspiration',
+    alt: 'Bright kitchen shown as cabinet inspiration, not a completed SELA project',
   },
 } as const
 
@@ -28,7 +24,7 @@ export const serviceImages = {
   },
   installation: {
     src: inspirationImages.neutral,
-    alt: 'Kitchen inspiration for discussing installation planning',
+    alt: 'Kitchen inspiration for discussing cabinet installation',
   },
   measurement: {
     src: inspirationImages.compact,
@@ -36,7 +32,7 @@ export const serviceImages = {
   },
   'design-help': {
     src: inspirationImages.bright,
-    alt: 'Kitchen inspiration for cabinet layout planning',
+    alt: 'Kitchen inspiration for cabinet layout guidance',
   },
 } as const
 

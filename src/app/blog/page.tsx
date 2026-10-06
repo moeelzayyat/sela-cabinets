@@ -4,12 +4,12 @@ import { CTASection } from '@/components/sections/cta-section'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Kitchen Cabinet Planning Guides for Detroit',
-  description: 'Practical guidance on cabinet planning, measurements, styles, storage, and installation coordination for Metro Detroit homeowners.',
+  title: 'Kitchen Cabinet Guides for Metro Detroit',
+  description: 'Practical guidance on kitchen cabinets, measurements, styles, storage, costs, and professional installation for Metro Detroit homeowners.',
   alternates: { canonical: '/blog' },
   ...createPageSocialMetadata({
-    title: 'Kitchen Cabinet Planning Guides for Detroit',
-    description: 'Practical guidance on cabinet planning, measurements, styles, storage, and installation coordination for Metro Detroit homeowners.',
+    title: 'Kitchen Cabinet Guides for Metro Detroit',
+    description: 'Practical guidance on kitchen cabinets, measurements, styles, storage, costs, and professional installation for Metro Detroit homeowners.',
     path: '/blog',
   }),
 }

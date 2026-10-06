@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Bloomfield Hills MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Bloomfield Hills, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Bloomfield Hills & Oakland County.',
-  keywords: ['kitchen cabinets Bloomfield Hills MI', 'cabinet installation Bloomfield Hills', 'kitchen remodel Bloomfield Hills', 'Bloomfield Hills kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function BloomfieldHillsPage() {

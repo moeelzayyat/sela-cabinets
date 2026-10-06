@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets West Bloomfield MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in West Bloomfield, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving West Bloomfield & Oakland County.',
-  keywords: ['kitchen cabinets West Bloomfield MI', 'cabinet installation West Bloomfield', 'kitchen remodel West Bloomfield', 'West Bloomfield kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function WestBloomfieldPage() {
@@ -26,8 +26,8 @@ export default function WestBloomfieldPage() {
                 Kitchen Cabinets in West Bloomfield
               </h1>
               <p className="mt-6 text-lg text-charcoal-300">
-                Premium kitchen cabinets for West Bloomfield homes. Quality craftsmanship, 
-                professional installation, and service that exceeds expectations in Oakland County.
+                Quality kitchen cabinets at a fair price for West Bloomfield homes, with
+                professional installation and one point of contact.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link href="/book">

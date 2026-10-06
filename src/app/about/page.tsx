@@ -1,215 +1,151 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { MapPin, Users, Award, Clock, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ProcessSection } from '@/components/sections/process-section'
-import { CTASection } from '@/components/sections/cta-section'
-import { siteConfig } from '@/config/site'
-import { aboutImages } from '@/config/images'
+import { Check, MapPin, MessageSquareText, Ruler, Wrench } from 'lucide-react'
+
+import { ResponsiveHeroImage } from '@/components/media/responsive-hero-image'
+import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
+import { CTASection } from '@/components/sections/cta-section'
+import { ProcessSection } from '@/components/sections/process-section'
+import { VerifiedTrustStrip } from '@/components/sections/verified-trust-strip'
+import { Button } from '@/components/ui/button'
+import { aboutImages } from '@/config/images'
+import { serviceAreaPages } from '@/config/service-area-pages'
+import { siteConfig } from '@/config/site'
+
+const title = 'About Detroit Kitchen Cabinet Installation'
+const description = 'Meet the SELA Cabinets process: one direct contact, quality kitchen cabinets, in-home measurement, and professional installation in Metro Detroit.'
 
 export const metadata: Metadata = {
-  title: 'About Our Kitchen Cabinet Planning Team',
-  description: 'Learn how SELA Cabinets guides Metro Detroit homeowners through measurement, cabinet selection, ordering coordination, and installation planning.',
+  title,
+  description,
   alternates: { canonical: '/about' },
-  keywords: ['SELA Cabinets Detroit', 'kitchen cabinet planning Detroit', 'Detroit cabinet company', 'local cabinet planning'],
-  ...createPageSocialMetadata({
-    title: 'About Our Kitchen Cabinet Planning Team',
-    description: 'Learn how SELA Cabinets guides Metro Detroit homeowners through measurement, cabinet selection, ordering coordination, and installation planning.',
-    path: '/about',
-  }),
+  ...createPageSocialMetadata({ title, description, path: '/about', image: '/images/seo/about-og.jpg' }),
 }
 
-const values = [
-  {
-    icon: Award,
-    title: 'Quality First',
-    description: 'We compare cabinet options carefully and keep the plan grounded in the measured space.',
-  },
-  {
-    icon: Users,
-    title: 'Customer Focus',
-    description: 'We start by listening to your priorities, questions, and concerns.',
-  },
-  {
-    icon: Clock,
-    title: 'Reliability',
-    description: 'We aim for clear communication and confirm timing from the actual project scope.',
-  },
-  {
-    icon: MapPin,
-    title: 'Local Expertise',
-    description: 'We focus on the cabinet-planning needs of Metro Detroit homeowners.',
-  },
-]
+const workingBenefits = [
+  ['One point of contact', 'Questions, scheduling, ordering, and updates stay with the owner from first call to final walkthrough.'],
+  ['In-home measurement', 'The kitchen and visible conditions are recorded before the cabinet order is finalized.'],
+  ['Cabinet selection help', 'Compare framed and frameless construction, finishes, storage needs, and hardware.'],
+  ['Professional installation', 'The lead installer focuses on leveling, alignment, secure attachment, scribing, adjustment, and clean fit.'],
+  ['Written project scope', 'The included cabinet supply and installation work is documented before commitment.'],
+] as const
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
+      <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'About', url: '/about' }]} />
+
       <section className="section-padding bg-charcoal-50">
-        <div className="container-wide">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <h1 className="font-display text-4xl font-bold text-charcoal-900 md:text-5xl lg:text-6xl">
-                About {siteConfig.name}
-              </h1>
-              <p className="mt-6 text-lg text-charcoal-600 md:text-xl">
-                SELA helps Metro Detroit homeowners turn kitchen-renovation questions into
-                a measured, coordinated cabinet plan.
-              </p>
-              <p className="mt-4 text-lg text-charcoal-600">
-                We guide the process from layout and cabinet selection through ordering,
-                delivery, and installation planning.
-              </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <Link href="/book">
-                  <Button size="lg">Plan My Kitchen</Button>
-                </Link>
-                <Link href="/services">
-                  <Button size="lg" variant="outline">
-                    Our Services
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            {/* TEMP PLACEHOLDER – REPLACE WITH REAL SELA CABINETS PHOTOS */}
-            <div className="aspect-square overflow-hidden rounded-2xl bg-charcoal-100 lg:aspect-[4/3]">
-              <Image
-                src={aboutImages.team.src}
-                alt={aboutImages.team.alt}
-                width={800}
-                height={600}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="section-padding bg-white">
-        <div className="container-wide">
-          <div className="text-center">
-            <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl lg:text-5xl">
-              What We Stand For
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-              Our values guide everything we do, from how we source cabinets to how we 
-              treat every homeowner we work with.
+        <div className="container-wide grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">One team for cabinets and installation</p>
+            <h1 className="mt-4 font-display text-4xl font-bold text-charcoal-900 md:text-5xl lg:text-6xl">
+              About SELA Cabinets
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-charcoal-700 md:text-xl">
+              SELA brings kitchen cabinet supply, in-home measurement, ordering coordination,
+              and professional installation together for Metro Detroit homeowners.
             </p>
+            <p className="mt-4 text-lg leading-8 text-charcoal-600">
+              You pick the cabinets. We handle the rest—with one direct contact from the first
+              conversation through the final cabinet walkthrough.
+            </p>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <Button asChild size="lg"><Link href="/estimate">Request an Estimate</Link></Button>
+              <Button asChild size="lg" variant="outline"><Link href="/products">Explore Cabinet Styles</Link></Button>
+            </div>
           </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {values.map((value) => (
-              <div key={value.title} className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-                  <value.icon className="h-8 w-8" />
-                </div>
-                <h3 className="mt-6 font-display text-xl font-semibold text-charcoal-900">
-                  {value.title}
-                </h3>
-                <p className="mt-2 text-charcoal-600">
-                  {value.description}
-                </p>
-              </div>
-            ))}
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-charcoal-200 bg-white">
+            <ResponsiveHeroImage alt={aboutImages.team.alt} preload className="h-full w-full object-cover" />
           </div>
         </div>
       </section>
 
-      {/* Process */}
+      <section className="section-padding bg-white" aria-labelledby="how-we-work-title">
+        <div className="container-wide">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">How we work</p>
+            <h2 id="how-we-work-title" className="mt-3 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
+              Clear communication meets careful cabinet work
+            </h2>
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <article className="rounded-2xl border border-charcoal-200 bg-charcoal-50 p-7 sm:p-8">
+              <MessageSquareText className="h-9 w-9 text-primary" aria-hidden="true" />
+              <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-primary">Your direct contact</p>
+              <h3 className="mt-2 font-display text-2xl font-semibold text-charcoal-900">{siteConfig.owner.name}, Owner</h3>
+              <p className="mt-4 leading-7 text-charcoal-700">{siteConfig.owner.shortBio}</p>
+              <p className="mt-4 leading-7 text-charcoal-700">
+                You&apos;ll always deal directly with {siteConfig.owner.name}, from first call to final
+                walkthrough, so questions, scheduling, ordering, and updates do not get lost between people.
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-charcoal-200 bg-charcoal-900 p-7 text-white sm:p-8">
+              <Wrench className="h-9 w-9 text-wood-300" aria-hidden="true" />
+              <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-wood-300">Craftsmanship in the home</p>
+              <h3 className="mt-2 font-display text-2xl font-semibold">Professional cabinet installation</h3>
+              <p className="mt-4 leading-7 text-charcoal-300">
+                Your cabinets are installed by our lead installer, a carpenter with {siteConfig.installer.yearsOfExperience}
+                {' '}years of experience installing kitchen cabinets.
+              </p>
+              <p className="mt-4 leading-7 text-charcoal-300">
+                The installation work emphasizes cabinet leveling, alignment, secure attachment,
+                careful scribing, door and drawer adjustment, and a clean fit in the measured space.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <ProcessSection />
 
-      {/* Trust Section */}
       <section className="section-padding bg-charcoal-50">
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-              Working With Us
-            </h2>
-            <p className="mt-6 text-lg text-charcoal-600">
-              When you choose {siteConfig.name}, you get a dedicated team focused on 
-              your project from start to finish. We offer:
+            <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Working With SELA</h2>
+            <p className="mt-5 text-lg leading-8 text-charcoal-600">
+              A new cabinet business can earn trust through a clear process, documented scope,
+              verified product details, and consistent communication.
             </p>
             <ul className="mt-8 space-y-4 text-left">
-              <li className="flex items-start gap-4">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  ?
-                </div>
-                <span className="text-charcoal-700">
-                  <strong>Personal consultations</strong> - phone, virtual, or in-person to discuss your project
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  ?
-                </div>
-                <span className="text-charcoal-700">
-                  <strong>In-home measurement</strong> - precise measurements for a perfect fit
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  ?
-                </div>
-                <span className="text-charcoal-700">
-                  <strong>Design assistance</strong> - help choosing styles, colors, and layouts
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  ?
-                </div>
-                <span className="text-charcoal-700">
-                  <strong>Professional installation</strong> - experienced installers who take pride in their work
-                </span>
-              </li>
-              <li className="flex items-start gap-4">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  ?
-                </div>
-                <span className="text-charcoal-700">
-                  <strong>Clear communication</strong> - we keep you informed throughout the process
-                </span>
-              </li>
+              {workingBenefits.map(([label, detail]) => (
+                <li key={label} className="flex items-start gap-4 rounded-xl border border-charcoal-200 bg-white p-5">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+                    <Check className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="text-charcoal-700"><strong>{label}:</strong> {detail}</span>
+                </li>
+              ))}
             </ul>
 
-            {/* Licensing note */}
-            <div className="mt-10 rounded-xl border border-charcoal-200 bg-white p-6">
-              <p className="text-sm text-charcoal-600">
-                <strong>Questions about licensing or insurance?</strong> We&apos;re happy to 
-                discuss our qualifications and provide any documentation you need. Just ask 
-                during your consultation.
-              </p>
-            </div>
+            <VerifiedTrustStrip />
           </div>
         </div>
       </section>
 
-      {/* Service Area */}
       <section className="section-padding bg-white">
         <div className="container-wide">
-          <div className="text-center">
-            <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-              Serving Detroit & Surrounding Areas
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-600">
-              We proudly serve homeowners throughout the Detroit metro area. If you don&apos;t 
-              see your city listed, contact us. We may still be able to help.
+          <div className="mx-auto max-w-3xl text-center">
+            <MapPin className="mx-auto h-9 w-9 text-primary" aria-hidden="true" />
+            <h2 className="mt-4 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Metro Detroit Service Areas</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-charcoal-600">
+              Select a city to learn how SELA approaches kitchen cabinet supply and installation there.
+              Project availability is confirmed after location and scope review.
             </p>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            {siteConfig.serviceAreas.map((area) => (
-              <span
-                key={area}
-                className="rounded-full border border-charcoal-200 bg-charcoal-50 px-4 py-2 text-sm font-medium text-charcoal-700"
-              >
-                {area}
-              </span>
+            {serviceAreaPages.map((area) => (
+              <Link key={area.slug} href={`/service-areas/${area.slug}`} className="rounded-full border border-charcoal-200 bg-charcoal-50 px-4 py-2 text-sm font-semibold text-charcoal-700 transition-colors hover:border-primary hover:text-primary">
+                {area.name}
+              </Link>
             ))}
+          </div>
+          <div className="mx-auto mt-10 flex max-w-xl items-start gap-4 rounded-xl bg-wood-50 p-5 text-charcoal-700">
+            <Ruler className="mt-1 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+            <p>Do not see your city? Contact SELA with the project ZIP code so service availability can be confirmed.</p>
           </div>
         </div>
       </section>

@@ -33,8 +33,10 @@ describe('organic SEO growth surface', () => {
 
     for (const route of growthRoutes) {
       const source = readFileSync(pagePath(route), 'utf8')
-      const title = source.match(/title:\s*'([^']+)'/)?.[1]
-      const description = source.match(/description:\s*'([^']+)'/)?.[1]
+      const title = source.match(/const title = '([^']+)'/)?.[1]
+        ?? source.match(/title:\s*'([^']+)'/)?.[1]
+      const description = source.match(/const description = '([^']+)'/)?.[1]
+        ?? source.match(/description:\s*'([^']+)'/)?.[1]
       const wordCount = source
         .replace(/<[^>]+>/g, ' ')
         .split(/\s+/)
@@ -44,7 +46,11 @@ describe('organic SEO growth surface', () => {
       expect(description, `${route} description`).toBeTruthy()
       expect(titles.has(title!), `${route} duplicate title`).toBe(false)
       expect(descriptions.has(description!), `${route} duplicate description`).toBe(false)
-      expect(source).toContain(`canonical: '${route}'`)
+      if (source.includes('alternates: { canonical: path }')) {
+        expect(source).toContain(`const path = '${route}'`)
+      } else {
+        expect(source).toContain(`canonical: '${route}'`)
+      }
       expect(source).toContain('createPageSocialMetadata')
       expect(wordCount, `${route} source copy depth`).toBeGreaterThan(250)
 

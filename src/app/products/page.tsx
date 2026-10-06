@@ -22,31 +22,31 @@ export const metadata: Metadata = {
     title: 'Kitchen Cabinet Styles in Metro Detroit',
     description: 'Explore 21 framed cabinet styles, 8 frameless cabinet styles, construction details, and available cabinet hardware from SELA Cabinets.',
     path: '/products',
+    image: '/images/seo/products-og.jpg',
   }),
 }
 
 function StyleCard({ product }: { product: CabinetProduct }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-charcoal-200 bg-white shadow-sm">
-      <div className="aspect-square bg-charcoal-50 p-4 sm:p-6">
-        <Image
-          src={product.image}
-          alt={`${product.name} ${product.construction} cabinet door style`}
-          width={900}
-          height={900}
-          className="h-full w-full object-contain"
-          sizes="(min-width: 1280px) 23vw, (min-width: 768px) 31vw, 46vw"
-        />
-      </div>
-      <div className="border-t border-charcoal-100 p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-          {product.construction}
-        </p>
-        <h3 className="mt-1 font-display text-xl font-semibold text-charcoal-900">
-          {product.name}
-        </h3>
-      </div>
-    </article>
+    <Link href={`/products/${product.id}`} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4">
+      <article className="h-full overflow-hidden rounded-2xl border border-charcoal-200 bg-white shadow-sm transition-transform group-hover:-translate-y-1">
+        <div className="aspect-square bg-charcoal-50 p-4 sm:p-6">
+          <Image
+            src={product.image}
+            alt={`${product.name} ${product.construction} cabinet door style`}
+            width={900}
+            height={900}
+            className="h-full w-full object-contain"
+            sizes="(min-width: 1280px) 23vw, (min-width: 768px) 31vw, 46vw"
+          />
+        </div>
+        <div className="border-t border-charcoal-100 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{product.construction}</p>
+          <h3 className="mt-1 font-display text-xl font-semibold text-charcoal-900 group-hover:text-primary">{product.name}</h3>
+          <p className="mt-2 text-sm font-semibold text-primary">View style details →</p>
+        </div>
+      </article>
+    </Link>
   )
 }
 
@@ -228,13 +228,12 @@ export default function ProductsPage() {
                   Handles & Hardware
                 </h2>
                 <p className="mt-5 text-lg leading-8 text-charcoal-700">
-                  Complete the cabinet design with coordinated handles and
-                  soft-close hardware. The current handle collection includes
-                  {` ${handleCatalog[0].name}.`} We confirm finish, size, and
-                  availability as part of your kitchen plan.
+                  Hardware is selected during your consultation. We currently show
+                  {` ${handleCatalog[0].name}`} as a reference, and more options can be
+                  added after finish, size, availability, and product-photo rights are confirmed.
                 </p>
                 <Button asChild size="lg" className="mt-8">
-                  <Link href="/book">Plan My Kitchen</Link>
+                  <Link href="/estimate">Discuss Hardware Options</Link>
                 </Button>
               </div>
             </div>

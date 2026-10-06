@@ -7,22 +7,17 @@ import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { Button } from '@/components/ui/button'
 
 const canonicalPath = '/blog/kitchen-cabinet-planning-detroit'
-const headline = 'How to Plan a Kitchen Cabinet Project in Detroit'
+const headline = 'Detroit Kitchen Cabinet Project Guide'
 const description = 'Plan a Detroit kitchen cabinet project with practical guidance on measurement, cabinet construction, finishes, storage, and installation coordination.'
 const publishedDate = '2026-07-30'
 
 export const metadata: Metadata = {
-  title: 'How to Plan a Kitchen Cabinet Project in Detroit',
+  title: 'Detroit Kitchen Cabinet Project Guide',
   description: 'Plan a Detroit kitchen cabinet project with practical guidance on measurement, cabinet construction, finishes, storage, and installation coordination.',
   alternates: { canonical: '/blog/kitchen-cabinet-planning-detroit' },
-  keywords: [
-    'kitchen cabinet planning Detroit',
-    'cabinet measurement Detroit',
-    'kitchen cabinet installation planning',
-    'framed and frameless cabinets',
-  ],
+
   ...createPageSocialMetadata({
-    title: 'How to Plan a Kitchen Cabinet Project in Detroit',
+    title: 'Detroit Kitchen Cabinet Project Guide',
     description: 'Plan a Detroit kitchen cabinet project with practical guidance on measurement, cabinet construction, finishes, storage, and installation coordination.',
     path: canonicalPath,
     type: 'article',

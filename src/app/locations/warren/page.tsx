@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Warren MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Warren, MI. cabinets, professional measuring & installation. In-home estimates. Serving Warren & Macomb County.',
-  keywords: ['kitchen cabinets Warren MI', 'cabinet installation Warren', 'kitchen remodel Warren', 'Macomb County cabinets', 'Warren kitchen design'],
+
 }
 
 export default function WarrenPage() {

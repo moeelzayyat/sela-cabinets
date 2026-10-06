@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Farmington Hills MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Farmington Hills, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Farmington Hills & Oakland County.',
-  keywords: ['kitchen cabinets Farmington Hills MI', 'cabinet installation Farmington Hills', 'kitchen remodel Farmington Hills', 'Farmington Hills kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function FarmingtonHillsPage() {

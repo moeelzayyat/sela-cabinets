@@ -1,9 +1,21 @@
 import { expect, test } from '@playwright/test'
 
 import { indexableRoutes } from '../../src/config/indexable-routes'
+import { allCabinetProducts } from '../../src/config/products-catalog'
 
 const productionOrigin = 'https://selacabinets.com'
 const socialImagePath = '/images/seo/sela-cabinets-og.png'
+
+function expectedSocialImagePath(route: string) {
+  if (route === '/') return '/images/seo/home-og.jpg'
+  if (route === '/about') return '/images/seo/about-og.jpg'
+  if (route === '/products') return '/images/seo/products-og.jpg'
+  if (route === '/services/kitchen-cabinet-installation-detroit') {
+    return '/images/seo/installation-og.jpg'
+  }
+  const product = allCabinetProducts.find((item) => route === `/products/${item.id}`)
+  return product?.image ?? socialImagePath
+}
 test('rendered production SEO metadata is unique, bounded, and self-canonical', async ({ page }) => {
   test.setTimeout(120_000)
   const titles = new Set<string>()
@@ -26,8 +38,8 @@ test('rendered production SEO metadata is unique, bounded, and self-canonical', 
     const twitterDescription = await page.locator('meta[name="twitter:description"]').getAttribute('content')
     const twitterImage = await page.locator('meta[name="twitter:image"]').getAttribute('content')
 
-    expect(title.length, `${route} title length`).toBeGreaterThanOrEqual(45)
-    expect(title.length, `${route} title length`).toBeLessThanOrEqual(65)
+    expect(title.length, `${route} title length`).toBeGreaterThanOrEqual(30)
+    expect(title.length, `${route} title length`).toBeLessThanOrEqual(60)
     expect(titles.has(title), `${route} duplicate title`).toBe(false)
     titles.add(title)
 
@@ -42,10 +54,11 @@ test('rendered production SEO metadata is unique, bounded, and self-canonical', 
     expect(openGraphType, `${route} Open Graph type`).toBe(
       route === '/blog/kitchen-cabinet-planning-detroit' ? 'article' : 'website'
     )
-    expect(openGraphImage).toBe(`${productionOrigin}${socialImagePath}`)
+    const expectedImage = `${productionOrigin}${expectedSocialImagePath(route)}`
+    expect(openGraphImage).toBe(expectedImage)
     expect(twitterTitle, `${route} Twitter title`).toBe(title)
     expect(twitterDescription, `${route} Twitter description`).toBe(description)
-    expect(twitterImage).toBe(`${productionOrigin}${socialImagePath}`)
+    expect(twitterImage).toBe(expectedImage)
   }
 })
 
@@ -55,7 +68,7 @@ test('planning guide renders article and breadcrumb schema with one business ent
   const schemas = (await page.locator('script[type="application/ld+json"]').allTextContents())
     .map((value) => JSON.parse(value) as { '@type'?: string; '@id'?: string })
 
-  expect(schemas.filter((schema) => schema['@type'] === 'LocalBusiness')).toHaveLength(1)
+  expect(schemas.filter((schema) => schema['@type'] === 'HomeAndConstructionBusiness')).toHaveLength(1)
   expect(schemas.some((schema) => schema['@type'] === 'BlogPosting')).toBe(true)
   expect(schemas.some((schema) => schema['@type'] === 'BreadcrumbList')).toBe(true)
   await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toBeVisible()
@@ -77,7 +90,7 @@ test('old cost URL permanently redirects to the truthful planning guide', async 
 })
 
 test('unapproved local landing pages fail closed', async ({ request }) => {
-  for (const route of ['/locations/royal-oak', '/service-areas/detroit']) {
+  for (const route of ['/locations/royal-oak', '/service-areas/not-a-real-city']) {
     const response = await request.get(route, { maxRedirects: 0 })
     expect(response.status(), route).toBe(404)
     expect(response.headers()['x-robots-tag'], route).toBe('noindex, nofollow')

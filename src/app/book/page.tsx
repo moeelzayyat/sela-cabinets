@@ -8,12 +8,12 @@ import { siteConfig } from '@/config/site'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
-  title: 'Plan Your Metro Detroit Kitchen Cabinets',
-  description: 'Schedule a SELA kitchen planning call for your Metro Detroit cabinet project.',
+  title: 'Detroit Kitchen Cabinet Consultation',
+  description: 'Schedule a call about kitchen cabinets, in-home measurement, and professional installation for your Metro Detroit project.',
   alternates: { canonical: '/book' },
   ...createPageSocialMetadata({
-    title: 'Plan Your Metro Detroit Kitchen Cabinets',
-    description: 'Schedule a SELA kitchen planning call for your Metro Detroit cabinet project.',
+    title: 'Detroit Kitchen Cabinet Consultation',
+    description: 'Schedule a call about kitchen cabinets, in-home measurement, and professional installation for your Metro Detroit project.',
     path: '/book',
   }),
 }

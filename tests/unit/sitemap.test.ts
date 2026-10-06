@@ -1,25 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import sitemap from '@/app/sitemap'
+import { indexableRoutes } from '@/config/indexable-routes'
 
-const expectedUrls = [
-  'https://selacabinets.com',
-  'https://selacabinets.com/services',
-  'https://selacabinets.com/services/kitchen-cabinet-installation-detroit',
-  'https://selacabinets.com/services/kitchen-cabinet-supply-detroit',
-  'https://selacabinets.com/services/in-home-cabinet-measurement',
-  'https://selacabinets.com/service-areas/metro-detroit',
-  'https://selacabinets.com/products',
-  'https://selacabinets.com/pricing',
-  'https://selacabinets.com/gallery',
-  'https://selacabinets.com/about',
-  'https://selacabinets.com/faqs',
-  'https://selacabinets.com/contact',
-  'https://selacabinets.com/book',
-  'https://selacabinets.com/estimate',
-  'https://selacabinets.com/blog',
-  'https://selacabinets.com/blog/kitchen-cabinet-planning-detroit',
-]
+const expectedUrls = indexableRoutes.map((route) =>
+  route === '/' ? 'https://selacabinets.com' : `https://selacabinets.com${route}`
+)
 
 describe('production sitemap', () => {
   it('uses only approved routes and never assigns request-time modification dates', () => {
@@ -33,7 +19,9 @@ describe('production sitemap', () => {
 
     expect(first.map((entry) => entry.url)).toEqual(expectedUrls)
     expect(second).toEqual(first)
-    expect(first.slice(0, -1).every((entry) => entry.lastModified === undefined)).toBe(true)
-    expect(first.at(-1)?.lastModified).toEqual(new Date('2026-07-30T00:00:00.000Z'))
+    const datedEntries = first.filter((entry) => entry.lastModified)
+    expect(datedEntries).toHaveLength(1)
+    expect(datedEntries[0]?.url).toBe('https://selacabinets.com/blog/kitchen-cabinet-planning-detroit')
+    expect(datedEntries[0]?.lastModified).toEqual(new Date('2026-07-30T00:00:00.000Z'))
   })
 })

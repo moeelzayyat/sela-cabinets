@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Shelby Township MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Shelby Township, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Shelby Township & Macomb County.',
-  keywords: ['kitchen cabinets Shelby Township MI', 'cabinet installation Shelby Township', 'kitchen remodel Shelby Township', 'Shelby Township kitchen design', 'Macomb County cabinets'],
+
 }
 
 export default function ShelbyTownshipPage() {

@@ -1,14 +1,18 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { HeroSection } from '@/components/sections/hero-section'
 import { ServicesPreview } from '@/components/sections/services-preview'
 import { ProcessSection } from '@/components/sections/process-section'
 import { TrustSection } from '@/components/sections/trust-section'
 import { CTASection } from '@/components/sections/cta-section'
+import { CompletedProjectsSection } from '@/components/sections/completed-projects-section'
+import { ReviewsSection } from '@/components/sections/reviews-section'
 import { ServiceJsonLd } from '@/components/seo/json-ld'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { siteConfig } from '@/config/site'
 import { homeGalleryPreview } from '@/config/images'
+import { cabinetConstruction } from '@/config/products-catalog'
 
 export const metadata: Metadata = {
   title: { absolute: siteConfig.seo.defaultTitle },
@@ -19,6 +23,7 @@ export const metadata: Metadata = {
     description: siteConfig.seo.defaultDescription,
     path: '/',
     absoluteTitle: true,
+    image: '/images/seo/home-og.jpg',
   }),
 }
 
@@ -31,6 +36,50 @@ export default function HomePage() {
       <ServicesPreview />
       <ProcessSection />
       <TrustSection />
+
+      <section className="section-padding bg-wood-50">
+        <div className="container-wide grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Price expectations</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
+              What should you expect to invest?
+            </h2>
+            <p className="mt-5 text-xl font-semibold leading-8 text-charcoal-900">
+              Most kitchen projects range from {siteConfig.pricing.installedRange} installed,
+              depending on size, style, and layout.
+            </p>
+            <p className="mt-4 leading-7 text-charcoal-700">
+              The exact price comes after in-home measurement and a review of cabinet selection,
+              delivery, site conditions, and installation scope.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-wood-200 bg-white p-7 sm:p-8">
+            <h3 className="font-display text-2xl font-semibold text-charcoal-900">Quality you can compare</h3>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+              {cabinetConstruction.framed.slice(0, 6).map((item) => (
+                <li key={item} className="flex gap-3 text-charcoal-700">
+                  <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/products#construction" className="mt-6 inline-block font-semibold text-primary hover:underline">Compare cabinet construction →</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-charcoal-50">
+        <div className="container-wide grid gap-8 lg:grid-cols-2">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">One point of contact</p>
+            <h2 className="mt-3 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Direct communication from first call to walkthrough</h2>
+          </div>
+          <div className="space-y-4 text-lg leading-8 text-charcoal-700">
+            <p>The owner coordinates questions, measurements, cabinet selection, ordering, scheduling, and project updates.</p>
+            <p>The lead installer focuses on precise cabinet work: leveling, alignment, scribing, secure attachment, adjustment, and clean fit in the home.</p>
+          </div>
+        </div>
+      </section>
       
       {/* Style Inspiration Preview */}
       <section className="section-padding bg-white">
@@ -82,6 +131,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <CompletedProjectsSection />
+      <ReviewsSection />
 
       <CTASection variant="dark" />
     </>

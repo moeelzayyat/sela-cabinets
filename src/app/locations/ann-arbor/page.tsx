@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Ann Arbor MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Ann Arbor, MI. cabinets, professional measuring & installation. In-home estimates. Serving Ann Arbor & Washtenaw County.',
-  keywords: ['kitchen cabinets Ann Arbor MI', 'cabinet installation Ann Arbor', 'kitchen remodel Ann Arbor', 'Washtenaw County cabinets', 'Ann Arbor kitchen design'],
+
 }
 
 export default function AnnArborPage() {

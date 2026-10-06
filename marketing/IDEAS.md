@@ -3,7 +3,7 @@
 ## Content Pillars
 
 1. **Before/After Transformations** - document completed kitchens with polished photography and short homeowner stories.
-2. **Premium Planning Guidance** - show how SELA helps homeowners choose cabinet lines, finishes, layouts, and storage details.
+2. **Cabinet Selection Guidance** - show how SELA helps homeowners choose cabinet lines, finishes, layouts, and storage details.
 3. **Process & Education** - explain cabinet construction, measurement, installation, and what to expect.
 4. **Customer Testimonials** - real reviews, real stories, and project outcomes.
 5. **Behind the Scenes** - installation process, team at work, samples, and showroom/warehouse content.

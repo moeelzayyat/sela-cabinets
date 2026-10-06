@@ -3,16 +3,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
+import { CompletedProjectsSection } from '@/components/sections/completed-projects-section'
 import { galleryImages } from '@/config/images'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
   title: 'Current Kitchen Cabinet Style Inspiration',
-  description: 'Explore current framed and frameless cabinet styles and finishes available through SELA Cabinets for Metro Detroit kitchen planning.',
+  description: 'Explore current framed and frameless kitchen cabinet styles and finishes available through SELA Cabinets in Metro Detroit.',
   alternates: { canonical: '/gallery' },
   ...createPageSocialMetadata({
     title: 'Current Kitchen Cabinet Style Inspiration',
-    description: 'Explore current framed and frameless cabinet styles and finishes available through SELA Cabinets for Metro Detroit kitchen planning.',
+    description: 'Explore current framed and frameless kitchen cabinet styles and finishes available through SELA Cabinets in Metro Detroit.',
     path: '/gallery',
   }),
 }
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <>
+      <CompletedProjectsSection />
       <section className="section-padding bg-charcoal-50">
         <div className="container-wide">
           <div className="mx-auto max-w-3xl text-center">

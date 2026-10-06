@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { AutomaticBreadcrumbSchema } from '@/components/seo/automatic-breadcrumb-schema'
 import { MobileCallButton } from '@/components/layout/mobile-call-button'
 import { Toaster } from '@/components/ui/toaster'
 
@@ -22,6 +23,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <AutomaticBreadcrumbSchema />
       <Header />
       <main className="pt-[72px]">{children}</main>
       <Footer />

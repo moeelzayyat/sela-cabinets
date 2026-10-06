@@ -4,15 +4,19 @@ import { serializeJsonLd } from '@/components/seo/serialize-json-ld'
 const businessId = `${siteConfig.seo.url}/#business`
 
 export function LocalBusinessJsonLd() {
+  const hasVerifiedHours = !siteConfig.businessFacts.hours.startsWith('[')
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'HomeAndConstructionBusiness',
     '@id': businessId,
     name: siteConfig.name,
     description: siteConfig.description,
-    telephone: siteConfig.phone,
+    telephone: siteConfig.phoneInternational,
     email: siteConfig.email,
     url: siteConfig.seo.url,
+    logo: `${siteConfig.seo.url}${siteConfig.seo.logo}`,
+    image: `${siteConfig.seo.url}${siteConfig.seo.image}`,
+    ...(hasVerifiedHours ? { openingHours: siteConfig.businessFacts.hours } : {}),
 
     areaServed: siteConfig.serviceAreas.map((area) => ({
       '@type': 'City',

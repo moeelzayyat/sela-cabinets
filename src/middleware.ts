@@ -2,6 +2,7 @@
 import type { NextRequest } from 'next/server'
 import { jwtVerify } from 'jose'
 import { serverEnv } from '@/env/server-runtime'
+import { serviceAreaPages } from '@/config/service-area-pages'
 
 const ADMIN_SECRET_KEY = new TextEncoder().encode(serverEnv.ADMIN_SECRET)
 const DISABLED_PUBLIC_PATHS = new Set([
@@ -12,7 +13,10 @@ const DISABLED_PUBLIC_PATHS = new Set([
   '/api/chat',
 ])
 const DISABLED_PUBLIC_PREFIXES = ['/locations/', '/service-areas/'] as const
-const ENABLED_PUBLIC_PATHS = new Set(['/service-areas/metro-detroit'])
+const ENABLED_PUBLIC_PATHS = new Set([
+  '/service-areas/metro-detroit',
+  ...serviceAreaPages.map((area) => `/service-areas/${area.slug}`),
+])
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

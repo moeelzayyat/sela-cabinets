@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">SELA Cabinets</title>
+  <desc id="desc">SELA Cabinets monogram</desc>
+  <rect width="512" height="512" rx="72" fill="#132b2b"/>
+  <path d="M147 138h222v54H202v45h141v52H202v31h167v54H147z" fill="#f4efe5"/>
+  <path d="M147 108h222v18H147zm0 278h222v18H147z" fill="#b98a55"/>
+</svg>

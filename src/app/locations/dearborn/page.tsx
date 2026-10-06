@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Dearborn MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Dearborn, MI. cabinets, professional measuring & installation. In-home estimates. Serving Dearborn & surrounding areas.',
-  keywords: ['kitchen cabinets Dearborn MI', 'cabinet installation Dearborn', 'kitchen remodel Dearborn', 'cabinets Dearborn', 'Dearborn kitchen design'],
+
 }
 
 export default function DearbornPage() {

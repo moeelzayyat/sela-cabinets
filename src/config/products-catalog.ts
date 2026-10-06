@@ -5,6 +5,9 @@ export interface CabinetProduct {
   name: string
   construction: CabinetConstruction
   image: string
+  designCharacter: string
+  suits: string
+  pairingSuggestions: string
 }
 
 export interface HandleProduct {
@@ -27,7 +30,45 @@ const cabinet = (
   name,
   construction,
   image: `/images/products/catalog/${slug(name)}.webp`,
+  ...styleProfile(name, construction),
 })
+
+function styleProfile(name: string, construction: CabinetConstruction) {
+  const lower = name.toLowerCase()
+  const profile = lower.includes('shaker')
+    ? 'a clean Shaker profile with balanced, familiar lines'
+    : lower.includes('slim')
+      ? 'a narrow-frame door profile with a streamlined appearance'
+      : lower.includes('charleston')
+        ? 'a traditional framed profile with added visual detail'
+        : lower.includes('aspen')
+          ? 'a versatile framed profile with a composed, transitional look'
+          : construction === 'frameless'
+            ? 'a flat, full-access profile with a contemporary appearance'
+            : 'a framed door profile with a distinctive finish direction'
+
+  const tone = lower.includes('white') || lower.includes('ivory')
+    ? 'light counters, natural wood accents, brushed metal, or contrasting dark hardware'
+    : lower.includes('black') || lower.includes('charcoal') || lower.includes('midnight')
+      ? 'light counters, warm wood accents, simple backsplashes, or mixed-metal hardware'
+      : lower.includes('oak') || lower.includes('wood') || lower.includes('saddle') || lower.includes('chest') || lower.includes('espresso')
+        ? 'warm neutrals, stone-look counters, matte hardware, or a lighter contrasting cabinet color'
+        : lower.includes('green') || lower.includes('sage') || lower.includes('navy')
+          ? 'white or cream counters, warm metals, natural wood, or restrained neutral tile'
+          : 'light or dark counters, neutral tile, wood accents, and hardware selected during consultation'
+
+  const suits = construction === 'frameless'
+    ? 'contemporary, modern, and streamlined kitchens'
+    : lower.includes('slim')
+      ? 'modern, transitional, and simplified traditional kitchens'
+      : 'transitional, traditional, farmhouse-inspired, and updated classic kitchens'
+
+  return {
+    designCharacter: `${name} offers ${profile}.`,
+    suits,
+    pairingSuggestions: `Consider pairing it with ${tone}. Final colors should be compared with physical samples in the room.`,
+  }
+}
 
 const framedNames = [
   'Shaker Charcoal',
@@ -68,6 +109,15 @@ export const productsCatalog = {
   framed: framedNames.map((name) => cabinet(name, 'framed')),
   frameless: framelessNames.map((name) => cabinet(name, 'frameless')),
 }
+
+export const allCabinetProducts = [
+  ...productsCatalog.framed,
+  ...productsCatalog.frameless,
+] as const
+
+export const cabinetProductBySlug = new Map(
+  allCabinetProducts.map((product) => [product.id, product])
+)
 
 export const cabinetConstruction = {
   framed: [

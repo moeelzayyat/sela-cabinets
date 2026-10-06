@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Rochester Hills MI | Cabinet Installation',
   description: 'Kitchen cabinet installation in Rochester Hills, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Rochester Hills & Oakland County.',
-  keywords: ['kitchen cabinets Rochester Hills MI', 'cabinet installation Rochester Hills', 'kitchen remodel Rochester Hills', 'Rochester Hills kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function RochesterHillsPage() {

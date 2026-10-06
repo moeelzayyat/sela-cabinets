@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Birmingham MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Birmingham, MI. Premium cabinets, professional measuring & installation. In-home estimates. Serving Birmingham & Oakland County.',
-  keywords: ['kitchen cabinets Birmingham MI', 'cabinet installation Birmingham', 'kitchen remodel Birmingham', 'Birmingham kitchen design', 'Oakland County cabinets'],
+
 }
 
 export default function BirminghamPage() {

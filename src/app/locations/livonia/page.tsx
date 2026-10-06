@@ -8,7 +8,7 @@ import { siteConfig } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Kitchen Cabinets Livonia MI | Cabinet Installation & Design',
   description: 'Kitchen cabinet installation in Livonia, MI. cabinets, professional measuring & installation. In-home estimates. Serving Livonia & surrounding areas.',
-  keywords: ['kitchen cabinets Livonia MI', 'cabinet installation Livonia', 'kitchen remodel Livonia', 'cabinets Livonia', 'Livonia kitchen design'],
+
 }
 
 export default function LivoniaPage() {

@@ -8,11 +8,11 @@ import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 
 export const metadata: Metadata = {
   title: 'Contact Our Metro Detroit Cabinet Team',
-  description: `Contact ${siteConfig.name} for kitchen cabinet planning in Metro Detroit. Call ${siteConfig.phone} or plan your kitchen online.`,
+  description: `Contact ${siteConfig.name} for kitchen cabinets and professional installation in Metro Detroit. Call ${siteConfig.phone} or request an estimate online.`,
   alternates: { canonical: '/contact' },
   ...createPageSocialMetadata({
     title: 'Contact Our Metro Detroit Cabinet Team',
-    description: `Contact ${siteConfig.name} for kitchen cabinet planning in Metro Detroit. Call ${siteConfig.phone} or plan your kitchen online.`,
+    description: `Contact ${siteConfig.name} for kitchen cabinets and professional installation in Metro Detroit. Call ${siteConfig.phone} or request an estimate online.`,
     path: '/contact',
   }),
 }

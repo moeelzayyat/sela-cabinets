@@ -10,12 +10,12 @@ import { serviceImages, type ServiceImageKey } from '@/config/images'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Services in Metro Detroit',
-  description: 'Plan Metro Detroit kitchen cabinets with installation, measurement, cabinet selection, and design guidance from SELA Cabinets.',
+  description: 'Kitchen cabinets, in-home measurement, layout guidance, and professional cabinet installation for Metro Detroit homeowners.',
   alternates: { canonical: '/services' },
-  keywords: ['kitchen cabinet installation Detroit', 'cabinet services Michigan', 'kitchen remodeling Detroit', 'cabinet installation Dearborn', 'kitchen design Troy'],
+
   ...createPageSocialMetadata({
     title: 'Kitchen Cabinet Services in Metro Detroit',
-    description: 'Plan Metro Detroit kitchen cabinets with installation, measurement, cabinet selection, and design guidance from SELA Cabinets.',
+    description: 'Kitchen cabinets, in-home measurement, layout guidance, and professional cabinet installation for Metro Detroit homeowners.',
     path: '/services',
   }),
 }

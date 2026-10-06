@@ -4,26 +4,26 @@ const trustItems = [
   {
     icon: MapPin,
     stat: 'Area',
-    title: 'Metro Detroit Planning',
-    description: 'Contact SELA to confirm service availability for your Metro Detroit kitchen project.',
+    title: 'Metro Detroit Service',
+    description: 'Cabinet supply and installation availability is confirmed for your project location.',
   },
   {
     icon: Ruler,
     stat: 'Measured',
-    title: 'In-Home Measuring',
-    description: 'Kitchen dimensions and existing conditions are recorded before final cabinet planning.',
+    title: 'In-Home Measurement',
+    description: 'Kitchen dimensions and visible conditions are recorded before the cabinet order is finalized.',
   },
   {
     icon: Clock,
-    stat: 'Scoped',
-    title: 'Installation Planning',
-    description: 'Site readiness, delivery, removal responsibilities, and installation scope are reviewed before work begins.',
+    stat: 'Installed',
+    title: 'Professional Installation',
+    description: 'The lead installer handles leveling, alignment, secure attachment, adjustments, and cabinet fit.',
   },
   {
     icon: Package,
-    stat: 'Options',
-    title: 'Cabinet Selection',
-    description: 'Compare available construction styles, finishes, and hardware during the planning process.',
+    stat: 'Written',
+    title: 'Clear Project Scope',
+    description: 'Cabinets, installation work, responsibilities, and exclusions are documented before commitment.',
   },
 ]
 
@@ -36,7 +36,7 @@ export function TrustSection() {
             Why Work With SELA?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-charcoal-400">
-            Our process focuses on measured planning, cabinet selection, ordering coordination, and installation scope.
+            Quality cabinet construction, in-home measurement, written scope, and one coordinated installation process.
           </p>
         </div>
 

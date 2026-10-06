@@ -45,8 +45,8 @@ export default function HomePage() {
               What should you expect to invest?
             </h2>
             <p className="mt-5 text-xl font-semibold leading-8 text-charcoal-900">
-              Most kitchen projects range from {siteConfig.pricing.installedRange} installed,
-              depending on size, style, and layout.
+              Cabinet and installation pricing depends on kitchen size, cabinet style, layout,
+              delivery requirements, site conditions, and the work included in the written scope.
             </p>
             <p className="mt-4 leading-7 text-charcoal-700">
               The exact price comes after in-home measurement and a review of cabinet selection,
@@ -75,8 +75,8 @@ export default function HomePage() {
             <h2 className="mt-3 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Direct communication from first call to walkthrough</h2>
           </div>
           <div className="space-y-4 text-lg leading-8 text-charcoal-700">
-            <p>The owner coordinates questions, measurements, cabinet selection, ordering, scheduling, and project updates.</p>
-            <p>The lead installer focuses on precise cabinet work: leveling, alignment, scribing, secure attachment, adjustment, and clean fit in the home.</p>
+            <p>SELA Cabinets coordinates questions, measurements, cabinet selection, ordering, scheduling, and project updates.</p>
+            <p>A cabinet installation specialist focuses on precise cabinet work: leveling, alignment, scribing, secure attachment, adjustment, and clean fit in the home.</p>
           </div>
         </div>
       </section>

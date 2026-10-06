@@ -143,8 +143,8 @@ export default function EstimatePage() {
         <div className="container-wide text-center">
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">Price expectations</p>
           <p className="mx-auto mt-3 max-w-3xl text-xl font-semibold leading-8 text-charcoal-900">
-            Most kitchen projects range from {siteConfig.pricing.installedRange} installed,
-            depending on size, style, and layout.
+            Cabinet and installation pricing depends on kitchen size, cabinet style, layout,
+            delivery requirements, site conditions, and the work included in the written scope.
           </p>
           <p className="mx-auto mt-3 max-w-2xl leading-7 text-charcoal-700">
             The exact price comes after in-home measurement and a review of cabinet selection,

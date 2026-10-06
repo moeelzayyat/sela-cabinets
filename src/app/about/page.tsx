@@ -11,7 +11,7 @@ import { VerifiedTrustStrip } from '@/components/sections/verified-trust-strip'
 import { Button } from '@/components/ui/button'
 import { aboutImages } from '@/config/images'
 import { serviceAreaPages } from '@/config/service-area-pages'
-import { siteConfig } from '@/config/site'
+
 
 const title = 'About Detroit Kitchen Cabinet Installation'
 const description = 'Meet the SELA Cabinets process: one direct contact, quality kitchen cabinets, in-home measurement, and professional installation in Metro Detroit.'
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
 }
 
 const workingBenefits = [
-  ['One point of contact', 'Questions, scheduling, ordering, and updates stay with the owner from first call to final walkthrough.'],
+  ['One point of contact', 'Questions, scheduling, ordering, and updates stay with SELA Cabinets from first call to final walkthrough.'],
   ['In-home measurement', 'The kitchen and visible conditions are recorded before the cabinet order is finalized.'],
   ['Cabinet selection help', 'Compare framed and frameless construction, finishes, storage needs, and hardware.'],
-  ['Professional installation', 'The lead installer focuses on leveling, alignment, secure attachment, scribing, adjustment, and clean fit.'],
+  ['Professional installation', 'A cabinet installation specialist focuses on leveling, alignment, secure attachment, scribing, adjustment, and clean fit.'],
   ['Written project scope', 'The included cabinet supply and installation work is documented before commitment.'],
 ] as const
 
@@ -75,11 +75,10 @@ export default function AboutPage() {
             <article className="rounded-2xl border border-charcoal-200 bg-charcoal-50 p-7 sm:p-8">
               <MessageSquareText className="h-9 w-9 text-primary" aria-hidden="true" />
               <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-primary">Your direct contact</p>
-              <h3 className="mt-2 font-display text-2xl font-semibold text-charcoal-900">{siteConfig.owner.name}, Owner</h3>
-              <p className="mt-4 leading-7 text-charcoal-700">{siteConfig.owner.shortBio}</p>
+              <h3 className="mt-2 font-display text-2xl font-semibold text-charcoal-900">SELA Cabinets</h3>
               <p className="mt-4 leading-7 text-charcoal-700">
-                You&apos;ll always deal directly with {siteConfig.owner.name}, from first call to final
-                walkthrough, so questions, scheduling, ordering, and updates do not get lost between people.
+                SELA Cabinets remains your direct point of contact from the first call through the final
+                walkthrough, keeping questions, scheduling, ordering, and updates connected.
               </p>
             </article>
 
@@ -88,8 +87,8 @@ export default function AboutPage() {
               <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-wood-300">Craftsmanship in the home</p>
               <h3 className="mt-2 font-display text-2xl font-semibold">Professional cabinet installation</h3>
               <p className="mt-4 leading-7 text-charcoal-300">
-                Your cabinets are installed by our lead installer, a carpenter with {siteConfig.installer.yearsOfExperience}
-                {' '}years of experience installing kitchen cabinets.
+                Your cabinets are installed by a cabinet installation specialist. No installer name or
+                portrait is published on the website.
               </p>
               <p className="mt-4 leading-7 text-charcoal-300">
                 The installation work emphasizes cabinet leveling, alignment, secure attachment,

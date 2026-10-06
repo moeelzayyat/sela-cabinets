@@ -23,8 +23,8 @@ const installationSteps = [
   ['Measure and review', 'The kitchen, cabinet layout, visible conditions, appliance openings, and access are reviewed against the proposed cabinet order.'],
   ['Confirm cabinets and scope', 'Cabinet selections, fillers, panels, trim, and included installation work are documented before commitment.'],
   ['Coordinate ordering and delivery', 'SELA stays the point of contact while the cabinet order and delivery readiness are coordinated.'],
-  ['Prepare for installation', 'The owner confirms scheduling and the agreed readiness details before the installation visit.'],
-  ['Install with care', 'The lead installer places, levels, aligns, secures, scribes, and adjusts the cabinets according to the approved layout and scope.'],
+  ['Prepare for installation', 'SELA Cabinets confirms scheduling and the agreed readiness details before the installation visit.'],
+  ['Install with care', 'A cabinet installation specialist places, levels, aligns, secures, scribes, and adjusts the cabinets according to the approved layout and scope.'],
   ['Walk through the work', 'Cabinet alignment, door and drawer operation, visible condition, and remaining cabinet punch-list items are reviewed.'],
 ] as const
 
@@ -53,7 +53,7 @@ export default function KitchenCabinetInstallationDetroitPage() {
             <h1 className="mt-4 font-display text-4xl font-bold md:text-5xl">Professional Kitchen Cabinet Installation</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-charcoal-300">
               Quality cabinets deserve careful installation. SELA connects the measured cabinet
-              layout with an experienced lead installer and gives you one point of contact from
+              layout with a cabinet installation specialist and gives you one point of contact from
               the first call through the final cabinet walkthrough.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -80,7 +80,7 @@ export default function KitchenCabinetInstallationDetroitPage() {
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Cabinet Installation, Step by Step</h2>
             <p className="mt-4 text-lg leading-8 text-charcoal-600">
-              The same owner keeps cabinet selection, measurement, ordering, scheduling, installation updates,
+              SELA Cabinets keeps cabinet selection, measurement, ordering, scheduling, installation updates,
               and the final walkthrough connected.
             </p>
           </div>

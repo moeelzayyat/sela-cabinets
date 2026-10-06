@@ -19,7 +19,7 @@ export function VerifiedTrustStrip() {
         <p className="text-sm leading-6 text-charcoal-600">
           <strong>Questions about licensing or insurance?</strong> We&apos;re happy to discuss
           our qualifications and provide any available documentation during your consultation.
-          Verified license, insurance, and warranty details will appear here only after owner confirmation.
+          Verified license, insurance, and warranty details will appear here only after documentation is confirmed.
         </p>
       </div>
     )

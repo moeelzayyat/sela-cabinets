@@ -56,8 +56,8 @@ export function CityServiceAreaPage({ area }: { area: ServiceAreaPage }) {
             <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">One point of contact for your {area.name} cabinet project</h2>
             <p className="mt-5 text-lg leading-8 text-charcoal-700">
               SELA keeps cabinet selection, in-home measurement, written scope, ordering updates,
-              and installation coordination together. The owner remains your direct contact while
-              the lead installer focuses on careful cabinet fit and adjustment.
+              and installation coordination together. SELA Cabinets remains your direct contact while
+              a cabinet installation specialist focuses on careful cabinet fit and adjustment.
             </p>
           </div>
           <nav aria-label={`${area.name} cabinet services`} className="rounded-2xl border border-wood-200 bg-white p-7">

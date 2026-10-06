@@ -105,12 +105,18 @@ describe('SELA search-intent and truthfulness overhaul', () => {
     expect(renderToStaticMarkup(<ReviewsSection />)).toBe('')
   })
 
-  it('retains explicit owner-controlled placeholders for unknown facts', () => {
-    expect(siteConfig.owner.name).toBe('[OWNER NAME]')
-    expect(siteConfig.owner.shortBio).toBe('[SHORT OWNER BIO]')
-    expect(siteConfig.installer.yearsOfExperience).toBe('[YEARS OF EXPERIENCE]')
-    expect(siteConfig.pricing.installedRange).toBe('[PRICE RANGE]')
+  it('keeps unknown facts out of public copy and describes an unnamed installation specialist', () => {
+    const about = readFileSync(resolve(process.cwd(), 'src/app/about/page.tsx'), 'utf8')
+    const home = readFileSync(resolve(process.cwd(), 'src/app/page.tsx'), 'utf8')
+    const estimate = readFileSync(resolve(process.cwd(), 'src/app/estimate/page.tsx'), 'utf8')
+    const layout = readFileSync(resolve(process.cwd(), 'src/app/layout.tsx'), 'utf8')
+
+    expect(about).toContain('SELA Cabinets')
+    expect(about).toMatch(/cabinet installation specialist/i)
+    expect(about).not.toMatch(/carpenter|lead installer|siteConfig\.owner|siteConfig\.installer/i)
+    expect(home).not.toContain('siteConfig.pricing.installedRange')
+    expect(estimate).not.toContain('siteConfig.pricing.installedRange')
+    expect(layout).not.toContain('google-site-verification')
     expect(siteConfig.businessFacts.hours).toBe('[HOURS]')
-    expect(siteConfig.businessFacts.gscVerification).toBe('[GSC VERIFICATION CODE]')
   })
 })

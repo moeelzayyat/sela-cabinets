@@ -27,26 +27,14 @@ export const siteConfig = {
     full: 'Detroit, Michigan',
   },
 
-  // Owner-supplied facts that must be completed before the related claims go live.
-  owner: {
-    name: '[OWNER NAME]',
-    photo: '[OWNER PHOTO — optional]',
-    shortBio: '[SHORT OWNER BIO]',
-  },
-  installer: {
-    yearsOfExperience: '[YEARS OF EXPERIENCE]',
-    handsOrToolsPhoto: '[HANDS/TOOLS PHOTO]',
-  },
-  pricing: {
-    installedRange: '[PRICE RANGE]',
-  },
+  // Unknown business facts remain hidden until they are verified.
   businessFacts: {
     address: '[BUSINESS ADDRESS OR "service-area business, no public address"]',
     hours: '[HOURS]',
     license: '[LICENSE TYPE AND NUMBER]',
     insured: '[INSURED: YES/NO]',
     warranty: '[WARRANTY TERMS]',
-    gscVerification: '[GSC VERIFICATION CODE]',
+
   },
   
   // ============================================
@@ -144,7 +132,7 @@ export const siteConfig = {
     {
       step: 4,
       title: 'Install & Walk Through',
-      description: 'The lead installer fits and adjusts the cabinets, followed by a final cabinet walkthrough.',
+      description: 'A cabinet installation specialist fits and adjusts the cabinets, followed by a final cabinet walkthrough.',
       icon: 'Truck',
     },
   ],
@@ -172,7 +160,7 @@ export const siteConfig = {
       shortDescription: 'Skilled cabinet fitting, leveling, alignment, secure attachment, and final adjustment.',
       description: 'Professional cabinet installation connects the measured layout with careful placement, leveling, alignment, secure attachment, trim work in the approved scope, and final adjustments.',
       features: [
-        'Experienced lead installer',
+        'Cabinet installation specialist',
         'Careful scribing and cabinet fit',
         'Precise leveling and alignment',
         'Final cabinet adjustments',

@@ -17,7 +17,7 @@ const trustItems = [
     icon: Clock,
     stat: 'Installed',
     title: 'Professional Installation',
-    description: 'The lead installer handles leveling, alignment, secure attachment, adjustments, and cabinet fit.',
+    description: 'A cabinet installation specialist handles leveling, alignment, secure attachment, adjustments, and cabinet fit.',
   },
   {
     icon: Package,

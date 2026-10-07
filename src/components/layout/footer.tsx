@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { siteConfig } from '@/config/site'
@@ -12,15 +13,14 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white">
-                <span className="font-display text-lg font-bold text-charcoal-900">
-                  S
-                </span>
-              </div>
-              <span className="font-display text-xl font-bold">
-                {siteConfig.name}
-              </span>
+            <Link href="/" aria-label={`${siteConfig.name} home`} className="inline-block">
+              <Image
+                src={'/brand/sela-wordmark-white.svg'}
+                alt={siteConfig.name}
+                width={760}
+                height={315}
+                className="h-auto w-[168px]"
+              />
             </Link>
             <p className="mt-4 text-charcoal-400">
               Quality kitchen cabinets at a fair price, professionally installed

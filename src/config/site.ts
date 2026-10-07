@@ -84,7 +84,7 @@ export const siteConfig = {
     defaultTitle: 'Kitchen Cabinets & Installation in Metro Detroit | SELA',
     defaultDescription: 'Quality kitchen cabinets at a fair price, professionally installed across Metro Detroit with one point of contact from measurement to walkthrough.',
     url: 'https://selacabinets.com',
-    logo: '/images/seo/sela-cabinets-logo.svg',
+    logo: '/brand/sela-icon-contained.svg',
     image: '/images/seo/home-og.jpg',
   },
   

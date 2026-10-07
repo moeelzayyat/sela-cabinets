@@ -28,6 +28,8 @@ export const metadata: Metadata = {
 
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
+  applicationName: siteConfig.name,
+  manifest: '/site.webmanifest',
   metadataBase: new URL(siteConfig.seo.url),
   ...createPageSocialMetadata({
     title: siteConfig.seo.defaultTitle,

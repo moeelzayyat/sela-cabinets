@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Phone } from 'lucide-react'
@@ -20,14 +21,19 @@ export function Header() {
     <header className="fixed top-0 z-50 w-full border-b border-charcoal-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
       <div className="container-wide">
         <div className="flex h-[72px] items-center justify-between gap-4">
-          <Link href="/" className="flex items-center space-x-2 shrink-0">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-charcoal-900">
-              <span className="font-display text-lg font-bold text-white">S</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-display text-xl font-bold text-charcoal-900">{siteConfig.name}</span>
-              <span className="hidden text-xs text-charcoal-600 sm:block">{siteConfig.location.full}</span>
-            </div>
+          <Link
+            href="/"
+            aria-label={`${siteConfig.name} home`}
+            className="shrink-0"
+          >
+            <Image
+              src={'/brand/sela-wordmark-primary.svg'}
+              alt={siteConfig.name}
+              width={760}
+              height={315}
+              priority
+              className="h-auto w-[126px] sm:w-[145px]"
+            />
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex flex-1 justify-center">

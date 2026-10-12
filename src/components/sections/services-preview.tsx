@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Package, Wrench, Ruler, Palette, ArrowRight } from 'lucide-react'
-import { siteConfig } from '@/config/site'
+import { dedicatedServices } from '@/config/internal-links'
 
 const iconMap = {
   Package,
@@ -23,12 +23,12 @@ export function ServicesPreview() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {siteConfig.services.map((service) => {
+          {dedicatedServices.map((service) => {
             const Icon = iconMap[service.icon as keyof typeof iconMap]
             return (
               <Link
                 key={service.id}
-                href={`/services#${service.id}`}
+                href={service.href}
                 className="group rounded-2xl border border-charcoal-200 bg-white p-8 shadow-sm transition-all hover:border-wood-300 hover:shadow-md"
               >
                 <div className="flex items-start gap-5">
@@ -54,13 +54,19 @@ export function ServicesPreview() {
           })}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-center">
           <Link
             href="/services"
             className="inline-flex items-center gap-2 text-lg font-semibold text-charcoal-900 transition-colors hover:text-primary"
           >
             View all services
             <ArrowRight className="h-5 w-5" />
+          </Link>
+          <Link href="/about" className="font-semibold text-primary hover:underline">
+            Learn about SELA
+          </Link>
+          <Link href="/contact" className="font-semibold text-primary hover:underline">
+            Contact SELA
           </Link>
         </div>
       </div>

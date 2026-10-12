@@ -119,6 +119,23 @@ export default async function CabinetStylePage({
         </div>
       </section>
 
+      <section className="section-padding bg-wood-50">
+        <div className="container-wide max-w-4xl">
+          <h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">Plan measurement and installation</h2>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-charcoal-700">
+            Cabinet style selection works best when it stays connected to the measured room and the installation scope.
+          </p>
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:gap-8">
+            <Link href="/services/in-home-cabinet-measurement" className="font-semibold text-primary hover:underline">
+              Review in-home cabinet measurement →
+            </Link>
+            <Link href="/services/kitchen-cabinet-installation-detroit" className="font-semibold text-primary hover:underline">
+              Review professional cabinet installation →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section-padding bg-charcoal-900 text-white">
         <div className="container-wide max-w-4xl text-center">
           <h2 className="font-display text-3xl font-bold md:text-4xl">See how {product.name} fits your kitchen</h2>

@@ -6,6 +6,12 @@ import { allCabinetProducts } from '../../src/config/products-catalog'
 const productionOrigin = 'https://selacabinets.com'
 const socialImagePath = '/images/seo/sela-cabinets-og.png'
 
+function routeFromHref(href: string) {
+  const url = new URL(href, productionOrigin)
+  if (url.origin !== productionOrigin) return null
+  return url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '')
+}
+
 function expectedSocialImagePath(route: string) {
   if (route === '/') return '/images/seo/home-og.jpg'
   if (route === '/about') return '/images/seo/about-og.jpg'
@@ -60,6 +66,38 @@ test('rendered production SEO metadata is unique, bounded, and self-canonical', 
     expect(twitterDescription, `${route} Twitter description`).toBe(description)
     expect(twitterImage).toBe(expectedImage)
   }
+})
+
+test('server-rendered in-content anchors leave no sitemap page orphaned', async ({ request }) => {
+  test.setTimeout(120_000)
+  const routeSet = new Set(indexableRoutes)
+  const incoming = new Map(indexableRoutes.map((route) => [route, new Set<string>()]))
+
+  for (const source of indexableRoutes) {
+    const response = await request.get(source)
+    expect(response.ok(), source).toBe(true)
+    const html = await response.text()
+    expect(html, `${source} keywords metadata`).not.toMatch(/<meta\b[^>]*name=["']keywords["']/i)
+
+    const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1]
+    expect(main, `${source} main landmark`).toBeDefined()
+
+    for (const match of main!.matchAll(/<a\b([^>]*)>/gi)) {
+      const attributes = match[1]
+      expect(attributes, `${source} JavaScript click handler`).not.toMatch(/\bonclick\s*=/i)
+      const href = attributes.match(/\bhref\s*=\s*(["'])(.*?)\1/i)?.[2]
+      expect(href, `${source} anchor without href`).toBeDefined()
+      if (!href || href.startsWith('#')) continue
+
+      const target = routeFromHref(href)
+      if (target && target !== source && routeSet.has(target)) {
+        incoming.get(target)!.add(source)
+      }
+    }
+  }
+
+  const orphans = indexableRoutes.filter((route) => incoming.get(route)!.size === 0)
+  expect(orphans, 'sitemap pages with zero incoming in-content links').toEqual([])
 })
 
 test('planning guide renders article and breadcrumb schema with one business entity', async ({ page }) => {

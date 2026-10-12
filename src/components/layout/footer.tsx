@@ -93,8 +93,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services#design-help" className="text-charcoal-400 transition-colors hover:text-white">
-                  Design Help
+                <Link href="/services/kitchen-cabinet-supply-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                  Cabinet Planning &amp; Design Help
                 </Link>
               </li>
             </ul>

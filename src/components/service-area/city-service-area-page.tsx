@@ -3,6 +3,7 @@ import { MapPin, Ruler, Wrench } from 'lucide-react'
 
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup'
 import { CompletedProjectsSection } from '@/components/sections/completed-projects-section'
+import { PopularCabinetStyleLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
 import type { ServiceAreaPage } from '@/config/service-area-pages'
 
@@ -69,6 +70,12 @@ export function CityServiceAreaPage({ area }: { area: ServiceAreaPage }) {
               <li><Link href="/gallery" className="hover:underline">Cabinet style inspiration →</Link></li>
             </ul>
           </nav>
+        </div>
+      </section>
+
+      <section className="section-padding bg-white">
+        <div className="container-wide rounded-2xl border border-charcoal-200 bg-charcoal-50 p-7 sm:p-8">
+          <PopularCabinetStyleLinks heading={`Popular cabinet styles for ${area.name} kitchens`} />
         </div>
       </section>
 

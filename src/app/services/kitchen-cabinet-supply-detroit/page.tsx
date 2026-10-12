@@ -4,6 +4,7 @@ import { CheckCircle, Layers, PackageCheck } from 'lucide-react'
 
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { CTASection } from '@/components/sections/cta-section'
+import { ServiceDiscoveryLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
 
 const title = 'Kitchen Cabinet Supply in Metro Detroit'
@@ -60,6 +61,8 @@ export default function KitchenCabinetSupplyDetroitPage() {
       </section>
 
       <section className="section-padding bg-white"><div className="container-wide"><div className="mx-auto max-w-3xl"><h2 className="font-display text-3xl font-bold text-charcoal-900">From Selection to Installation</h2><p className="mt-4 leading-7 text-charcoal-600">Cabinet supply works best when measurement, layout review, ordering, delivery inspection, and installation planning remain connected. If you already have measurements, bring them to the planning call. SELA will still identify which dimensions and site conditions must be verified before an order can be treated as final.</p><div className="mt-6 flex flex-wrap gap-4"><Link href="/services/in-home-cabinet-measurement" className="font-semibold text-primary hover:underline">In-home measurement →</Link><Link href="/services/kitchen-cabinet-installation-detroit" className="font-semibold text-primary hover:underline">Installation planning →</Link></div></div></div></section>
+
+      <ServiceDiscoveryLinks />
 
       <CTASection title="Build a Cabinet Plan for Your Kitchen" description="Share your layout, style preferences, and project stage. We’ll help determine the measurements and selection decisions needed for a detailed cabinet estimate." variant="wood" />
     </>

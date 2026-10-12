@@ -4,6 +4,7 @@ import { Ruler, ScanLine, CheckCircle } from 'lucide-react'
 
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { CTASection } from '@/components/sections/cta-section'
+import { ServiceDiscoveryLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
 
 const title = 'In-Home Cabinet Measurement in Metro Detroit'
@@ -41,6 +42,8 @@ export default function InHomeCabinetMeasurementPage() {
       <section className="section-padding bg-charcoal-50"><div className="container-wide"><div className="mx-auto max-w-3xl text-center"><h2 className="font-display text-3xl font-bold text-charcoal-900 md:text-4xl">From Measurements to a Cabinet Estimate</h2><p className="mt-4 leading-7 text-charcoal-600">Measurements become useful when they are connected to a cabinet layout and project scope. SELA reviews cabinet sizes, openings, panels, fillers, trim, appliance clearances, delivery access, and installation responsibilities before selections are finalized.</p></div><div className="mx-auto mt-10 grid max-w-4xl gap-6 md:grid-cols-3">{[['1', 'Record the kitchen', 'Measure the room and note visible conditions.'], ['2', 'Review the layout', 'Connect cabinet sizes and clearances to the measured space.'], ['3', 'Prepare the estimate', 'Price the selected cabinets and confirmed project scope.']].map(([number, heading, copy]) => <article key={number} className="rounded-2xl bg-white p-7 shadow-sm"><p className="text-sm font-bold text-primary">{number}</p><h3 className="mt-2 font-display text-xl font-semibold text-charcoal-900">{heading}</h3><p className="mt-3 text-charcoal-600">{copy}</p></article>)}</div></div></section>
 
       <section className="section-padding bg-white"><div className="container-wide grid gap-10 lg:grid-cols-2"><div><h2 className="font-display text-3xl font-bold text-charcoal-900">Measurements Can Change</h2><p className="mt-4 leading-7 text-charcoal-600">Demolition, wall repairs, flooring changes, appliance substitutions, plumbing work, and other project changes can affect dimensions. Measurements and cabinet plans should be reviewed again when the room or selected equipment changes before ordering or installation.</p></div><div><h2 className="font-display text-3xl font-bold text-charcoal-900">Serving Metro Detroit Homes</h2><p className="mt-4 leading-7 text-charcoal-600">SELA provides cabinet planning and measurement across its confirmed Metro Detroit service area. Appointment availability and travel coverage are confirmed when the project location and requested service are reviewed.</p><div className="mt-6 flex flex-wrap gap-4"><Link href="/service-areas/metro-detroit" className="font-semibold text-primary hover:underline">View the service area →</Link><Link href="/services/kitchen-cabinet-supply-detroit" className="font-semibold text-primary hover:underline">Review cabinet supply →</Link></div></div></div></section>
+
+      <ServiceDiscoveryLinks />
 
       <CTASection title="Schedule the Next Cabinet-Planning Step" description="Tell us where the project is located and what stage you’re in. We’ll confirm whether an in-home measurement, planning call, or estimate review should come next." variant="dark" />
     </>

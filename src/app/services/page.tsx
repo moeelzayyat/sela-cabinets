@@ -4,9 +4,10 @@ import Image from 'next/image'
 import { Package, Wrench, Ruler, Palette, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CTASection } from '@/components/sections/cta-section'
-import { siteConfig } from '@/config/site'
+import { dedicatedServices } from '@/config/internal-links'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { serviceImages, type ServiceImageKey } from '@/config/images'
+import { serviceAreaPages } from '@/config/service-area-pages'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Services in Metro Detroit',
@@ -59,7 +60,7 @@ export default function ServicesPage() {
       <section className="section-padding bg-white">
         <div className="container-wide">
           <div className="space-y-24">
-            {siteConfig.services.map((service, index) => {
+            {dedicatedServices.map((service, index) => {
               const Icon = iconMap[service.icon as keyof typeof iconMap]
               const isEven = index % 2 === 0
 
@@ -95,7 +96,9 @@ export default function ServicesPage() {
                       <Icon className="h-7 w-7" />
                     </div>
                     <h2 className="mt-6 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-                      {service.title}
+                      <Link href={service.href} className="transition-colors hover:text-primary hover:underline">
+                        {service.title}
+                      </Link>
                     </h2>
                     <p className="mt-4 text-lg text-charcoal-600">
                       {service.description}
@@ -109,9 +112,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                     <div className="mt-8">
-                      <Link href="/book">
-                        <Button>Book This Service</Button>
-                      </Link>
+                      <Button asChild variant="outline"><Link href="/book">Book This Service</Link></Button>
                     </div>
                   </div>
                 </div>
@@ -133,13 +134,14 @@ export default function ServicesPage() {
             </p>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            {siteConfig.serviceAreas.map((area) => (
-              <span
-                key={area}
-                className="rounded-full bg-white px-4 py-2 text-sm font-medium text-charcoal-700 shadow-sm"
+            {serviceAreaPages.map((area) => (
+              <Link
+                key={area.slug}
+                href={`/service-areas/${area.slug}`}
+                className="rounded-full bg-white px-4 py-2 text-sm font-medium text-charcoal-700 shadow-sm transition-colors hover:text-primary"
               >
-                {area}
-              </span>
+                {area.name}
+              </Link>
             ))}
           </div>
         </div>

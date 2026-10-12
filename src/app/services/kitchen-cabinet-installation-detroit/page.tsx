@@ -5,6 +5,7 @@ import { CheckCircle, Phone, Ruler, Wrench } from 'lucide-react'
 import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { CTASection } from '@/components/sections/cta-section'
+import { ServiceDiscoveryLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
 import { siteConfig } from '@/config/site'
 
@@ -119,6 +120,8 @@ export default function KitchenCabinetInstallationDetroitPage() {
           </div>
         </div>
       </section>
+
+      <ServiceDiscoveryLinks />
 
       <CTASection title="Get Kitchen Cabinets Professionally Installed" description="Tell us where the project is, what stage it is in, and which cabinet styles you are considering. SELA will identify the right next step." variant="dark" />
     </>

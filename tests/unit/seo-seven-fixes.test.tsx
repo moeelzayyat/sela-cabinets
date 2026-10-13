@@ -46,9 +46,14 @@ function jsonLd(markup: string) {
 }
 
 describe('seven-item SEO staging candidate', () => {
-  it('configures the GSC placeholder and uses the canonical homepage slash everywhere', () => {
+  it('uses the Google verification file and canonical homepage slash everywhere', () => {
     const layout = readFileSync(resolve(process.cwd(), 'src/app/layout.tsx'), 'utf8')
-    expect(layout).toContain("verification: { google: '[GSC VERIFICATION CODE]' }")
+    const verification = readFileSync(
+      resolve(process.cwd(), 'public/google5311959f90a181fd.html'),
+      'utf8',
+    )
+    expect(layout).not.toContain('[GSC VERIFICATION CODE]')
+    expect(verification).toBe('google-site-verification: google5311959f90a181fd.html')
     const homeMarkup = documentFor(renderToStaticMarkup(<HomePage />))
     expect(homeMarkup.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://selacabinets.com/')
     expect(homeMarkup.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe('https://selacabinets.com/')

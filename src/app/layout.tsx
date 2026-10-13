@@ -29,7 +29,6 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   applicationName: siteConfig.name,
-  verification: { google: '[GSC VERIFICATION CODE]' },
   manifest: '/site.webmanifest',
   metadataBase: new URL(siteConfig.seo.url),
   ...createPageSocialMetadata({

@@ -88,6 +88,18 @@ const nextConfig = {
         source: '/:path*',
         headers: deploymentHeaders,
       },
+      ...(isCanonicalProductionOrigin()
+        ? [
+            {
+              source: '/admin/:path*',
+              headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+            },
+            {
+              source: '/account/:path*',
+              headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+            },
+          ]
+        : []),
     ]
   },
 }

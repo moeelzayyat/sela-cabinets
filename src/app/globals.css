@@ -124,3 +124,16 @@ html {
     height: 1000px;
   }
 }
+
+/* Full-size tap targets for textual links on touch devices. */
+@media (pointer: coarse) {
+  main p a,
+  main li a,
+  main nav a,
+  footer a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding-block: 0.5rem;
+  }
+}

@@ -80,15 +80,15 @@ describe('SELA search-intent and truthfulness overhaul', () => {
     expect(JSON.stringify(schema)).not.toMatch(/"@type":"Person"/)
   })
 
-  it('defines 13 unique city pages and 29 product routes in the sitemap source', () => {
+  it('defines 16 unique city pages and 29 product routes in the sitemap source', () => {
     const cityNames = serviceAreaPages.map(({ name }) => name)
     expect(cityNames).toEqual([
       'Detroit', 'Dearborn', 'Livonia', 'Troy', 'Warren', 'Sterling Heights',
       'Ann Arbor', 'Farmington Hills', 'Southfield', 'Royal Oak', 'Novi',
-      'Canton', 'Westland',
+      'Canton', 'Westland', 'Redford', 'Dearborn Heights', 'Taylor',
     ])
-    expect(new Set(serviceAreaPages.map(({ introduction }) => introduction)).size).toBe(13)
-    expect(new Set(serviceAreaPages.map(({ homeNotes }) => homeNotes)).size).toBe(13)
+    expect(new Set(serviceAreaPages.map(({ introduction }) => introduction)).size).toBe(16)
+    expect(serviceAreaPages.every(({ contentSections }) => new Set(contentSections.map(({ heading }) => heading)).size === 4)).toBe(true)
 
     const products = [...productsCatalog.framed, ...productsCatalog.frameless]
     expect(products).toHaveLength(29)

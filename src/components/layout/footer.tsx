@@ -13,7 +13,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="/" aria-label={`${siteConfig.name} home`} className="inline-block">
+            <Link href="/" aria-label={`${siteConfig.name} home`} className="inline-flex min-h-11 items-center">
               <Image
                 src={'/brand/sela-wordmark-white.svg'}
                 alt={siteConfig.name}
@@ -29,14 +29,14 @@ export function Footer() {
             <div className="mt-6 space-y-3">
               <a
                 href={siteConfig.phoneLink}
-                className="flex items-center gap-3 text-charcoal-300 transition-colors hover:text-white"
+                className="flex min-h-11 items-center gap-3 py-2 text-charcoal-300 transition-colors hover:text-white"
               >
                 <Phone className="h-5 w-5" />
                 {siteConfig.phoneFormatted}
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}
-                className="flex items-center gap-3 text-charcoal-300 transition-colors hover:text-white"
+                className="flex min-h-11 items-center gap-3 py-2 text-charcoal-300 transition-colors hover:text-white"
               >
                 <Mail className="h-5 w-5" />
                 {siteConfig.email}
@@ -56,7 +56,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-charcoal-400 transition-colors hover:text-white"
+                    className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-charcoal-400 transition-colors hover:text-white"
+                  className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white"
                 >
                   Planning Guides
                 </Link>
@@ -78,22 +78,22 @@ export function Footer() {
             <h3 className="font-display text-lg font-semibold">Our Services</h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link href="/services/kitchen-cabinet-supply-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                <Link href="/services/kitchen-cabinet-supply-detroit" className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white">
                   Cabinet Supply
                 </Link>
               </li>
               <li>
-                <Link href="/services/kitchen-cabinet-installation-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                <Link href="/services/kitchen-cabinet-installation-detroit" className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white">
                   Cabinet Installation
                 </Link>
               </li>
               <li>
-                <Link href="/services/in-home-cabinet-measurement" className="text-charcoal-400 transition-colors hover:text-white">
+                <Link href="/services/in-home-cabinet-measurement" className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white">
                   In-Home Measurement
                 </Link>
               </li>
               <li>
-                <Link href="/services/kitchen-cabinet-supply-detroit" className="text-charcoal-400 transition-colors hover:text-white">
+                <Link href="/services/kitchen-cabinet-supply-detroit" className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white">
                   Cabinet Planning &amp; Design Help
                 </Link>
               </li>
@@ -105,14 +105,14 @@ export function Footer() {
             <h3 className="font-display text-lg font-semibold">Service Areas</h3>
             <Link
               href="/service-areas/metro-detroit"
-              className="mt-4 inline-block text-charcoal-300 transition-colors hover:text-white"
+              className="mt-4 inline-flex min-h-11 items-center py-2 text-charcoal-300 transition-colors hover:text-white"
             >
               Metro Detroit service area
             </Link>
             <ul className="mt-4 grid grid-cols-2 gap-2 text-sm">
               {serviceAreaPages.map((area) => (
                 <li key={area.slug}>
-                  <Link href={`/service-areas/${area.slug}`} className="text-charcoal-400 transition-colors hover:text-white">
+                  <Link href={`/service-areas/${area.slug}`} className="inline-flex min-h-11 items-center py-2 text-charcoal-400 transition-colors hover:text-white">
                     {area.name}
                   </Link>
                 </li>
@@ -127,10 +127,10 @@ export function Footer() {
             © {currentYear} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-charcoal-500">
-            <Link href="/contact" className="hover:text-white">
+            <Link href="/contact" className="inline-flex min-h-11 items-center py-2 hover:text-white">
               Contact
             </Link>
-            <Link href="/faqs" className="hover:text-white">
+            <Link href="/faqs" className="inline-flex min-h-11 items-center py-2 hover:text-white">
               FAQs
             </Link>
           </div>

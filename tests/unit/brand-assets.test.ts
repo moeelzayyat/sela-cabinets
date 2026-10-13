@@ -39,7 +39,11 @@ describe('approved SELA Cabinets brand integration', () => {
 
   it('publishes the compact mark for schema, browser, Apple, and direct favicon requests', () => {
     const siteConfig = read('src/config/site.ts')
-    expect(siteConfig).toContain("logo: '/brand/sela-icon-contained.svg'")
+    expect(siteConfig).toContain("logo: '/brand/sela-logo-192.png'")
+    const schemaLogo = readFileSync(fromRoot('public/brand/sela-logo-192.png'))
+    expect(schemaLogo.subarray(1, 4).toString('ascii')).toBe('PNG')
+    expect(schemaLogo.readUInt32BE(16)).toBeGreaterThanOrEqual(112)
+    expect(schemaLogo.readUInt32BE(20)).toBeGreaterThanOrEqual(112)
 
     for (const relativePath of [
       'src/app/favicon.ico',

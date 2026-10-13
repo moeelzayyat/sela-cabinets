@@ -8,6 +8,7 @@ export interface CabinetProduct {
   designCharacter: string
   suits: string
   pairingSuggestions: string
+  styleNotes: readonly [string, string, string]
 }
 
 export interface HandleProduct {
@@ -63,10 +64,35 @@ function styleProfile(name: string, construction: CabinetConstruction) {
       ? 'modern, transitional, and simplified traditional kitchens'
       : 'transitional, traditional, farmhouse-inspired, and updated classic kitchens'
 
+  const colorCharacter = lower.includes('white') || lower.includes('ivory')
+    ? 'Its light finish can keep a compact kitchen visually open while allowing wood, tile, or hardware to carry more contrast'
+    : lower.includes('black') || lower.includes('charcoal') || lower.includes('midnight')
+      ? 'Its deep finish creates strong contrast and usually benefits from a lighter counter, backsplash, or adjacent surface'
+      : lower.includes('oak') || lower.includes('wood') || lower.includes('saddle') || lower.includes('chest') || lower.includes('espresso')
+        ? 'Its warm finish works naturally with quiet stone looks, restrained metals, and lighter surrounding finishes'
+        : lower.includes('green') || lower.includes('sage') || lower.includes('navy')
+          ? 'Its colored finish can become the room’s focal point, especially when surrounding materials stay warm and restrained'
+          : 'Its neutral finish can bridge warm and cool materials when counters, flooring, and hardware are reviewed together'
+
+  const lightingCharacter = lower.includes('gloss') || lower.includes('glass')
+    ? 'Because the surface is reflective, window light and under-cabinet lighting can make glare and surrounding colors more noticeable'
+    : lower.includes('black') || lower.includes('charcoal') || lower.includes('midnight') || lower.includes('espresso')
+      ? 'Dark finishes absorb more light, so sample placement near work lighting helps confirm that the room will not feel visually heavy'
+      : lower.includes('white') || lower.includes('ivory')
+        ? 'Light finishes reflect nearby colors, so warm and cool bulbs can noticeably change how the door reads beside the countertop'
+        : lower.includes('oak') || lower.includes('wood') || lower.includes('saddle') || lower.includes('chest')
+          ? 'Wood tones can look warmer or flatter as daylight changes, making an in-room sample useful before the final selection'
+          : 'Morning daylight, evening light, and under-cabinet fixtures can shift the perceived undertone, so compare the sample at more than one time of day'
+
   return {
     designCharacter: `${name} offers ${profile}.`,
     suits,
     pairingSuggestions: `Consider pairing it with ${tone}. Final colors should be compared with physical samples in the room.`,
+    styleNotes: [
+      `${name} is a practical fit for ${suits}, particularly when the door profile supports the room’s architecture instead of competing with it.`,
+      `${name} has a distinct color direction. ${colorCharacter}, with the final palette checked against fixed flooring and counters.`,
+      `Lighting matters with ${name}. ${lightingCharacter}.`,
+    ] as const,
   }
 }
 

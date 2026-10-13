@@ -50,7 +50,8 @@ describe('public content truthfulness', () => {
     )
 
     expect(quoteForm).not.toMatch(/all cabinets come with|5-year warranty/i)
-    expect(quoteForm).toMatch(/manufacturer.*written terms/i)
+    expect(quoteForm).toMatch(/written product terms/i)
+    expect(quoteForm).not.toMatch(/cabinet supplier|manufacturer/i)
     expect(quoteForm).toMatch(/signed customer agreement.*warranty exhibit/i)
   })
 

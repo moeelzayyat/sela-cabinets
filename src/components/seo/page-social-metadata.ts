@@ -11,6 +11,7 @@ export function createPageSocialMetadata({
   image = '/images/seo/sela-cabinets-og.png',
   imageWidth = 1200,
   imageHeight = 630,
+  includeUrl = true,
 }: {
   title: string
   description: string
@@ -20,11 +21,12 @@ export function createPageSocialMetadata({
   image?: string
   imageWidth?: number
   imageHeight?: number
-}): Pick<Metadata, 'openGraph' | 'twitter'> {
+  includeUrl?: boolean
+}): Pick<Metadata, 'openGraph' | 'twitter' | 'other'> {
   const resolvedTitle = absoluteTitle
     ? title
     : siteConfig.seo.titleTemplate.replace('%s', title)
-  const url = path === '/' ? siteConfig.seo.url : `${siteConfig.seo.url}${path}`
+  const url = path === '/' ? siteConfig.seo.homepageUrl : `${siteConfig.seo.url}${path}`
   const socialImage = {
     url: image,
     width: imageWidth,
@@ -36,7 +38,7 @@ export function createPageSocialMetadata({
     openGraph: {
       title: resolvedTitle,
       description,
-      url,
+      ...(includeUrl ? { url } : {}),
       siteName: siteConfig.name,
       locale: 'en_US',
       type,
@@ -48,5 +50,6 @@ export function createPageSocialMetadata({
       description,
       images: [socialImage.url],
     },
+    ...(includeUrl ? { other: { 'twitter:url': url } } : {}),
   }
 }

@@ -54,10 +54,10 @@ function metadataForRoute(route: string) {
   }
 
   const area = serviceAreaPages.find((item) => route === `/service-areas/${item.slug}`)
-  if (area && area.slug !== 'detroit') {
+  if (area) {
     return {
       title: `Kitchen Cabinets ${area.name} MI${siteConfig.seo.titleTemplate.replace('%s', '')}`,
-      description: `Quality kitchen cabinets and professional installation in ${area.name}, Michigan, with in-home measurement, written scope, and one direct contact.`,
+      description: area.metaDescription,
     }
   }
 
@@ -90,7 +90,7 @@ describe('launch SEO surface', () => {
   it('publishes every configured public route in the sitemap', () => {
     const urls = sitemap().map(({ url }) => url)
     const expected = indexableRoutes.map((route) =>
-      route === '/' ? siteConfig.seo.url : `${siteConfig.seo.url}${route}`
+      route === '/' ? siteConfig.seo.homepageUrl : `${siteConfig.seo.url}${route}`
     )
 
     expect(urls).toEqual(expected)
@@ -199,10 +199,12 @@ describe('launch SEO surface', () => {
   it.each(indexableRoutes)('declares a self-canonical for %s', (route) => {
     const pageSource = metadataSourceForRoute(route)
 
-    expect(pageSource).toContain('alternates:')
     if (route === '/') {
-      expect(pageSource).toContain("canonical: '/'")
-    } else if (route.startsWith('/products/')) {
+      expect(pageSource).toContain('<link rel="canonical" href={siteConfig.seo.homepageUrl} />')
+      return
+    }
+    expect(pageSource).toContain('alternates:')
+    if (route.startsWith('/products/')) {
       expect(pageSource).toContain('const path = `/products/${product.id}`')
       expect(pageSource).toContain('alternates: { canonical: path }')
     } else if (route.startsWith('/service-areas/') && route !== '/service-areas/metro-detroit' && route !== '/service-areas/detroit') {

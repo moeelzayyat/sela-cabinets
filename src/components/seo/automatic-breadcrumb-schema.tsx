@@ -52,7 +52,7 @@ export function AutomaticBreadcrumbSchema() {
 
   const segments = pathname.split('/').filter(Boolean)
   const items = [
-    { name: 'Home', item: siteConfig.seo.url },
+    { name: 'Home', item: siteConfig.seo.homepageUrl },
     ...segments.map((segment, index) => {
       const path = `/${segments.slice(0, index + 1).join('/')}`
       return {

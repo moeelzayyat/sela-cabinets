@@ -21,7 +21,7 @@ describe('robots metadata', () => {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/account/', '/locations/'],
+        disallow: ['/api/', '/admin/', '/account/'],
       },
     ])
     expect(result.sitemap).toBe('https://selacabinets.com/sitemap.xml')

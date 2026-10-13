@@ -19,7 +19,7 @@ export function PopularCabinetStyleLinks({
           <li key={style.id}>
             <Link
               href={`/products/${style.id}`}
-              className="inline-flex font-semibold text-primary hover:underline"
+              className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline"
             >
               {style.name} →
             </Link>
@@ -42,7 +42,7 @@ export function AreasWeServeLinks() {
           <li key={area.slug}>
             <Link
               href={`/service-areas/${area.slug}`}
-              className="font-semibold text-primary hover:underline"
+              className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline"
             >
               {area.name}
             </Link>
@@ -63,7 +63,13 @@ export function ServiceDiscoveryLinks() {
         <div className="rounded-2xl border border-wood-200 bg-white p-7 sm:p-8">
           <AreasWeServeLinks />
         </div>
+        <p className="mt-8 border-t border-wood-200 pt-6 text-charcoal-700 lg:col-span-2">
+          Need help choosing the right next step?{' '}
+          <Link href="/contact" className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline">
+            Contact SELA about your kitchen →
+          </Link>
+        </p>
       </div>
-    </section>
+      </section>
   )
 }

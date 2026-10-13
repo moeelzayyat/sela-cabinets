@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Inter, Montserrat } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
 import { GoogleAnalytics } from '@/components/analytics/google-analytics'
@@ -13,9 +13,9 @@ const inter = Inter({
   display: 'swap',
 })
 
-const playfair = Playfair_Display({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-montserrat',
   display: 'swap',
 })
 
@@ -29,6 +29,7 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   applicationName: siteConfig.name,
+  verification: { google: '[GSC VERIFICATION CODE]' },
   manifest: '/site.webmanifest',
   metadataBase: new URL(siteConfig.seo.url),
   ...createPageSocialMetadata({
@@ -45,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <head>
         <GoogleAnalytics />
         <LocalBusinessJsonLd />

@@ -41,13 +41,13 @@ COMPANY INFO:
 
 SERVICES:
 1. Cabinet Supply - Premium semi-custom cabinets
-2. Professional Installation - timing confirmed after inspection, supplier ordering, delivery, and site readiness review
+2. Professional Installation - timing confirmed after inspection, cabinet ordering, delivery, and site readiness review
 3. In-Home Measurement with order
 4. Design Consultation
 
 ESTIMATES:
 - SELA does not publish generic project prices in chat
-- Estimates are based on measurements, cabinet style, finish, storage needs, supplier ordering lead time, delivery timing, and installation scope
+- Estimates are based on measurements, cabinet style, finish, storage needs, cabinet ordering lead time, delivery timing, and installation scope
 - Encourage customers to use Plan My Kitchen or request a measured estimate
 
 SERVICE AREAS:
@@ -191,7 +191,7 @@ function getSimpleResponse(message: string): string {
   }
 
   if (lowerMessage.includes('time') || lowerMessage.includes('long') || lowerMessage.includes('install')) {
-    return "Project timing is confirmed after inspection. The SELA team reviews your layout, site conditions, cabinet selections, supplier ordering lead time, delivery timing, and installation scope before giving you a realistic schedule."
+    return "Project timing is confirmed after inspection. The SELA team reviews your layout, site conditions, cabinet selections, ordering lead time, delivery timing, and installation scope before giving you a realistic schedule."
   }
 
   if (lowerMessage.includes('quote') || lowerMessage.includes('estimate')) {

@@ -58,6 +58,10 @@ export default async function CabinetStylePage({
 
   const specs = cabinetConstruction[product.construction]
   const path = `/products/${product.id}`
+  const productIndex = allCabinetProducts.findIndex((item) => item.id === product.id)
+  const relatedStyles = [1, 2, 3].map(
+    (offset) => allCabinetProducts[(productIndex + offset) % allCabinetProducts.length],
+  )
 
   return (
     <>
@@ -87,6 +91,9 @@ export default async function CabinetStylePage({
               This style can suit {product.suits}. View the physical sample with your room lighting,
               counters, flooring, and backsplash before final selection.
             </p>
+            <div className="mt-5 space-y-3 text-charcoal-700">
+              {product.styleNotes.map((note) => <p key={note}>{note}</p>)}
+            </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Button asChild size="lg"><Link href={`/estimate?style=${encodeURIComponent(product.id)}`}>Get a Quote for This Style</Link></Button>
               <Button asChild size="lg" variant="outline"><Link href="/products">Compare All Styles</Link></Button>
@@ -126,13 +133,25 @@ export default async function CabinetStylePage({
             Cabinet style selection works best when it stays connected to the measured room and the installation scope.
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:gap-8">
-            <Link href="/services/in-home-cabinet-measurement" className="font-semibold text-primary hover:underline">
+            <Link href="/services/in-home-cabinet-measurement" className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline">
               Review in-home cabinet measurement →
             </Link>
-            <Link href="/services/kitchen-cabinet-installation-detroit" className="font-semibold text-primary hover:underline">
+            <Link href="/services/kitchen-cabinet-installation-detroit" className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline">
               Review professional cabinet installation →
             </Link>
           </div>
+          <nav aria-label={`Related cabinet styles to ${product.name}`} className="mt-8 border-t border-wood-200 pt-6">
+            <h3 className="font-display text-xl font-semibold text-charcoal-900">Related cabinet styles</h3>
+            <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
+              {relatedStyles.map((related) => (
+                <li key={related.id}>
+                  <Link href={`/products/${related.id}`} className="inline-flex min-h-11 items-center py-2 font-semibold text-primary hover:underline">
+                    {related.name} →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </section>
 

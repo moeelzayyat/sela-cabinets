@@ -16,11 +16,11 @@ const manifest = JSON.parse(
 
 describe('security dependency resolutions', () => {
   it('keeps Next transitive build dependencies above their patched minimums', () => {
-    // Next 16.2.12 requests vulnerable versions. These narrow overrides are
-    // intentional until Next declares patched postcss and sharp ranges.
+    // Keep narrow overrides at or above the current patched transitive versions.
     expect(manifest.resolutions?.['next/postcss']).toBe('8.5.23')
     expect(manifest.resolutions?.nanoid).toBe('3.3.18')
-    expect(manifest.resolutions?.['next/sharp']).toBe('0.35.3')
+    expect(manifest.resolutions?.['next/sharp']).toBe('0.35.5')
+    expect(manifest.resolutions?.['source-map-js']).toBe('1.2.2')
     expect(manifest.resolutions?.['form-data']).toBe('4.0.6')
   })
 

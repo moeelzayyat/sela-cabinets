@@ -34,6 +34,7 @@ Thumbs.db
 
 # Local handoff/audit scratch
 .ui-audit/
+reports/qa/
 tmp/
 temp/
 *.bak

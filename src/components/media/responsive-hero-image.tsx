@@ -6,6 +6,7 @@ interface ResponsiveHeroImageProps {
 
 const srcSet = [
   '/images/hero/kitchen-640.webp 640w',
+  '/images/hero/kitchen-768.webp 768w',
   '/images/hero/kitchen-960.webp 960w',
   '/images/hero/kitchen-1600.webp 1600w',
 ].join(', ')
@@ -23,7 +24,7 @@ export function ResponsiveHeroImage({
         <link
           rel="preload"
           as="image"
-          href="/images/hero/kitchen-1600.webp"
+          href="/images/hero/kitchen-768.webp"
           imageSrcSet={srcSet}
           imageSizes={sizes}
           type="image/webp"
@@ -37,6 +38,7 @@ export function ResponsiveHeroImage({
         width={1600}
         height={1200}
         loading="eager"
+        fetchPriority="high"
         decoding="async"
         className={className}
       />

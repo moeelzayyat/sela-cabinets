@@ -2,18 +2,22 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CheckCircle, Layers, PackageCheck } from 'lucide-react'
 
+import { FAQSchema } from '@/components/seo/SchemaMarkup'
+import { ServicePageJsonLd } from '@/components/seo/json-ld'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { CTASection } from '@/components/sections/cta-section'
 import { ServiceDiscoveryLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
+import { ServiceDetailSections } from '@/components/services/service-detail-sections'
+import { servicePageContent } from '@/config/service-page-content'
 
 const title = 'Kitchen Cabinet Supply in Metro Detroit'
-const description = 'Compare kitchen cabinet styles and construction options in Metro Detroit with measurement, layout, ordering, delivery, and installation coordination.'
+const description = 'Choose Metro Detroit kitchen cabinets through a measured plan, written scope, and coordinated order. Compare styles and request an estimate.'
 const path = '/services/kitchen-cabinet-supply-detroit'
 
 export const metadata: Metadata = {
   title: 'Kitchen Cabinet Supply in Metro Detroit',
-  description: 'Compare kitchen cabinet styles and construction options in Metro Detroit with measurement, layout, ordering, delivery, and installation coordination.',
+  description,
   alternates: { canonical: '/services/kitchen-cabinet-supply-detroit' },
   ...createPageSocialMetadata({ title, description, path }),
 }
@@ -30,6 +34,8 @@ const decisions = [
 export default function KitchenCabinetSupplyDetroitPage() {
   return (
     <>
+      <ServicePageJsonLd name="Kitchen Cabinet Supply" serviceType="Kitchen cabinet supply" description={description} path={path} />
+      <FAQSchema faqs={servicePageContent.supply.faqs} />
       <section className="section-padding bg-charcoal-900 text-white">
         <div className="container-wide grid gap-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div>
@@ -62,6 +68,7 @@ export default function KitchenCabinetSupplyDetroitPage() {
 
       <section className="section-padding bg-white"><div className="container-wide"><div className="mx-auto max-w-3xl"><h2 className="font-display text-3xl font-bold text-charcoal-900">From Selection to Installation</h2><p className="mt-4 leading-7 text-charcoal-600">Cabinet supply works best when measurement, layout review, ordering, delivery inspection, and installation planning remain connected. If you already have measurements, bring them to the planning call. SELA will still identify which dimensions and site conditions must be verified before an order can be treated as final.</p><div className="mt-6 flex flex-wrap gap-4"><Link href="/services/in-home-cabinet-measurement" className="font-semibold text-primary hover:underline">In-home measurement →</Link><Link href="/services/kitchen-cabinet-installation-detroit" className="font-semibold text-primary hover:underline">Installation planning →</Link></div></div></div></section>
 
+      <ServiceDetailSections content={servicePageContent.supply} />
       <ServiceDiscoveryLinks />
 
       <CTASection title="Build a Cabinet Plan for Your Kitchen" description="Share your layout, style preferences, and project stage. We’ll help determine the measurements and selection decisions needed for a detailed cabinet estimate." variant="wood" />

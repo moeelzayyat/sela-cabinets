@@ -2,15 +2,18 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CheckCircle, Phone, Ruler, Wrench } from 'lucide-react'
 
-import { BreadcrumbSchema } from '@/components/seo/SchemaMarkup'
+import { BreadcrumbSchema, FAQSchema } from '@/components/seo/SchemaMarkup'
+import { ServicePageJsonLd } from '@/components/seo/json-ld'
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { CTASection } from '@/components/sections/cta-section'
 import { ServiceDiscoveryLinks } from '@/components/sections/internal-link-sections'
 import { Button } from '@/components/ui/button'
+import { ServiceDetailSections } from '@/components/services/service-detail-sections'
+import { servicePageContent } from '@/config/service-page-content'
 import { siteConfig } from '@/config/site'
 
 const title = 'Kitchen Cabinet Installation | Metro Detroit'
-const description = 'Professional kitchen cabinet installation in Metro Detroit with careful leveling, alignment, fitting, adjustment, and one direct point of contact.'
+const description = 'Metro Detroit cabinet installation with measured planning, written scope, careful fitting, and a final walkthrough. Call for an estimate.'
 const path = '/services/kitchen-cabinet-installation-detroit'
 
 export const metadata: Metadata = {
@@ -41,6 +44,8 @@ const craftDetails = [
 export default function KitchenCabinetInstallationDetroitPage() {
   return (
     <>
+      <ServicePageJsonLd name="Kitchen Cabinet Installation" serviceType="Kitchen cabinet installation" description={description} path={path} />
+      <FAQSchema faqs={servicePageContent.installation.faqs} />
       <BreadcrumbSchema items={[
         { name: 'Home', url: '/' },
         { name: 'Services', url: '/services' },
@@ -56,6 +61,9 @@ export default function KitchenCabinetInstallationDetroitPage() {
               Quality cabinets deserve careful installation. SELA connects the measured cabinet
               layout with a cabinet installation specialist and gives you one point of contact from
               the first call through the final cabinet walkthrough.
+            </p>
+            <p className="mt-5 text-xl font-semibold text-white">
+              Most 10x10 kitchens, installed, start at [PRICE].
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Button asChild size="lg"><Link href="/estimate">Request an Installation Estimate</Link></Button>
@@ -121,6 +129,7 @@ export default function KitchenCabinetInstallationDetroitPage() {
         </div>
       </section>
 
+      <ServiceDetailSections content={servicePageContent.installation} />
       <ServiceDiscoveryLinks />
 
       <CTASection title="Get Kitchen Cabinets Professionally Installed" description="Tell us where the project is, what stage it is in, and which cabinet styles you are considering. SELA will identify the right next step." variant="dark" />

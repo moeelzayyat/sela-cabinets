@@ -23,7 +23,7 @@ export async function generateMetadata({
   if (!area) return {}
 
   const title = `Kitchen Cabinets ${area.name} MI`
-  const description = `Quality kitchen cabinets and professional installation in ${area.name}, Michigan, with in-home measurement, written scope, and one direct contact.`
+  const description = area.metaDescription
   const path = `/service-areas/${area.slug}`
 
   return {

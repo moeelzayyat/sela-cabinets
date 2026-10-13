@@ -112,7 +112,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                     <div className="mt-8">
-                      <Button asChild variant="outline"><Link href="/book">Book This Service</Link></Button>
+                      <Button asChild variant="outline"><Link href={service.href}>View Service Details</Link></Button>
                     </div>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import sitemap from '@/app/sitemap'
 import { indexableRoutes } from '@/config/indexable-routes'
 
 const expectedUrls = indexableRoutes.map((route) =>
-  route === '/' ? 'https://selacabinets.com' : `https://selacabinets.com${route}`
+  route === '/' ? 'https://selacabinets.com/' : `https://selacabinets.com${route}`
 )
 
 describe('production sitemap', () => {
@@ -19,9 +19,13 @@ describe('production sitemap', () => {
 
     expect(first.map((entry) => entry.url)).toEqual(expectedUrls)
     expect(second).toEqual(first)
-    const datedEntries = first.filter((entry) => entry.lastModified)
-    expect(datedEntries).toHaveLength(1)
-    expect(datedEntries[0]?.url).toBe('https://selacabinets.com/blog/kitchen-cabinet-planning-detroit')
-    expect(datedEntries[0]?.lastModified).toEqual(new Date('2026-07-30T00:00:00.000Z'))
+    expect(first.every((entry) => entry.lastModified !== undefined)).toBe(true)
+    expect(first.every((entry) => new Date(entry.lastModified!).getTime() <= Date.now())).toBe(true)
+    expect(first.map((entry) => new Date(entry.lastModified!).toISOString()))
+      .toEqual(second.map((entry) => new Date(entry.lastModified!).toISOString()))
+    expect(first.find((entry) => entry.url.endsWith('/contact'))?.lastModified)
+      .toEqual(new Date('2026-10-06T00:00:00.000Z'))
+    expect(first.find((entry) => entry.url.endsWith('/service-areas/detroit'))?.lastModified)
+      .toEqual(new Date('2026-10-12T00:00:00.000Z'))
   })
 })

@@ -17,19 +17,22 @@ import { cabinetConstruction } from '@/config/products-catalog'
 export const metadata: Metadata = {
   title: { absolute: siteConfig.seo.defaultTitle },
   description: siteConfig.seo.defaultDescription,
-  alternates: { canonical: '/' },
   ...createPageSocialMetadata({
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.defaultDescription,
     path: '/',
     absoluteTitle: true,
     image: '/images/seo/home-og.jpg',
+    includeUrl: false,
   }),
 }
 
 export default function HomePage() {
   return (
     <>
+      <link rel="canonical" href={siteConfig.seo.homepageUrl} />
+      <meta property="og:url" content={siteConfig.seo.homepageUrl} />
+      <meta name="twitter:url" content={siteConfig.seo.homepageUrl} />
       <ServiceJsonLd />
       
       <HeroSection />
@@ -45,12 +48,12 @@ export default function HomePage() {
               What should you expect to invest?
             </h2>
             <p className="mt-5 text-xl font-semibold leading-8 text-charcoal-900">
-              Cabinet and installation pricing depends on kitchen size, cabinet style, layout,
-              delivery requirements, site conditions, and the work included in the written scope.
+              Most 10x10 kitchens, installed, start at [PRICE].
             </p>
             <p className="mt-4 leading-7 text-charcoal-700">
-              The exact price comes after in-home measurement and a review of cabinet selection,
-              delivery, site conditions, and installation scope.
+              This starting point is a placeholder until the amount is confirmed. The written quote
+              comes after in-home measurement and review of cabinet selection, delivery, site
+              conditions, and installation scope.
             </p>
           </div>
           <div className="rounded-2xl border border-wood-200 bg-white p-7 sm:p-8">
@@ -107,7 +110,7 @@ export default function HomePage() {
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  loading="eager"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 transition-opacity group-hover:opacity-100">

@@ -56,6 +56,7 @@ export const siteConfig = {
     'Canton',
     'Westland',
     'Redford',
+    'Dearborn Heights',
     'Taylor',
   ],
   
@@ -82,9 +83,10 @@ export const siteConfig = {
   seo: {
     titleTemplate: '%s | SELA Cabinets',
     defaultTitle: 'Kitchen Cabinets & Installation in Metro Detroit | SELA',
-    defaultDescription: 'Quality kitchen cabinets at a fair price, professionally installed across Metro Detroit with one point of contact from measurement to walkthrough.',
+    defaultDescription: 'Kitchen cabinets supplied & installed by our own installer in Metro Detroit. Written quote after in-home measurement. Call (313) 468-3225.',
     url: 'https://selacabinets.com',
-    logo: '/brand/sela-icon-contained.svg',
+    homepageUrl: 'https://selacabinets.com/',
+    logo: '/brand/sela-logo-192.png',
     image: '/images/seo/home-og.jpg',
   },
   

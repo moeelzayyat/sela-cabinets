@@ -5,9 +5,9 @@ import { CityServiceAreaPage } from '@/components/service-area/city-service-area
 import { createPageSocialMetadata } from '@/components/seo/page-social-metadata'
 import { getServiceAreaPage } from '@/config/service-area-pages'
 
-const area = getServiceAreaPage('detroit')
+const area = getServiceAreaPage('detroit')!
 const title = 'Kitchen Cabinets Detroit MI'
-const description = 'Quality kitchen cabinets and professional installation in Detroit, with in-home measurement, written scope, and one direct point of contact.'
+const description = area.metaDescription
 const path = '/service-areas/detroit'
 
 export const metadata: Metadata = {

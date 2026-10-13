@@ -21,6 +21,7 @@ services:
             - traefik.enable=true
             - traefik.http.middlewares.gzip.compress=true
             - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+            - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
             - traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.entryPoints=http
             - traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.middlewares=redirect-to-https
             - 'traefik.http.routers.http-0-cgog4w8wgsk0w4gogc4ocsco.rule=Host(`selacabinets.com`) && PathPrefix(`/`)'

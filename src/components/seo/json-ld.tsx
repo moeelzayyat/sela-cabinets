@@ -1,10 +1,15 @@
 import { siteConfig } from '@/config/site'
+import { serviceAreaPages } from '@/config/service-area-pages'
+import { dedicatedServiceRoutes, type DedicatedServiceId } from '@/config/internal-links'
 import { serializeJsonLd } from '@/components/seo/serialize-json-ld'
 
 const businessId = `${siteConfig.seo.url}/#business`
+const areaServed = serviceAreaPages.map((area) => ({
+  '@type': 'City',
+  name: area.name,
+}))
 
 export function LocalBusinessJsonLd() {
-  const hasVerifiedHours = !siteConfig.businessFacts.hours.startsWith('[')
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'HomeAndConstructionBusiness',
@@ -13,15 +18,18 @@ export function LocalBusinessJsonLd() {
     description: siteConfig.description,
     telephone: siteConfig.phoneInternational,
     email: siteConfig.email,
-    url: siteConfig.seo.url,
+    url: siteConfig.seo.homepageUrl,
     logo: `${siteConfig.seo.url}${siteConfig.seo.logo}`,
     image: `${siteConfig.seo.url}${siteConfig.seo.image}`,
-    ...(hasVerifiedHours ? { openingHours: siteConfig.businessFacts.hours } : {}),
-
-    areaServed: siteConfig.serviceAreas.map((area) => ({
-      '@type': 'City',
-      name: area,
-    })),
+    priceRange: '$$',
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        description: siteConfig.businessFacts.hours,
+      },
+    ],
+    // Social profiles stay omitted until verified public URLs are supplied.
+    areaServed,
   }
 
   return (
@@ -33,22 +41,54 @@ export function LocalBusinessJsonLd() {
 }
 
 export function ServiceJsonLd() {
-  const services = siteConfig.services.map((service) => ({
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.title,
-    description: service.description,
-    provider: { '@id': businessId },
-    areaServed: {
-      '@type': 'City',
-      name: siteConfig.location.city,
-    },
-  }))
+  const services = siteConfig.services.map((service) => {
+    const path = dedicatedServiceRoutes[service.id as DedicatedServiceId]
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.title,
+      serviceType: service.title,
+      description: service.description,
+      provider: { '@id': businessId },
+      areaServed,
+      ...(path ? { url: `${siteConfig.seo.url}${path}` } : {}),
+    }
+  })
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: serializeJsonLd(services) }}
+    />
+  )
+}
+
+export function ServicePageJsonLd({
+  name,
+  serviceType,
+  description,
+  path,
+}: {
+  name: string
+  serviceType: string
+  description: string
+  path: string
+}) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name,
+    serviceType,
+    description,
+    provider: { '@id': businessId },
+    areaServed,
+    url: `${siteConfig.seo.url}${path}`,
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }

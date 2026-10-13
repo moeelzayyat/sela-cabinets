@@ -29,8 +29,14 @@ describe('deployment robots response header', () => {
     process.env.NEXT_PUBLIC_APP_URL = 'https://selacabinets.com'
 
     const rules = await nextConfig.headers()
-    const headers = rules.flatMap((rule) => rule.headers)
+    const catchAll = rules.find((rule) => rule.source === '/:path*')
+    expect(catchAll?.headers.some((header) => header.key === 'X-Robots-Tag')).toBe(false)
 
-    expect(headers.some((header) => header.key === 'X-Robots-Tag')).toBe(false)
+    for (const source of ['/admin/:path*', '/account/:path*']) {
+      expect(rules.find((rule) => rule.source === source)?.headers).toContainEqual({
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow',
+      })
+    }
   })
 })

@@ -72,9 +72,12 @@ describe('SELA server-rendered internal linking', () => {
       expect(titleLink, `${service.title} title link`).toBeDefined()
     }
 
-    const bookLinks = [...page.querySelectorAll('a[href="/book"]')]
-      .filter((anchor) => anchor.textContent?.match(/Book This Service/i))
-    expect(bookLinks).toHaveLength(dedicatedServices.length)
+    const detailLinks = [...page.querySelectorAll('a')]
+      .filter((anchor) => anchor.textContent?.match(/View Service Details/i))
+    expect(detailLinks).toHaveLength(dedicatedServices.length)
+    expect(detailLinks.map((anchor) => anchor.getAttribute('href'))).toEqual(
+      dedicatedServices.map((service) => service.href),
+    )
     expectPlainAnchors(page.innerHTML)
   })
 
@@ -108,11 +111,16 @@ describe('SELA server-rendered internal linking', () => {
     expectPlainAnchors(markup)
   })
 
-  it.each(serviceAreaPages)('links $name to four to six popular style pages', (area) => {
+  it.each(serviceAreaPages)('links $name to styles, every service, and contact', (area) => {
     const markup = renderToStaticMarkup(<CityServiceAreaPage area={area} />)
-    const styleHrefs = hrefsIn(markup).filter((href) => href.startsWith('/products/'))
+    const hrefs = hrefsIn(markup)
+    const styleHrefs = hrefs.filter((href) => href.startsWith('/products/'))
 
     expect(new Set(styleHrefs)).toEqual(new Set(popularStyleHrefs))
+    expect(hrefs).toContain('/services/kitchen-cabinet-supply-detroit')
+    expect(hrefs).toContain('/services/kitchen-cabinet-installation-detroit')
+    expect(hrefs).toContain('/services/in-home-cabinet-measurement')
+    expect(hrefs).toContain('/contact')
     expectPlainAnchors(markup)
   })
 
@@ -123,6 +131,11 @@ describe('SELA server-rendered internal linking', () => {
 
     expect(hrefs).toContain('/services/kitchen-cabinet-installation-detroit')
     expect(hrefs).toContain('/services/in-home-cabinet-measurement')
+    const relatedStyleLinks = new Set(
+      hrefs.filter((href) => href.startsWith('/products/') && href !== `/products/${product.id}`),
+    )
+    expect(relatedStyleLinks.size).toBeGreaterThanOrEqual(2)
+    expect(relatedStyleLinks.size).toBeLessThanOrEqual(3)
     expectPlainAnchors(markup)
   })
 

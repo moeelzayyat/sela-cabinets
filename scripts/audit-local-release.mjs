@@ -24,7 +24,13 @@ const home = await page('/')
 check('homepage canonical slash', home.document.querySelector('link[rel="canonical"]')?.href === 'https://selacabinets.com/')
 check('homepage og:url slash', home.document.querySelector('meta[property="og:url"]')?.content === 'https://selacabinets.com/')
 check('homepage twitter:url slash', home.document.querySelector('meta[name="twitter:url"]')?.content === 'https://selacabinets.com/')
-check('GSC placeholder', home.document.querySelector('meta[name="google-site-verification"]')?.content === '[GSC VERIFICATION CODE]')
+const verificationFile = await response('/google5311959f90a181fd.html')
+check('GSC verification file status', verificationFile.status === 200, { status: verificationFile.status })
+check(
+  'GSC verification file content',
+  (await verificationFile.text()).trim() === 'google-site-verification: google5311959f90a181fd.html',
+)
+check('GSC placeholder metadata absent', home.document.querySelector('meta[name="google-site-verification"]') === null)
 check('hero high priority', home.document.querySelector('img[fetchpriority="high"][srcset]') !== null)
 const heroPreload = home.document.querySelector('link[rel="preload"][as="image"][imagesrcset]')
 check('responsive hero preload', heroPreload !== null && heroPreload.getAttribute('imagesizes') !== null)
@@ -76,6 +82,9 @@ check('installation Service schema', installationSchemas.some((value) => value['
 check('installation FAQ schema', installationSchemas.some((value) => value['@type'] === 'FAQPage' && value.mainEntity?.length >= 4 && value.mainEntity?.length <= 6))
 const business = schemas(home.document).find((value) => value['@type'] === 'HomeAndConstructionBusiness')
 check('business schema complete', business?.url === 'https://selacabinets.com/' && business?.priceRange === '$$' && business?.logo?.endsWith('.png') && business?.areaServed?.length === 16)
+check('business schema omits unverified hours', business && !Object.hasOwn(business, 'openingHoursSpecification'))
+const renderedPages = [home, installation, detroit, style, products]
+check('sampled public HTML has no bracketed placeholders', renderedPages.every(({ html }) => !html.match(/\[[A-Z][A-Z0-9 _:/,".-]*\]/)))
 
 const cityWords = (detroit.document.querySelector('main')?.textContent ?? detroit.document.body.textContent ?? '').match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) ?? []
 check('Detroit has 500+ words', cityWords.length >= 500, { words: cityWords.length })

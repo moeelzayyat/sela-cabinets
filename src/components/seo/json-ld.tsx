@@ -22,12 +22,6 @@ export function LocalBusinessJsonLd() {
     logo: `${siteConfig.seo.url}${siteConfig.seo.logo}`,
     image: `${siteConfig.seo.url}${siteConfig.seo.image}`,
     priceRange: '$$',
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        description: siteConfig.businessFacts.hours,
-      },
-    ],
     // Social profiles stay omitted until verified public URLs are supplied.
     areaServed,
   }

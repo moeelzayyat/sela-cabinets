@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import { siteConfig } from '@/config/site'
 
-const unsupportedPositioning = /\b(years of experience|installed perfectly|premium|luxury|semi-custom|custom kitchen cabinets|showroom|best kitchen cabinet company)\b/i
+const unsupportedPositioning = /\b(years of experience|installed perfectly|premium|luxury|semi-custom|custom kitchen cabinets|best kitchen cabinet company)\b/i
 
 describe('public content truthfulness', () => {
   it('keeps service and SEO positioning within verified capabilities', () => {

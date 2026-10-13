@@ -45,15 +45,14 @@ export default function HomePage() {
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Price expectations</p>
             <h2 className="mt-3 font-display text-3xl font-bold text-charcoal-900 md:text-4xl">
-              What should you expect to invest?
+              How our pricing works
             </h2>
             <p className="mt-5 text-xl font-semibold leading-8 text-charcoal-900">
-              Most 10x10 kitchens, installed, start at [PRICE].
+              Dealer-direct pricing, no showroom markup.
             </p>
             <p className="mt-4 leading-7 text-charcoal-700">
-              This starting point is a placeholder until the amount is confirmed. The written quote
-              comes after in-home measurement and review of cabinet selection, delivery, site
-              conditions, and installation scope.
+              You get a written, itemized quote after we measure your kitchen, and that&apos;s the price
+              you pay unless you change the scope.
             </p>
           </div>
           <div className="rounded-2xl border border-wood-200 bg-white p-7 sm:p-8">

@@ -1,10 +1,9 @@
-# Release placeholders
+# Owner-supplied facts
 
-The staging candidate intentionally leaves these owner-supplied values unresolved:
+The site omits business facts that have not been verified. No bracketed placeholder values are emitted in public pages, page data, or structured data.
 
-- `[PRICE]` — starting installed price for the approved 10x10-kitchen statement.
-- `[HOURS]` — verified public opening hours for `openingHoursSpecification`.
-- `[GOOGLE BUSINESS PROFILE URL]` — omit from `sameAs` until the real public profile URL is supplied.
-- `[FACEBOOK URL]` — omit from `sameAs` until the real public page URL is supplied.
+- Pricing uses quote-based explanatory copy without a numerical starting-price claim.
+- Opening hours remain omitted from structured data until verified public hours are supplied.
+- Google Business Profile and Facebook URLs remain omitted from `sameAs` until verified public URLs are supplied.
 
-Google Search Console uses the root verification file `public/google5311959f90a181fd.html`; no verification placeholder remains in page metadata. No placeholder value is presented as a verified fact. The two `sameAs` properties remain absent from generated JSON-LD until real URLs are supplied.
+Google Search Console uses the root verification file `public/google5311959f90a181fd.html`.

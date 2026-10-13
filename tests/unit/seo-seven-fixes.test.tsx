@@ -52,7 +52,7 @@ describe('seven-item SEO staging candidate', () => {
       resolve(process.cwd(), 'public/google5311959f90a181fd.html'),
       'utf8',
     )
-    expect(layout).not.toContain('[GSC VERIFICATION CODE]')
+    expect(layout).not.toMatch(/\[[A-Z][A-Z0-9 _:/,".-]*\]/)
     expect(verification).toBe('google-site-verification: google5311959f90a181fd.html')
     const homeMarkup = documentFor(renderToStaticMarkup(<HomePage />))
     expect(homeMarkup.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://selacabinets.com/')
@@ -108,11 +108,20 @@ describe('seven-item SEO staging candidate', () => {
     expect(schemas.some((schema) => schema['@type'] === 'FAQPage')).toBe(true)
   })
 
-  it('shows the exact installation price placeholder on home, pricing, and installation', () => {
-    const expected = 'Most 10x10 kitchens, installed, start at [PRICE].'
-    expect(textOf(HomePage)).toContain(expected)
-    expect(textOf(PricingPage)).toContain(expected)
-    expect(textOf(KitchenCabinetInstallationDetroitPage)).toContain(expected)
+  it('explains quote-based pricing consistently without placeholders', () => {
+    const headline = 'Dealer-direct pricing, no showroom markup.'
+    const explanation = "You get a written, itemized quote after we measure your kitchen, and that's the price you pay unless you change the scope."
+    const pages = [
+      textOf(HomePage),
+      textOf(PricingPage),
+      textOf(KitchenCabinetInstallationDetroitPage),
+    ]
+    for (const page of pages) {
+      expect(page).toContain(headline)
+      expect(page).toContain(explanation)
+      expect(page).not.toMatch(/\[[A-Z][A-Z0-9 _:/,".-]*\]/)
+    }
+    expect(pages[0]).toContain('How our pricing works')
   })
 
   it('gives every cabinet style three useful and distinct style notes', () => {
@@ -154,9 +163,7 @@ describe('seven-item SEO staging candidate', () => {
     expect(schema).not.toHaveProperty('sameAs')
     expect(schema).not.toHaveProperty('review')
     expect(schema).not.toHaveProperty('aggregateRating')
-    expect(schema.openingHoursSpecification).toEqual([
-      { '@type': 'OpeningHoursSpecification', description: '[HOURS]' },
-    ])
+    expect(schema).not.toHaveProperty('openingHoursSpecification')
     expect(schema.logo).toMatch(/\.png$/)
     const logoPath = resolve(process.cwd(), 'public', new URL(schema.logo).pathname.slice(1))
     expect(existsSync(logoPath)).toBe(true)

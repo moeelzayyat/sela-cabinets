@@ -53,10 +53,11 @@ export default function PricingPage() {
               Every SELA cabinet project is measured, planned, and estimated around the actual home, not a generic online number.
             </p>
             <p className="mt-5 text-xl font-semibold text-white">
-              Most 10x10 kitchens, installed, start at [PRICE].
+              Dealer-direct pricing, no showroom markup.
             </p>
-            <p className="mt-2 text-sm text-charcoal-300">
-              The starting amount remains a placeholder until the final figure is confirmed.
+            <p className="mt-3 text-base leading-7 text-charcoal-300">
+              You get a written, itemized quote after we measure your kitchen, and that&apos;s the price
+              you pay unless you change the scope.
             </p>
           </div>
         </div>

@@ -63,7 +63,11 @@ export default function KitchenCabinetInstallationDetroitPage() {
               the first call through the final cabinet walkthrough.
             </p>
             <p className="mt-5 text-xl font-semibold text-white">
-              Most 10x10 kitchens, installed, start at [PRICE].
+              Dealer-direct pricing, no showroom markup.
+            </p>
+            <p className="mt-3 max-w-3xl text-base leading-7 text-charcoal-300">
+              You get a written, itemized quote after we measure your kitchen, and that&apos;s the price
+              you pay unless you change the scope.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Button asChild size="lg"><Link href="/estimate">Request an Installation Estimate</Link></Button>

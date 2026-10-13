@@ -29,12 +29,10 @@ export const siteConfig = {
 
   // Unknown business facts remain hidden until they are verified.
   businessFacts: {
-    address: '[BUSINESS ADDRESS OR "service-area business, no public address"]',
-    hours: '[HOURS]',
-    license: '[LICENSE TYPE AND NUMBER]',
-    insured: '[INSURED: YES/NO]',
-    warranty: '[WARRANTY TERMS]',
-
+    address: null,
+    license: null,
+    insured: null,
+    warranty: null,
   },
   
   // ============================================

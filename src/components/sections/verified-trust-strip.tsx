@@ -8,8 +8,8 @@ const trustFacts = [
   { label: 'Warranty', value: siteConfig.businessFacts.warranty, icon: BadgeCheck },
 ] as const
 
-function isVerified(value: string) {
-  return !value.startsWith('[')
+function isVerified(value: string | null) {
+  return value !== null
 }
 
 export function VerifiedTrustStrip() {

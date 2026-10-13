@@ -118,6 +118,7 @@ describe('SELA search-intent and truthfulness overhaul', () => {
     expect(home).not.toContain('siteConfig.pricing.installedRange')
     expect(estimate).not.toContain('siteConfig.pricing.installedRange')
     expect(layout).not.toContain('google-site-verification')
-    expect(siteConfig.businessFacts.hours).toBe('[HOURS]')
+    expect(siteConfig.businessFacts).not.toHaveProperty('hours')
+    expect(Object.values(siteConfig.businessFacts).every((value) => value === null)).toBe(true)
   })
 })

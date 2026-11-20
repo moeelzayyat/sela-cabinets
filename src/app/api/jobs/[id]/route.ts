@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAdminSession } from '@/lib/api-authorization'
 import { pool } from '@/lib/db'
+import { cancelJobAppointments, syncJobToCalendar } from '@/lib/job-calendar-sync'
 
 // GET /api/jobs/[id]
 async function GETHandler(
@@ -94,7 +95,19 @@ async function PUTHandler(
       return NextResponse.json({ error: 'Job not found' }, { status: 404 })
     }
     
-    return NextResponse.json({ job: result.rows[0] })
+    const job = result.rows[0]
+
+    // Keep the installation appointment on the calendar in step with the job.
+    // A calendar failure is logged but does not undo the saved job.
+    if (startDate !== undefined || status !== undefined || crewMembers !== undefined) {
+      try {
+        await syncJobToCalendar(id, job)
+      } catch (syncError) {
+        console.error('Error syncing job to calendar:', syncError)
+      }
+    }
+
+    return NextResponse.json({ job })
   } catch (error) {
     console.error('Error updating job:', error)
     return NextResponse.json({ error: 'Failed to update job' }, { status: 500 })
@@ -121,6 +134,12 @@ async function DELETEHandler(
       return NextResponse.json({ error: 'Job not found' }, { status: 404 })
     }
     
+    try {
+      await cancelJobAppointments(id)
+    } catch (syncError) {
+      console.error('Error cancelling job calendar appointment:', syncError)
+    }
+
     return NextResponse.json({ message: 'Job cancelled' })
   } catch (error) {
     console.error('Error deleting job:', error)

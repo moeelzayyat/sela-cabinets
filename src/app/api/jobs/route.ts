@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAdminSession } from '@/lib/api-authorization'
 import { pool } from '@/lib/db'
+import { syncJobToCalendar } from '@/lib/job-calendar-sync'
 
 // GET /api/jobs - List all jobs
 async function GETHandler(request: NextRequest) {
@@ -109,7 +110,19 @@ async function POSTHandler(request: NextRequest) {
       totalAmount, notes
     ])
     
-    return NextResponse.json({ job: result.rows[0] }, { status: 201 })
+    const job = result.rows[0]
+
+    // Put the installation on the calendar when the new job already has a date.
+    // A calendar failure is logged but does not undo the created job.
+    if (job.start_date) {
+      try {
+        await syncJobToCalendar(job.id, job)
+      } catch (syncError) {
+        console.error('Error adding job to calendar:', syncError)
+      }
+    }
+
+    return NextResponse.json({ job }, { status: 201 })
   } catch (error) {
     console.error('Error creating job:', error)
     return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })
